@@ -1,10 +1,10 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/AdmMemberDao.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersDao.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/A_Mgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/DbUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 
-class AdmMemberMgr extends A_Mgr
+class ToursafeMembersMgr extends A_Mgr
 {
     private static $instance = null;
     
@@ -27,7 +27,7 @@ class AdmMemberMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $row = AdmMemberDao::getInstance()->selectByKey($db, $key);
+            $row = ToursafeMembersDao::getInstance()->selectByKey($db, $key);
             
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -44,7 +44,7 @@ class AdmMemberMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $row = AdmMemberDao::getInstance()->selectFirst($db, $wq);
+            $row = ToursafeMembersDao::getInstance()->selectFirst($db, $wq);
 
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -65,7 +65,7 @@ class AdmMemberMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $result = AdmMemberDao::getInstance()->select($db, $wq);
+            $result = ToursafeMembersDao::getInstance()->select($db, $wq);
             
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -86,8 +86,8 @@ class AdmMemberMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $pg->setTotalCount(AdmMemberDao::getInstance()->selectCount($db, $wq));
-            $result = AdmMemberDao::getInstance()->selectPerPage($db, $wq, $pg);
+            $pg->setTotalCount(ToursafeMembersDao::getInstance()->selectCount($db, $wq));
+            $result = ToursafeMembersDao::getInstance()->selectPerPage($db, $wq, $pg);
             
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -105,7 +105,7 @@ class AdmMemberMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $result = AdmMemberDao::getInstance()->selectCount($db, $wq);
+            $result = ToursafeMembersDao::getInstance()->selectCount($db, $wq);
             
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -123,7 +123,7 @@ class AdmMemberMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $result = AdmMemberDao::getInstance()->exists($db, $wq);
+            $result = ToursafeMembersDao::getInstance()->exists($db, $wq);
             
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -143,7 +143,7 @@ class AdmMemberMgr extends A_Mgr
             
             //            $this->startTran($db);
             
-            $isOk = AdmMemberDao::getInstance()->insert($db, $arrVal);
+            $isOk = ToursafeMembersDao::getInstance()->insert($db, $arrVal);
             
             //            $this->commit($db);
             
@@ -166,7 +166,7 @@ class AdmMemberMgr extends A_Mgr
             
             //$this->startTran($db);
             
-            $isOk = AdmMemberDao::getInstance()->update($db, $uq, $key);
+            $isOk = ToursafeMembersDao::getInstance()->update($db, $uq, $key);
             
             //$this->commit($db);
             
@@ -189,7 +189,7 @@ class AdmMemberMgr extends A_Mgr
             
             //$this->startTran($db);
             
-            $isOk = AdmMemberDao::getInstance()->delete($db, $key);
+            $isOk = ToursafeMembersDao::getInstance()->delete($db, $key);
             
             //$this->commit($db);
             

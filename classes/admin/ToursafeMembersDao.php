@@ -1,7 +1,7 @@
 <?php 
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/A_Dao.php";
 
-class AdmMemberDao extends A_Dao
+class ToursafeMembersDao extends A_Dao
 {
 	private static $instance = null;
 
@@ -18,8 +18,8 @@ class AdmMemberDao extends A_Dao
 
 	function selectByKey($db, $key) {
 		 
-		$sql =" select userid, passwd, name, grade, fg_del, fg_outside, last_login, reg_date, hp_no, email, grade_alarm, hiworks_id "
-			 ." from icm_adm_member "
+		$sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type "
+			 ." from toursafe_members "
 			 ." where userid = ".$this->quot($db, $key)
 		 	 ;
 		
@@ -36,8 +36,8 @@ class AdmMemberDao extends A_Dao
 
 	function selectFirst($db, $wq) {
 
-		$sql =" select userid, passwd, name, grade, fg_del, fg_outside, last_login, reg_date, hp_no, email, grade_alarm, hiworks_id "
-			 ." from icm_adm_member"
+		$sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type "
+			 ." from toursafe_members"
 			 .$wq->getWhereQuery()
 			 .$wq->getOrderByQuery()
 			 ;
@@ -56,8 +56,8 @@ class AdmMemberDao extends A_Dao
 
 	function select($db, $wq) {
 	    
-	    $sql =" select userid, passwd, name, grade, fg_del, fg_outside, last_login, reg_date, hp_no, email, grade_alarm, hiworks_id "
-	         ." from icm_adm_member"
+	    $sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type "
+	         ." from toursafe_members"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
 	         ;
@@ -66,23 +66,26 @@ class AdmMemberDao extends A_Dao
 	}
 	
 	function selectPerPage($db, $wq, $pg) {
-		
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
-			 ."		select @rnum:=0, userid, passwd, name, grade, fg_del, fg_outside, last_login, reg_date, hp_no, email, grade_alarm, hiworks_id "
-			 ."		from icm_adm_member"
-	         .$wq->getWhereQuery()
-	         .$wq->getOrderByQuery()
-	         ."		limit ".$pg->getStartIdx().", ".$pg->getPageSize()
-			 ." ) r"
-			 ;
-
+			."		select @rnum:=0, no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type "
+			." 		from toursafe_members a "
+			." 		INNER JOIN ( "
+	        ."			select no as idx from toursafe_members a "
+            			.$wq->getWhereQuery()
+						.$wq->getOrderByQuery()
+	        ."     		limit ".$pg->getStartIdx().", ".$pg->getPageSize()
+	        ." 		) pg_idx "
+	        ." 		on a.no=pg_idx.idx "
+			." ) r"
+		;
+			 
         return $db->query($sql);
 	}
 	
 	function selectCount($db, $wq) {
 
 		$sql =" select count(*) cnt"
-			 ." from icm_adm_member a "
+			 ." from toursafe_members a "
 			 .$wq->getWhereQuery()
 			 ;
 		
@@ -100,7 +103,7 @@ class AdmMemberDao extends A_Dao
 	function exists($db, $wq) {
 
 		$sql =" select count(*) cnt"
-			 ." from icm_adm_member"
+			 ." from toursafe_members"
 			 .$wq->getWhereQuery()
 			 ;
 
@@ -128,8 +131,8 @@ class AdmMemberDao extends A_Dao
 	}
 	
 	function insert($db, $arrVal) {
-	    
-	    $sql =" insert icm_adm_member(userid, passwd, name, grade, fg_outside, hp_no, email, grade_alarm, hiworks_id, reg_date)"
+/*
+	    $sql =" insert toursafe_members(mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type )"
 	        ." values ('".$this->checkMysql($db, $arrVal["userid"])
 	        ."', password('".$this->checkMysql($db, $arrVal["passwd"])."')"
 	            .", '".$this->checkMysql($db, $arrVal["name"])
@@ -143,12 +146,12 @@ class AdmMemberDao extends A_Dao
 	                ;
 	                
 	                return $db->query($sql);
-	                
+*/	                
 	}
 	
 	function update($db, $uq, $key) {
 	    
-	    $sql =" update icm_adm_member"
+	    $sql =" update toursafe_members"
 			.$uq->getQuery($db)
 	        ." where userid = ".$this->quot($db, $key);
 	        
@@ -157,7 +160,7 @@ class AdmMemberDao extends A_Dao
 	
 	function delete($db, $key) {
 	    if ($key) {
-	    	$sql =" update icm_adm_member set fg_del=1 where userid = ".$this->quot($db, $key);
+	    	$sql =" delete from toursafe_members where userid = ".$this->quot($db, $key);
 			return $db->query($sql);
 		}
 	}	
