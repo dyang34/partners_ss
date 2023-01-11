@@ -6,7 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/UpdateQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/AdmMemberMgr.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/SystemUtil.php";aa
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/SystemUtil.php";
 
 $rtnUrl = RequestUtil::getParam("rtnUrl", "");
 
