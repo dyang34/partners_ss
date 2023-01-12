@@ -1,22 +1,22 @@
 <?php
 
-define("ICM_KEY_USER_LOGIN", "ICM_KEY_USER_LOGIN");
-define("ICM_KEY_MANAGER_LOGIN", "ICM_KEY_MANAGER_LOGIN");
+define("B2B_UDIRECT_SS_KEY_USER_LOGIN", "B2B_UDIRECT_SS_KEY_USER_LOGIN");
+define("B2B_UDIRECT_SS_KEY_MANAGER_LOGIN", "B2B_UDIRECT_SS_KEY_MANAGER_LOGIN");
 
 class LoginManager
 {
 	static function setUserLogin($array) {
 		@session_start();
-		$_SESSION[ICM_KEY_USER_LOGIN] = $array;
+		$_SESSION[B2B_UDIRECT_SS_KEY_USER_LOGIN] = $array;
 	}
 	
 	static function getUserLogin() {
 	    @session_start();
-	    return $_SESSION[ICM_KEY_USER_LOGIN];
+	    return $_SESSION[B2B_UDIRECT_SS_KEY_USER_LOGIN];
 	}	
 	
 	static function isUserLogined() {
-		$login = LoginManager::getManagerLogin();
+		$login = LoginManager::getUserLogin();
 		if ( empty($login) ) {
 			return false;
 		} else {
@@ -25,7 +25,7 @@ class LoginManager
 	}
 	
 	static function getUserLoginInfo($key) {
-		$login = LoginManager::getManagerLogin();
+		$login = LoginManager::getUserLogin();
 		if ( empty($login) ) {
 			return "";
 		} else {
@@ -34,23 +34,23 @@ class LoginManager
 	}	
 
 	static function setUserLoginInfo($key, $val) {
-	    $login = LoginManager::getManagerLogin();
+	    $login = LoginManager::getUserLogin();
 	    if ( empty($login) ) {
 	        return "";
 	    } else {
 	        //$login[$key] = $val;
-	        $_SESSION[ICM_KEY_USER_LOGIN][$key] = $val;
+	        $_SESSION[B2B_UDIRECT_SS_KEY_USER_LOGIN][$key] = $val;
 	    }
 	}
 	
 	static function setManagerLogin($array) {
 		@session_start();
-		$_SESSION[ICM_KEY_MANAGER_LOGIN] = $array;
+		$_SESSION[B2B_UDIRECT_SS_KEY_MANAGER_LOGIN] = $array;
 	}
 	
 	static function getManagerLogin() {
 		@session_start();
-		return $_SESSION[ICM_KEY_MANAGER_LOGIN];
+		return $_SESSION[B2B_UDIRECT_SS_KEY_MANAGER_LOGIN];
 	}
 	
 	static function isManagerLogined() {

@@ -5,11 +5,6 @@ class DbUtil
 {
     static function getConnection() {
         @ $db = new mysqli(CmsConfig::$mysql_host, CmsConfig::$mysql_user, CmsConfig::$mysql_password, CmsConfig::$mysql_database);
-/*        
-        $icm_connect = mysql_connect(CmsConfig::$mysql_host,CmsConfig::$mysql_user,CmsConfig::$mysql_password) or die(mysql_error().'<BR> DB connect fail !!');
-        mysql_query("set names utf8");
-        $icm_db = mysql_select_db(CmsConfig::$mysql_database, $icm_connect) or die('DB selected fail !!');
-*/        
         
         if ( $db->connect_errno ) {
             throw new Exception("DbUtil getConnection Error!");

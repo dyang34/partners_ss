@@ -10,5 +10,5 @@ if (!LoginManager::isUserLogined()) {
     exit;
 }
 
-JsUtil::replace("/admin/system/adm_mem_list.php");
+JsUtil::replace("/service/apply/apply.php");
 ?>

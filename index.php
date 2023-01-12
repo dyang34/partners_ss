@@ -11,11 +11,11 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/SystemUtil.php";
 $rtnUrl = RequestUtil::getParam("rtnUrl", "");
 
 $b2b_udirect_ss_ck_auto = CookieUtil::getCookieMd5("b2b_udirect_ss_ck_auto");
-$b2b_udirect_ss_ck_userid = CookieUtil::getCookieMd5("b2b_udirect_ss_ck_userid");
+$b2b_udirect_ss_ck_uid = CookieUtil::getCookieMd5("b2b_udirect_ss_ck_uid");
 
 if(!$b2b_udirect_ss_ck_auto) $b2b_udirect_ss_ck_auto = "";
 
-if (LoginManager::isUserLogined() && !empty(LoginManager::getUserLoginInfo("grade"))) {
+if (LoginManager::isUserLogined()) {
     
     $wq = new WhereQuery(true, true);
     $wq->addAndString("uid", "=", LoginManager::getUserLoginInfo("uid"));
@@ -108,14 +108,14 @@ if(window.location.protocol == "http:"){
         </div>
 
 <?php
-if ($b2b_udirect_ss_ck_auto=="b2b_udirect_ss_auto_login" && !empty($b2b_udirect_ss_ck_userid)) {
+if ($b2b_udirect_ss_ck_auto=="b2b_udirect_ss_auto_login" && !empty($b2b_udirect_ss_ck_uid)) {
 ?>
 
 <form name="autoLoginForm" method="post" action="./admin_login_act.php">
 	<input type="hidden" name="mode" value="autologin" />
 	<input type="hidden" name="auto_defense" value="identicharmc!@" />
     <input type="hidden" name="rtnUrl" value="<?=urlencode($rtnUrl)?>" />
-    <input type="hidden" name="uid" value="<?=$b2b_udirect_ss_ck_userid?>" />
+    <input type="hidden" name="uid" value="<?=$b2b_udirect_ss_ck_uid?>" />
 </form>
 
 <script type="text/javascript">

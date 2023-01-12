@@ -6,7 +6,6 @@ class UploadUtil
     static $Img_MaxFileSize 		= 10240000;
     static $Img_AllowFileType		= array("image/pjpeg", "image/jpeg", "image/gif", "image/png");
 
-//    static $Excel_UpWebPath 	= "/icm/data/";
     static $Excel_UpWebPath 	= "/_data/file/excel/";
     static $Excel_MaxFileSize 	= 20480000;
     static $Excel_AllowFileType	= array();
