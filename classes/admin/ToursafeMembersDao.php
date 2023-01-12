@@ -20,7 +20,7 @@ class ToursafeMembersDao extends A_Dao
 		 
 		$sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type "
 			 ." from toursafe_members "
-			 ." where userid = ".$this->quot($db, $key)
+			 ." where uid = ".$this->quot($db, $key)
 		 	 ;
 		
 		$row = null;
@@ -133,7 +133,7 @@ class ToursafeMembersDao extends A_Dao
 	function insert($db, $arrVal) {
 /*
 	    $sql =" insert toursafe_members(mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type )"
-	        ." values ('".$this->checkMysql($db, $arrVal["userid"])
+	        ." values ('".$this->checkMysql($db, $arrVal["uid"])
 	        ."', password('".$this->checkMysql($db, $arrVal["passwd"])."')"
 	            .", '".$this->checkMysql($db, $arrVal["name"])
 	            ."', '".$this->checkMysql($db, $arrVal["grade"])
@@ -153,14 +153,14 @@ class ToursafeMembersDao extends A_Dao
 	    
 	    $sql =" update toursafe_members"
 			.$uq->getQuery($db)
-	        ." where userid = ".$this->quot($db, $key);
+	        ." where uid = ".$this->quot($db, $key);
 	        
 		return $db->query($sql);
 	}
 	
 	function delete($db, $key) {
 	    if ($key) {
-	    	$sql =" delete from toursafe_members where userid = ".$this->quot($db, $key);
+	    	$sql =" delete from toursafe_members where uid = ".$this->quot($db, $key);
 			return $db->query($sql);
 		}
 	}	
