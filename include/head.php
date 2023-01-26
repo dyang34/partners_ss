@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT']."/common/site_default_set.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/common/site_default_data.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/lib/function.php";
 
 @session_start();
 ?>
@@ -26,5 +27,5 @@ require_once $_SERVER['DOCUMENT_ROOT']."/common/site_default_data.php";
         <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
         <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="/js/common.js"></script>
-        <script type="text/javascript" src="/js/script.js"></script>
+        <script type="text/javascript" src="/js/script.js?v=<?=time()?>"></script>
     </head>
