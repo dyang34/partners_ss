@@ -332,6 +332,7 @@ $(document).ready(function() {
 
 		$('table[name=tbl_contract] tr').each(function(index, item) {
 			if(index>0) {
+
 				obj = $(this).find('input[name="jumin_show[]"]');
 				if (obj.val()) {
 					chk_jumin(obj);
@@ -341,6 +342,8 @@ $(document).ready(function() {
 		
 		return false;
 	});
+
+
 
 	numbering_row();
 });
