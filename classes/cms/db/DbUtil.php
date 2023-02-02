@@ -16,6 +16,19 @@ class DbUtil
         }
     }
 
+    static function getConnectionUlife() {
+        @ $db = new mysqli(CmsConfig::$mysql_host_ulife, CmsConfig::$mysql_user_ulife, CmsConfig::$mysql_password_ulife, CmsConfig::$mysql_database_ulife);
+        
+        if ( $db->connect_errno ) {
+            throw new Exception("DbUtil getConnection Error!");
+        } else {
+            // 한글처리.
+//            mysqli_query($db, 'set names euckr');
+            mysqli_query($db, 'set names utf8');
+            return $db;
+        }
+    }
+
     static function freeProcedureResult($db) {
         while ( $db->more_results() ) {
             if ( $db->next_result() ) {

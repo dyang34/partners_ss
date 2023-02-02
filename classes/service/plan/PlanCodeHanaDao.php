@@ -82,6 +82,25 @@ class PlanCodeHanaDao extends A_Dao
         return $db->query($sql);
 	}
 	
+	function selectPlanList($db, $wq) {
+
+		$sql =" SELECT a.trip_type, a.plan_title as plan_repre_title, a.plan_type, b.cal_type, b.plan_code, b.plan_start_age, b.plan_end_age, b.plan_title, b.company_type "
+			."FROM ( "
+			."	SELECT company_type, trip_type, plan_title, MIN(cast(plan_type AS UNSIGNED )) AS plan_type "
+			."	FROM plan_code_hana a "
+			.$wq->getWhereQuery()
+			."	GROUP BY trip_type, plan_title "
+			.") AS a "
+			."LEFT JOIN plan_code_hana b "
+			."ON a.trip_type = b.trip_type "
+			."AND a.company_type = b.company_type "
+			."AND b.plan_type LIKE CONCAT('%',a.plan_type,'%') "
+			."ORDER BY a.trip_type, a.plan_type, b.cal_type "
+		;
+
+		return $db->query($sql);
+	}
+
 	function selectCount($db, $wq) {
 
 		$sql =" select count(*) cnt"

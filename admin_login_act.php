@@ -66,8 +66,11 @@ if($mode=="login"){
             CookieUtil::removeCookie("b2b_udirect_ss_ck_auto");
         }
         
+        $row_session["company_type"] = $row["company_type"];
+        $row_session["no"] = $row["no"];
         $row_session["uid"] = $row["uid"];
         $row_session["com_name"] = $row["com_name"];
+        $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
 
         LoginManager::setUserLogin($row_session);
         
@@ -109,8 +112,11 @@ if($mode=="login"){
             ToursafeMembersMgr::getInstance()->edit($uq, $uid);
         }
         
+        $row_session["company_type"] = $row["company_type"];
+        $row_session["no"] = $row["no"];
         $row_session["uid"] = $row["uid"];
         $row_session["com_name"] = $row["com_name"];
+        $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
 
         LoginManager::setUserLogin($row_session);
         

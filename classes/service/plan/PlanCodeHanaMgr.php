@@ -97,6 +97,27 @@ class PlanCodeHanaMgr extends A_Mgr
         return $result;
     }
 
+    /*
+     *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
+     */
+    function getPlanList($wq) {
+        
+        $result = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            $result = PlanCodeHanaDao::getInstance()->selectPlanList($db, $wq);
+            
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $result;
+    }
+
     function getCount($wq) {
         
         $result = null;
