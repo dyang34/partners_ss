@@ -15,11 +15,11 @@ include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
         <div class="head-wrap">
             <h1><img src="/img/common/logo-toursafe.png" alt="투어세이프 로고"></h1>
             <nav>
-                <a href="/service/contract/register.php" class="<?=($menuNo==1)?"active":""?>">보험 가입</a>
-                <a href="/service/contract/inquiry.php" class="<?=($menuNo==2)?"active":""?>">신청내역 조회/수정</a>
-                <a href="#" class="<?=($menuNo==3)?"active":""?>">정산관리</a>
-                <a href="#" class="<?=($menuNo==4)?"active":""?>">청구안내</a>
-                <a href="#" class="<?=($menuNo==5)?"active":""?>">고객센터</a>
+                <a href="/service/contract/register.php" class="<?=($menuNo[0]==1)?"active":""?>">보험 가입</a>
+                <a href="/service/contract/inquiry.php" class="<?=($menuNo[0]==2)?"active":""?>">신청내역 조회/수정</a>
+                <a href="/service/calc/calc_list.php" class="<?=($menuNo[0]==3)?"active":""?>">정산관리</a>
+                <a href="/service/claim/info.php" class="<?=($menuNo[0]==4)?"active":""?>">청구안내</a>
+                <a href="/service/customer/notice.php" class="<?=($menuNo[0]==5)?"active":""?>">고객센터</a>
             </nav>
 <?php
 if (LoginManager::isUserLogined()) {

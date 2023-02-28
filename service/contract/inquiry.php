@@ -4,14 +4,13 @@ require_once $_SERVER['DOCUMENT_ROOT']."/include/common.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/nation/NationMgr.php";
 
 if (!LoginManager::isUserLogined()) {
     //    JsUtil::alertBack("비정상적인 접근입니다. (ErrCode:0x05)    ");
     JsUtil::alertReplace("로그인이 필요합니다.    ","/");
 }
 
-$menuNo=2;
+$menuNo=[2,0];
 
 $__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
 if(!LoginManager::getUserLoginInfo("fg_not_common_plan")) {
@@ -20,7 +19,6 @@ if(!LoginManager::getUserLoginInfo("fg_not_common_plan")) {
 
 include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 ?>
-
 
 <script type="text/javascript">
     // 달력 script

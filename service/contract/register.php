@@ -11,7 +11,7 @@ if (!LoginManager::isUserLogined()) {
     JsUtil::alertReplace("로그인이 필요합니다.    ","/");
 }
 
-$menuNo=1;
+$menuNo=[1,0];
 
 $__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
 if(!LoginManager::getUserLoginInfo("fg_not_common_plan")) {
