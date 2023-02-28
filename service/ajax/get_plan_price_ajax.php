@@ -112,6 +112,7 @@ if ( $term_day <= 0) {
 $rtnVal['RESULTCD'] = "200";
 $rtnVal['RESULTMSG'] = "SUCCESS";
 $rtnVal['Price'] = $__ARR_CONFIG_PLAN_PRICE[$company_type][$member_no][$trip_type][$plan_code][$gender][$term_day][$age];
+$rtnVal['Term_Day'] = $term_day;
 echo json_encode($rtnVal);
 exit;
 ?>

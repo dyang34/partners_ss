@@ -50,6 +50,8 @@ if($auto_defense != "identicharmc!@") {
     exit;
 }
 
+$repre_hp = str_replace("-", "", $repre_hp);
+
 $price_sum = $join_cnt = 0;
 $join_name = "";
 for($i=0;$i<count($arr_price);$i++) {

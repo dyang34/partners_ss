@@ -182,20 +182,17 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <th>추가정보 2</th>
                     <td><input type="text"  class="input-search" name="add_info2" placeholder="50자 이내로 작성해주세요"></td>
                 </tr>
+<?php if($_GET["hp"]=="Y") { ?>
                 <tr>
                     <th>휴대폰 <em class="bulStyle1">*</em></th>
-                    <td class="inpt">
-                        <div class="select-box">
-                            <select name="trip_purpose">
-                                <option value="1">여행/관광</option>
-                                <option value="2">연수/출장</option>
-                            </select>
-                        </div>
-                    </td>
+                    <td><input type="tel" class="input-search input_number input_phone" name="repre_hp" placeholder="010-2345-6789" maxlength="11"></td>
 
                     <th>이메일 <em class="bulStyle1">*</em></th>                    
-                    <td colspan="3"><input type="text"  class="input-search" name="add_info1" placeholder="50자 이내로 작성해주세요"></td>
+                    <td><input type="email"  class="input-search" name="repre_email" placeholder="bis@bis.co.kr"></td>
+
+                    <td colspan="2" class="last"></td>
                 </tr>
+<?php } ?>
             </tbody>
         </table>
     </div>
@@ -208,8 +205,8 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                 <select name="plan_repre_type" id="">
                 </select>
             </div>
-
         </h2>
+        
         <div class="flan-info-wrap inb">
             <!-- 주니어 start -->
             <div class="flan-box-list div_plan_type" name="divPlantypeCal1">
@@ -418,7 +415,9 @@ function reset_Select2() {  // Select 리셋시 사용.
 }
 </script>
 
+<?/*
 <script type="text/javascript" src="/js/ValidCheck.js?v=<?=filemtime($_SERVER['DOCUMENT_ROOT']."/travel/meritz/js/ValidCheck.js")?>"></script>
+*/?>
 <script type="text/javascript">
 const fg_auto_calc = <?=$_GET['fg_auto_calc']!="N"?"true":"false"?>;
 const g_company_type = "<?=LoginManager::getUserLoginInfo("company_type")?>";
@@ -607,8 +606,8 @@ $(document).ready(function() {
 
         calc_price(fg_auto_calc);
     });
-/*
-    $(document).on('input', '.input_price', function(e) {
+    
+    $(document).on('input, click', '.input_number', function(e) {
 
         e.stopPropagation();
         e.preventDefault();    
@@ -616,6 +615,19 @@ $(document).ready(function() {
         $(this).val($(this).val().replace(/[^0-9]/g,''));
     });
 
+    $(document).on('blur', '.input_phone', function(e) {
+
+        e.stopPropagation();
+        e.preventDefault();    
+
+        let hp = $(this).val();
+
+        if(chk_pattern(hp, 'hp')) {
+            $(this).val(hp.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,"$1-$2-$3"));
+        }
+    });
+
+/*
     $(document).on('blur', '.input_price', function(e) {
 
         e.stopPropagation();
@@ -1391,6 +1403,8 @@ const get_member_price = function(p_company_type, p_member_no, p_trip_type, p_pl
                         rtn_val = -1;
                     }
                 }
+
+                $('input[name=term_day]').val(data.Term_Day);
             },
             error : function(err)
             {
@@ -1549,7 +1563,56 @@ const chk_all_set_field = function(fg_msg, fg_chk_price) {
 
         return false;
     }
- 
+
+    if (!$('input[name=end_date]').val()) {
+        if(fg_msg) {
+            alert("여행 종료일을 선택해 주십시오.    ");
+            $('input[name="end_date"]').datepicker("show");
+        }
+
+        return false;
+    }
+
+    if($('input[name=repre_hp]').val()) {
+        if(!chk_pattern($('input[name=repre_hp]').val(), 'hp')) {
+            if(fg_msg) {
+                alert("올바른 휴대폰 번호를 입력해 주십시오.    ");
+                $('input[name="repre_hp"]').focus();
+            }
+
+            return false;
+        }
+<?php if($_GET["hp"]=="Y") { ?>
+    } else {
+        if(fg_msg) {
+            alert("휴대폰 번호를 입력해 주십시오.    ");
+            $('input[name="repre_hp"]').focus();
+        }
+
+        return false;
+<?php } ?>
+    }
+
+    if($('input[name=repre_email]').val()) {
+        if(!chk_pattern($('input[name=repre_email]').val(), 'email')) {
+            if(fg_msg) {
+                alert("올바른 이메일을 입력해 주십시오.    ");
+                $('input[name="repre_email"]').focus();
+            }
+
+            return false;
+        }
+<?php if($_GET["hp"]=="Y") { ?>
+    } else {
+        if(fg_msg) {
+            alert("이메일을 입력해 주십시오.    ");
+            $('input[name="repre_email"]').focus();
+        }
+
+        return false;
+<?php } ?>
+    }
+
     $('table[name=tbl_contract] tr').each(function(index, item) {
 		if(index>0) {
             if($(this).find('input[name="jumin[]"]').val() || $(this).find('input[name="name[]"]').val() || $(this).find('input[name="name_eng[]"]').val()) {
