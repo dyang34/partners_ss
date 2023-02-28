@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/plan/HanaPlanMemberDao.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/contract/HanaPlanMemberDao.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/A_Mgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/DbUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
@@ -133,7 +133,7 @@ class HanaPlanMemberMgr extends A_Mgr
         return $result;
     }
     
-    function add($arrVal) {
+    function add_simple($arrVal) {
         
         $isOk = null;
         $db = null;
@@ -143,7 +143,7 @@ class HanaPlanMemberMgr extends A_Mgr
             
             //            $this->startTran($db);
             
-            $isOk = HanaPlanMemberDao::getInstance()->insert($db, $arrVal);
+            $isOk = HanaPlanMemberDao::getInstance()->insert_simple($db, $arrVal);
             
             //            $this->commit($db);
             

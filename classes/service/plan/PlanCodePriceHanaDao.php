@@ -65,6 +65,18 @@ class PlanCodePriceHanaDao extends A_Dao
         return $db->query($sql);
 	}
 	
+	function selectTermDay($db, $wq) {
+	    
+	    $sql =" SELECT company_type, member_no, trip_type, plan_code, term_day "
+	         ." from plan_code_price_hana"
+	         .$wq->getWhereQuery()
+	         ." GROUP BY company_type, member_no, trip_type, plan_code, term_day "
+			 ." ORDER BY company_type, member_no, trip_type, plan_code, term_day "
+	         ;
+
+        return $db->query($sql);
+	}
+
 	function selectPerPage($db, $wq, $pg) {
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
 			."		select @rnum:=0, no,member_no,trip_type,plan_code,plan_type,term_day,sex,age,price,company_type "

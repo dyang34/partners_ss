@@ -52,6 +52,8 @@ include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
 
 if (!SystemUtil::isLocalhost()) {
 ?>
+<link rel="stylesheet" href="/css/swiper-bundle.min.css" />
+<link rel="stylesheet" type="text/css" href="/css/member.css?v=<?=time()?>">
 <script>
 if(window.location.protocol == "http:"){
 	window.location.protocol = "https:";
@@ -60,52 +62,81 @@ if(window.location.protocol == "http:"){
 <?php
 }
 ?>
-    <body id="lgoin">
-        <div id="wrap">
-            <div class="lg-box">
-                <div class="log-area">
-                    <h1><img src="/images/common/bis_logo.png" alt=""></h1>
-                    <h2>U-Direct B2B System.</h2>
-
-                    <form name="writeForm" class="custom-form" method="post" autocomplete="off">
-                        <input type="hidden" name="auto_defense" />
-                        <input type="hidden" name="mode" value="login" />
-                        <div class="id_pw_wrap inb">
-                            <div class="input_row">
-                                <div class="icon_cell">
-                                    <span class="icon_id">
-                                        <span class="blind">아이디</span>
-                                    </span>
-                                </div>
-                                <input type="text" name="uid" id="uid" class="input-login" />
-                            </div>
-                            <div class="input_row">
-                                <div class="icon_cell">
-                                    <span class="icon_pw">
-                                        <span class="blind">비밀번호</span>
-                                    </span>
-                                </div>
-                                <input type="password" class="input-login" name="upw"  id="upw" />
-                            </div>
-                        </div>
-
-                        <div class="check_box_wrap">
-                            <div class="choice-round">
-                                <input type="checkbox"  id="nologin" name="ck_auto" value="1" />
-                                <label for="nologin">자동 로그인<span class="box"></span></label>
-                            </div>
-                        </div>
-                        <div class="button-center">
-                            <a href="#" onClick="javascript:login_submit();return false;" class="button login xlarge">로그인</a>
-                        </div>
-                    </form>
-                </div>
+    <body id="wrap">
         
-                <div class="caption">
-                    Copyright ⓒ 2023 (주)유라이프파이낸셜. All rights reserved.
+    <div class="login-wrap">
+        <div class="login-cont-box">
+            <div class="info-box-left">
+                <h1><img src="/img/common/logo-toursafe.png" alt="투어세이프 로고"></h1>
+                <div class="rgstr-guide-wrpa">
+                    <div class="rgstr-guide">
+                        <strong>가입안내</strong>
+                        <p class="type-number">1. 가입 시 비용이 발생 하지 않습니다.</p>
+                        <p class="type-number">2. 사업자 등록 증은 필수 사항 입니다. 가입전 미리 준비해 주세요.</p>
+                        <p class="type-number">3. 가입 후 관리자 승인이 필요 합니다.</p>
+                    </div>
+
+                    <div class="user-manual">
+                        <strong>사용자 메뉴얼</strong>
+                        <a href="#;" class="button gray">다운로드</a>
+                    </div>
+
+                    <div class="join-contact">
+                        <strong>가입문의</strong>
+                        <span class="tel-number">1800-9010</span>
+                    </div>
                 </div>
-            </div>    
-        </div>
+
+                <div class="banner">
+                    <div class="swiper mySwiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">Slide 1</div>
+                            <div class="swiper-slide">Slide 2</div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="login-box-right">
+                <h2>투어세이프 파트너스 <span>로그인</span></h2>
+
+                <form name="writeForm" class="custom-form" method="post" autocomplete="off">
+                    <input type="hidden" name="auto_defense" />
+                    <input type="hidden" name="mode" value="login" />
+                    <div class="login-inputbox-wrap">
+                        <ul class="clearfix inb">
+                            <li>
+                                <input type="text" class="input-login" name="uid" id="uid"  placeholder="admin ID">
+                            </li>
+                            <li>
+                                <input type="password" class="input-login" name="upw" id="upw"  placeholder="password">
+                            </li>
+                            <li>
+                                <a href="#;" onClick="javascript:login_submit();return false;" class="button blue">LOGIN</a>
+                            </li>
+                        </ul>
+                        <div class="save-find">
+                            <div class="check-box-save">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="nologin" name="ck_auto" value="1" />
+                                    <label for="nologin"></label>
+                                </div>
+                                자동 로그인
+                            </div>
+                            <div class="find-right-area">
+                                <a href="/service/member/forget.php" class="link-find">아이디 찾기</a>
+                                <a href="/service/member/forget.php?mode=pw" class="link-find">비밀번호 찾기</a>
+                            </div>
+                        </div>
+                        <div class="join-wrap">
+                            <a href="/service/member/join_mem.php" class="button gray">회원가입</a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>  
+    </div>
 
 <?php
 if ($b2b_udirect_ss_ck_auto=="b2b_udirect_ss_auto_login" && !empty($b2b_udirect_ss_ck_uid)) {
@@ -127,6 +158,8 @@ document.autoLoginForm.submit();
 ?>       
         
 <script src="/js/ValidCheck.js"></script>
+<!-- Swiper JS -->
+<script src="/js/swiper-bundle.min.js"></script>
 <script language="javascript">
 //<![CDATA[
 
@@ -155,6 +188,14 @@ function login_submit(){
 }	
 
 //]]>
+
+// Initialize Swiper
+var swiper = new Swiper(".mySwiper", {
+    loop: true,
+    pagination: {
+    el: ".swiper-pagination",
+    },
+});
 </script>
 
     </body>

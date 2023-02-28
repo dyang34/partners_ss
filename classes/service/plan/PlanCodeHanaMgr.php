@@ -100,7 +100,7 @@ class PlanCodeHanaMgr extends A_Mgr
     /*
      *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
      */
-    function getPlanList($wq) {
+    function getReprePlanList($wq) {
         
         $result = null;
         $db = null;
@@ -108,7 +108,49 @@ class PlanCodeHanaMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $result = PlanCodeHanaDao::getInstance()->selectPlanList($db, $wq);
+            $result = PlanCodeHanaDao::getInstance()->selectReprePlanList($db, $wq);
+            
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $result;
+    }
+    
+    /*
+     *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
+     */
+    function getPlanListByPlanType($wq) {
+        
+        $result = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            $result = PlanCodeHanaDao::getInstance()->selectPlanListByPlanType($db, $wq);
+            
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $result;
+    }
+
+    /*
+     *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
+     */
+    function getPlanListByCalType($wq) {
+        
+        $result = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            $result = PlanCodeHanaDao::getInstance()->selectPlanListByCalType($db, $wq);
             
         } catch(Exception $e) {
             echo $e->getMessage();

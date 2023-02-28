@@ -18,9 +18,9 @@ class ToursafeMembersDao extends A_Dao
 
 	function selectByKey($db, $key) {
 		 
-		$sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2,manager, fg_not_common_plan "
+		$sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan "
 			 ." from toursafe_members "
-			 ." where uid = ".$this->quot($db, $key)
+			 ." where no = ".$this->quot($db, $key)
 		 	 ;
 		
 		$row = null;
@@ -36,7 +36,7 @@ class ToursafeMembersDao extends A_Dao
 
 	function selectFirst($db, $wq) {
 
-		$sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2,manager, fg_not_common_plan "
+		$sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan "
 			 ." from toursafe_members"
 			 .$wq->getWhereQuery()
 			 .$wq->getOrderByQuery()
@@ -56,7 +56,7 @@ class ToursafeMembersDao extends A_Dao
 
 	function select($db, $wq) {
 	    
-	    $sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2,manager, fg_not_common_plan "
+	    $sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan "
 	         ." from toursafe_members"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -67,7 +67,7 @@ class ToursafeMembersDao extends A_Dao
 	
 	function selectPerPage($db, $wq, $pg) {
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
-			."		select @rnum:=0, no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2,manager, fg_not_common_plan "
+			."		select @rnum:=0, no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan "
 			." 		from toursafe_members a "
 			." 		INNER JOIN ( "
 	        ."			select no as idx from toursafe_members a "
@@ -132,7 +132,7 @@ class ToursafeMembersDao extends A_Dao
 	
 	function insert($db, $arrVal) {
 
-	    $sql =" insert toursafe_members(mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,com_percent,com_percent_other,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2,manager,regdate)"
+	    $sql =" insert toursafe_members(mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,com_percent,com_percent_other,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2,regdate)"
 	        ." values ('".$this->checkMysql($db, $arrVal["mem_type"])
 			."', '".$this->checkMysql($db, $arrVal["mem_state"])
 			."', '".$this->checkMysql($db, $arrVal["uid"])
@@ -164,7 +164,6 @@ class ToursafeMembersDao extends A_Dao
 			."', '".$this->checkMysql($db, $arrVal["insuran10"])				
 			."', '".$this->checkMysql($db, $arrVal["company_type"])				
 			."', '".$this->checkMysql($db, $arrVal["hphone2"])				
-			."', '".$this->checkMysql($db, $arrVal["manager"])				
 			."', unix_timestamp())"
 		;
 		

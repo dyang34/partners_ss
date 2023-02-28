@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/plan/HanaPlanChangeDao.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/contract/HanaPlanChangeDao.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/A_Mgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/DbUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";

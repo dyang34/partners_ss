@@ -13,10 +13,13 @@ if(empty($uid)) {
 	exit;
 }
 
-if(empty(ToursafeMembersMgr::getInstance()->getByKey($uid))) {
-	$arrRtn = array('RESULTCD'=>'SUCCESS','RESULTMSG'=>'');
-} else {
+$wq = new WhereQuery(true, true);
+$wq->addAndString("uid","=",$uid);
+
+if(ToursafeMembersMgr::getInstance()->exists($wq)) {
 	$arrRtn = array('RESULTCD'=>'EXISTS','RESULTMSG'=>'이미 존재하는 아이디입니다.');
+} else {
+	$arrRtn = array('RESULTCD'=>'SUCCESS','RESULTMSG'=>'');
 }
 
 echo json_encode($arrRtn);

@@ -10,5 +10,5 @@ if (!LoginManager::isUserLogined()) {
     exit;
 }
 
-JsUtil::replace("/service/apply/apply.php");
+JsUtil::replace("/service/contract/register.php");
 ?>

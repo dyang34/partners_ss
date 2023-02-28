@@ -1,31 +1,24 @@
-<?php
-require_once $_SERVER['DOCUMENT_ROOT']."/common/site_default_set.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/common/site_default_data.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/lib/function.php";
-
-@session_start();
-?>
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <title>U-Direct B2B System</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-        <meta name="robots" content="noindex">  <!-- 검색엔진로봇 수집 차단. -->
+<head>
+    <title>U-Direct B2B System</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,width=device-width">
+    <meta name="robots" content="noindex">  <!-- 검색엔진로봇 수집 차단. -->
 
-        <link rel="shortcut icon" href="/images/common/favicon.ico" />
-        <link rel="apple-touch-icon-precomposed" href="/images/common/apple-favicon.png"/>
-        
-        <link type="text/css" rel="stylesheet" href="/css/style.css" />
-        <link type="text/css" rel="stylesheet" href="/css/basic.css" />
-        <link type="text/css" rel="stylesheet" href="/css/button.css" />
-        <link type="text/css" rel="stylesheet" href="/css/jquery-ui.css" />
-        <link type="text/css" rel="stylesheet" href="/css/admin.css" />
-        <link type="text/css" rel="stylesheet" href="/css/modal.css" />
-        
-        <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
-        <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="/js/common.js"></script>
-        <script type="text/javascript" src="/js/script.js?v=<?=time()?>"></script>
-    </head>
+    <link rel="shortcut icon" href="/img/common/favicon.ico" />
+    <link rel="apple-touch-icon-precomposed" href="/img/common/favicon.png"/>
+    
+    <link rel="stylesheet" type="text/css" href="/css/style.css?v=<?=time()?>">
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/css/basic.css?v=<?=time()?>">
+    <link rel="stylesheet" type="text/css" href="/css/main.css?v=<?=time()?>">
+    <link rel="stylesheet" type="text/css" href="/css/sub.css?v=<?=time()?>">
+    <link rel="stylesheet" type="text/css" href="/css/button.css?v=<?=time()?>">
+    <link rel="stylesheet" type="text/css" href="/css/modal.css?v=<?=time()?>">
+
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/js/common.js?v=<?=time()?>"></script>
+</head>

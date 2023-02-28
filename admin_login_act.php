@@ -6,6 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/UpdateQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersManagerMgr.php";
 
 $rtnUrl = RequestUtil::getParam("rtnUrl", "");
 $mode = RequestUtil::getParam("mode", "");
@@ -72,8 +73,31 @@ if($mode=="login"){
         $row_session["com_name"] = $row["com_name"];
         $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
 
+        $wq_manager = new WhereQuery(true, true);
+        $wq_manager->addAndString("uid", "=", $row["uid"]);
+        $wq_manager->addAndString2("fg_del", "=", "0");
+        $wq_manager->addOrderBy("sort", "desc");
+        $rs_manager = ToursafeMembersManagerMgr::getInstance()->getList($wq_manager);
+
+        $arr_manager = array();
+        if($rs_manager->num_rows > 0) {
+            for($i=0;$i<$rs_manager->num_rows;$i++) {
+                $row_manager = $rs_manager->fetch_assoc();
+
+                array_push($arr_manager, array(
+                    "idx"=>$row_manager['idx']
+                    ,"manager_id"=>$row_manager['manager_id']
+                    ,"name"=>$row_manager['name']
+                    ,"hp_no"=>$row_manager['hp_no']
+                    ,"email"=>$row_manager['email']
+                ));
+            }
+        }
+
+        $row_session["manager_list"] = $arr_manager;
+
         LoginManager::setUserLogin($row_session);
-        
+
         if(!empty($rtnUrl)){
             $rtnUrl = urldecode($rtnUrl);
             
@@ -117,6 +141,29 @@ if($mode=="login"){
         $row_session["uid"] = $row["uid"];
         $row_session["com_name"] = $row["com_name"];
         $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
+
+        $wq_manager = new WhereQuery(true, true);
+        $wq_manager->addAndString("uid", "=", $row["uid"]);
+        $wq_manager->addAndString2("fg_del", "=", "0");
+        $wq_manager->addOrderBy("sort", "desc");
+        $rs_manager = ToursafeMembersManagerMgr::getInstance()->getList($wq_manager);
+
+        $arr_manager = array();
+        if($rs_manager->num_rows > 0) {
+            for($i=0;$i<$rs_manager->num_rows;$i++) {
+                $row_manager = $rs_manager->fetch_assoc();
+
+                array_push($arr_manager, array(
+                    "idx"=>$row_manager['idx']
+                    ,"manager_id"=>$row_manager['manager_id']
+                    ,"name"=>$row_manager['name']
+                    ,"hp_no"=>$row_manager['hp_no']
+                    ,"email"=>$row_manager['email']
+                ));
+            }
+        }
+
+        $row_session["manager_list"] = $arr_manager;
 
         LoginManager::setUserLogin($row_session);
         

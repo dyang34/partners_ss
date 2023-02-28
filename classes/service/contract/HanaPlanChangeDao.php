@@ -131,22 +131,22 @@ class HanaPlanChangeDao extends A_Dao
 	}
 	
 	function insert($db, $arrVal) {
-/*
-	    $sql =" insert hana_plan_change(mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type )"
-	        ." values ('".$this->checkMysql($db, $arrVal["no"])
-	        ."', password('".$this->checkMysql($db, $arrVal["passwd"])."')"
-	            .", '".$this->checkMysql($db, $arrVal["name"])
-	            ."', '".$this->checkMysql($db, $arrVal["grade"])
-	            ."', '".$this->checkMysql($db, $arrVal["fg_outside"])
-	            ."', '".$this->checkMysql($db, $arrVal["hp_no"])
-	            ."', '".$this->checkMysql($db, $arrVal["email"])
-	            ."', '".$this->checkMysql($db, $arrVal["grade_alarm"])
-	            ."', '".$this->checkMysql($db, $arrVal["hiworks_id"])
-	            ."', now())"
-	                ;
-	                
-	                return $db->query($sql);
-*/	                
+
+	    $sql =" insert hana_plan_change(hana_plan_no,change_type,change_price,change_date,in_price,add_input_1,add_input_2,com_percent,com_point,company_type,regdate )"
+	        ." values ('".$this->checkMysql($db, $arrVal["hana_plan_no"])
+	            ."', '".$this->checkMysql($db, $arrVal["change_type"])
+	            ."', '".$this->checkMysql($db, $arrVal["change_price"])
+	            ."', '".$this->checkMysql($db, $arrVal["change_date"])
+	            ."', '".$this->checkMysql($db, $arrVal["in_price"])
+	            ."', '".$this->checkMysql($db, $arrVal["add_input_1"])
+	            ."', '".$this->checkMysql($db, $arrVal["add_input_2"])
+	            ."', '".$this->checkMysql($db, $arrVal["com_percent"])
+	            ."', '".$this->checkMysql($db, $arrVal["com_point"])
+	            ."', '".$this->checkMysql($db, $arrVal["company_type"])
+	            ."', UNIX_TIMESTAMP())"
+		;
+	         
+		return $db->query($sql);
 	}
 	
 	function update($db, $uq, $key) {

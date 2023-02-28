@@ -130,23 +130,31 @@ class HanaPlanMemberDao extends A_Dao
 		}
 	}
 	
-	function insert($db, $arrVal) {
-/*
-	    $sql =" insert hana_plan_member(mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type )"
-	        ." values ('".$this->checkMysql($db, $arrVal["no"])
-	        ."', password('".$this->checkMysql($db, $arrVal["passwd"])."')"
-	            .", '".$this->checkMysql($db, $arrVal["name"])
-	            ."', '".$this->checkMysql($db, $arrVal["grade"])
-	            ."', '".$this->checkMysql($db, $arrVal["fg_outside"])
-	            ."', '".$this->checkMysql($db, $arrVal["hp_no"])
+	function insert_simple($db, $arrVal) {
+
+	    $sql =" insert hana_plan_member(member_no,hana_plan_no,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age)"
+	        ." values ('".$this->checkMysql($db, $arrVal["member_no"])
+	            ."', '".$this->checkMysql($db, $arrVal["hana_plan_no"])
+	            ."', '".$this->checkMysql($db, $arrVal["main_check"])
+	            ."', '".$this->checkMysql($db, $arrVal["name"])
+	            ."', '".$this->checkMysql($db, $arrVal["name_eng"])
+	            ."', '".$this->checkMysql($db, $arrVal["name_eng_first"])
+	            ."', '".$this->checkMysql($db, $arrVal["name_eng_last"])
+	            ."', '".$this->checkMysql($db, $arrVal["jumin_1"])
+	            ."', '".$this->checkMysql($db, $arrVal["jumin_2"])
+	            ."', '".$this->checkMysql($db, $arrVal["hphone"])
 	            ."', '".$this->checkMysql($db, $arrVal["email"])
-	            ."', '".$this->checkMysql($db, $arrVal["grade_alarm"])
-	            ."', '".$this->checkMysql($db, $arrVal["hiworks_id"])
-	            ."', now())"
-	                ;
+	            ."', '".$this->checkMysql($db, $arrVal["plan_code"])
+	            ."', (select plan_title from plan_code_hana where plan_code='".$this->checkMysql($db, $arrVal["plan_code"])."' limit 1)"
+				.", (select plan_title_src from plan_code_hana where plan_code='".$this->checkMysql($db, $arrVal["plan_code"])."' limit 1)"
+	            .", '".$this->checkMysql($db, $arrVal["plan_price"])
+	            ."', '".$this->checkMysql($db, $arrVal["sex"])
+	            ."', '".$this->checkMysql($db, $arrVal["age"])
+	            ."')"
+		;
 	                
-	                return $db->query($sql);
-*/	                
+		return $db->query($sql);
+
 	}
 	
 	function update($db, $uq, $key) {

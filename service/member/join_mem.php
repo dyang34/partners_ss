@@ -4,64 +4,102 @@ require_once $_SERVER['DOCUMENT_ROOT']."/common/site_default_set.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersMgr.php";
 
-include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
+include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 ?>
-
-<form name="writeForm" action="./join_mem_act.php" method="post">
-	<input type="hidden" name="auto_defense" />
-	<input type="hidden" name="mode" value="INS" />
-
-        <table name="tbl_contract" class="table-basic" style="border-spacing:0px;border: 1px solid #ddd;">
-			<colgroup>
-				<col>
-				<col>
-			</colgroup>
-            <tbody name="tbody_nm">
-				<tr class="tr_input" tr_error_cnt="0">
-					<td>아이디</td>
-					<td><input type="text" name="uid"><a href="#" name="btnChkUid">중복체크</a></td>
-                </tr>
-				<tr class="tr_input" tr_error_cnt="0">
-					<td>비번</td>
-					<td><input type="text" name="upw"><input type="text" name="upw_cfm"></td>
-                </tr>
-				<tr class="tr_input" tr_error_cnt="0">
-					<td>회사명</td>
-					<td><input type="text" name="com_name"></td>
-                </tr>
-				<tr class="tr_input" tr_error_cnt="0">
-					<td>사업자번호</td>
-					<td><input type="text" name="com_no"></td>
-                </tr>
-				<tr class="tr_input" tr_error_cnt="0">
-					<td>담당자</td>
-					<td><input type="text" name="manager"></td>
-                </tr>
-				<tr class="tr_input" tr_error_cnt="0">
-					<td>전화번호</td>
-					<td><input type="text" name="hphone"></td>
-                </tr>
-				<tr class="tr_input" tr_error_cnt="0">
-					<td>휴대폰</td>
-					<td><input type="text" name="hphone2"></td>
-                </tr>
-				<tr class="tr_input" tr_error_cnt="0">
-					<td>이메일</td>
-					<td><input type="text" name="email"></td>
-                </tr>
-				<tr class="tr_input" tr_error_cnt="0">
-					<td>동의</td>
-					<td><input type="checkbox" name="chk1" value="Y">동의1<br/><input type="checkbox" name="chk2" value="Y">동의2</td>
-                </tr>
-
-			</tbody>
-		</table>
-
-		<div class="button-center">
-            <a href="#" name="btnSave" class="button line-basic large">저장</a>
-        </div>
-
-</form>
+<link rel="stylesheet" type="text/css" href="/css/member.css?v=<?=time()?>">
+<body id="wrap">
+    <div class="join-box-wrap">
+        <h2>파트너스 가입</h2>
+        <form name="writeForm" action="./join_mem_act.php" method="post">
+            <input type="hidden" name="auto_defense" />
+            <input type="hidden" name="mode" value="INS" />
+            <div class="basic-wrap">
+                <h3 class="fourth">기본 정보
+                    <div class="necessary"> <i class="icon-necessary"></i> 표기된 항목은 필수 입력 사항입니다.</div>
+                </h3>
+                <div class="id-area">
+                    <strong>아이디 <i class="icon-necessary"></i></strong>
+                    <input type="text" class="input-member" name="uid" placeholder="아이디 입력">
+                </div>
+                <ul class="clearfix inb">
+                    <li>
+                        <strong>비밀번호 <i class="icon-necessary"></i></strong>
+                        <input type="password" class="input-member" name="upw" placeholder="비밀번호 입력">
+                    </li>
+                    <li>
+                        <strong>비밀번호 확인 <i class="icon-necessary"></i></strong>
+                        <input type="password" class="input-member" name="upw_cfm" placeholder="비밀번호 확인">
+                    </li>
+                    
+                    <li>
+                        <strong>회사명 <i class="icon-necessary"></i></strong>
+                        <input type="text" class="input-member" name="com_name" placeholder="회사명 입력">
+                    </li>
+                    <li>
+                        <strong>사업자번호 <i class="icon-necessary"></i></strong>
+                        <input type="text" class="input-member" name="com_no" placeholder="‘-’ 없이 작성해주세요" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
+                    </li>
+                </ul>
+                <div class="bsnsLic-area">
+                    <strong>사업자 등록증<i class="icon-necessary"></i></strong>
+                    <div class="add-file">
+                        <input type="file" name="str_Image1" id="addfile" class="add-file-input class_img" val1="2" val2="2">
+                        <div class="add-file-txt">파일 업로드</div>
+                        <label for="addfile"><div class="add-file-btn">찾아보기</div></label>
+                    </div>
+                </div>
+                <ul class="clearfix inb">
+                    <li>
+                        <strong>담당자<i class="icon-necessary"></i></strong>
+                        <input type="text" class="input-member" name="manager" placeholder="실명 입력">
+                    </li>
+                    <li>
+                        <strong>전화번호<i class="icon-necessary"></i></strong>
+                        <input type="text" class="input-member" name="hphone" placeholder="‘-’ 없이 작성해주세요" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
+                    </li>
+                    
+                    <li>
+                        <strong>휴대폰<i class="icon-necessary"></i></strong>
+                        <input type="text" class="input-member" name="hphone2" placeholder="‘-’ 없이 작성해주세요" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
+                    </li>
+                    <li>
+                        <strong>이메일<i class="icon-necessary"></i></strong>
+                        <input type="text" class="input-member" name="email" placeholder="admin@admin.co.kr">
+                    </li>
+                </ul>
+        
+                <h3 class="privacy fourth">이용약관
+                    <div class="checkbox-wrap">
+                        <div class="checkbox">
+                            <input type="checkbox" id="chk1" name="chk1" value="Y" />
+                            <label for="chk1"></label>
+                        </div>
+                        <span>동의합니다.</span>               
+                    </div>
+                </h3>
+                <div class="terms-box">
+                    <?php include 'terms.php'; ?>
+                </div>
+                
+                <h3 class="privacy">개인정보 수집 및 이용목적
+                    <div class="checkbox-wrap">
+                        <div class="checkbox">
+                            <input type="checkbox" id="chk2" name="chk2" value="Y"/>
+                            <label for="chk2"></label>
+                        </div>
+                        <span>동의합니다.</span>               
+                    </div>
+                </h3>
+                <div class="terms-box">
+                    <?php include 'privacy.php'; ?>
+                </div>
+            </div>
+            
+            <div class="center-button-area">
+                <a href="#;" name="btnSave" class="button blue">가입하기</a>
+            </div>
+        </form>
+    </div>
 			
 <script src="/js/ValidCheck.js?t=<?=filemtime($_SERVER['DOCUMENT_ROOT']."/js/ValidCheck.js")?>"></script>	
 <script type="text/javascript">
@@ -161,4 +199,27 @@ $(document).on('click','a[name=btnChkUid]', function() {
 
 	return false;
 });
-</script>	
+
+
+// finle upload
+var fileinput = document.querySelector(".add-file-input"),
+    button = document.querySelector(".add-file-btn"),
+    returntxt = document.querySelector(".add-file-txt");
+
+button.addEventListener("keydown", function(event){
+    if(event.keyCode == 13 || event.keyCode == 32){
+    fileinput.focus();
+    }
+});
+button.addEventListener("click", function(event){
+    fileinput.focus();
+    return false;
+});
+fileinput.addEventListener("change", function(event){
+    returntxt.innerHTML = this.value;
+});
+</script>
+
+<?php
+include $_SERVER['DOCUMENT_ROOT']."/include/footer.php";
+?>

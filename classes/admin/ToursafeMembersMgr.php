@@ -36,6 +36,7 @@ class ToursafeMembersMgr extends A_Mgr
         @ $db->close();
         return $row;
     }
+
     function getFirst($wq) {
         
         $row = null;

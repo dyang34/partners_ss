@@ -19,4 +19,17 @@ function decode_pass($str,$s_key) {
     
     return $out_str;
 }
+
+function get_default_member_no($company_type) {
+    switch($company_type) {
+        case "1":
+            $rtn_member_no = 25;
+            break;
+        default:
+            $rtn_member_no = ((int)$company_type)*10000;
+            break;
+    }
+
+    return $rtn_member_no;
+}
 ?>
