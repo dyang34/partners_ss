@@ -182,6 +182,20 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <th>추가정보 2</th>
                     <td><input type="text"  class="input-search" name="add_info2" placeholder="50자 이내로 작성해주세요"></td>
                 </tr>
+                <tr>
+                    <th>휴대폰 <em class="bulStyle1">*</em></th>
+                    <td class="inpt">
+                        <div class="select-box">
+                            <select name="trip_purpose">
+                                <option value="1">여행/관광</option>
+                                <option value="2">연수/출장</option>
+                            </select>
+                        </div>
+                    </td>
+
+                    <th>이메일 <em class="bulStyle1">*</em></th>                    
+                    <td colspan="3"><input type="text"  class="input-search" name="add_info1" placeholder="50자 이내로 작성해주세요"></td>
+                </tr>
             </tbody>
         </table>
     </div>
