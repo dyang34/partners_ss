@@ -594,5 +594,63 @@ class Page
                 
                 return $ret;
     }
+
+
+    function getNaviForFuncULifeB2B($funcName) {
+        
+        $ret = "";
+        $last = 0;
+        $pageBlock = 10;
+        $rest = 0;
+        $start = 0;
+        
+        $ret = "<div class='paginate'>";
+        $ret .= "<ul>";
+        
+        $last = (int)($this->totalCount/$this->pageSize);
+        if( ($this->totalCount % $this->pageSize) > 0 )
+            $last += 1;
+            $rest = $this->currentPage % $pageBlock;
+            if( $rest == 0 )
+                $rest = $pageBlock;
+                $start = $this->currentPage - $rest + 1;
+                if( $last > 1 ) {
+                    
+                    if( $start - $pageBlock > 0 ) {
+                        $ret .= "<li><a class=\"first\" onclick=\"javascript:" . $funcName . "('1');return false;\"><i class=\"prev-arrow-double\"></i></a></li>";
+                        $ret .= "<li><a class=\"prev\" onclick=\"javascript:" . $funcName . "('" . ($start-$pageBlock) . "');return false;\"><i class=\"prev-arrow\"></i></a></li>";
+                    }
+/*                    
+                    else {
+                        $ret .= "<li><a class=\"link\" href=\"#\"><span class=\"prev-last\">첫페이지</span></a></li>";
+                        $ret .= "<li><a class=\"link\" href=\"#\"><span class=\"prev-first\">다음페이지</span></a></li>";
+                    }
+*/                    
+
+                    for($i = $start; $i <= ($start+$pageBlock-1); $i++) {
+                        if( $i <= $last ) {
+                            if( $i == $this->currentPage) {
+                                $ret .= "<li><a class=\"active\" onclick=\"javascript:return false;\">".$i."</a></li>";
+                            } else {
+                                $ret .= "<li><a class=\"\" onclick=\"javascript:".$funcName."('".$i."');return false;\">".$i."</a></li>";
+                            }
+                        }
+                    }
+                    
+                    if( ($start+$pageBlock) <= $last ) {
+                        $ret .= "<li><a class=\"next\" onclick=\"javascript:" . $funcName . "('" . ($start+$pageBlock) . "');return false;\"><i class=\"next-arrow\"></i></a></li>";
+                        $ret .= "<li><a class=\"last\" onclick=\"javascript:" . $funcName . "('" . $last . "');return false;\"><i class=\"next-arrow-double\"></i></a></li>";
+                    }
+                }
+/*                
+                else {
+                    $ret .= "<li>&nbsp;</li>";
+                }
+*/                
+                $ret .= "</ul></div>";
+                
+                return $ret;
+    }
+
 }
 ?>

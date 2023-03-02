@@ -97,6 +97,28 @@ class HanaPlanMgr extends A_Mgr
         return $result;
     }
 
+    /*
+     *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
+     */
+    function getListReprePerPage($wq, $pg) {
+        
+        $result = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            $pg->setTotalCount(HanaPlanDao::getInstance()->selectCount($db, $wq));
+            $result = HanaPlanDao::getInstance()->selectReprePerPage($db, $wq, $pg);
+            
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $result;
+    }
+
     function getCount($wq) {
         
         $result = null;

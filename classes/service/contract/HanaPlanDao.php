@@ -81,7 +81,28 @@ class HanaPlanDao extends A_Dao
 			 
         return $db->query($sql);
 	}
-	
+
+	function selectReprePerPage($db, $wq, $pg) {
+		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
+			."		select @rnum:=0, a.* "
+			."		,plan_state,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,thai_chk,fg_dual,nation_name "
+			." 		from hana_plan a "
+			." 		INNER JOIN ( "
+	        ."			select no as idx from hana_plan a "
+            			.$wq->getWhereQuery()
+						.$wq->getOrderByQuery()
+	        ."     		limit ".$pg->getStartIdx().", ".$pg->getPageSize()
+	        ." 		) pg_idx "
+	        ." 		on a.no=pg_idx.idx "
+	        ." 		LEFT JOIN hana_plan_member b "
+	        ." 		ON a.no = b.hana_plan_no "
+	        ." 		AND b.main_check = 'Y' "
+			." ) r"
+		;
+			 
+        return $db->query($sql);
+	}
+
 	function selectCount($db, $wq) {
 
 		$sql =" select count(*) cnt"
