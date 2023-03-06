@@ -22,4 +22,10 @@ $arrPlanStateText = [
     ,8=>"청약대기2"
     ,9=>"청약대기3"
 ];
+
+$arrPlanChageStateText = [
+    1=>"처리중",
+    2=>"수정완료",
+    3=>"취소완료"
+];
 ?>

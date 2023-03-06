@@ -277,7 +277,7 @@ $(document).on('click', '.close_modal', function() {
 	$("#modal").addClass("out");
 });
 */
-	
+
 $(document).on('click','.md-close', function() {
 	close_modal();
 });

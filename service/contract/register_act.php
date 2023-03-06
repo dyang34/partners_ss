@@ -126,14 +126,13 @@ if(!empty($join_name)) {
 		}
 	}
 
-
 	$row = ToursafeMembersMgr::getInstance()->getByKey($__CONFIG_MEMBER_NO);
 
 	$arrChangeIns = array();
 	$arrChangeIns["hana_plan_no"] = $hana_plan_no;
 	$arrChangeIns["change_type"] = "1";
 	$arrChangeIns["change_price"] = $price_sum;
-	$arrChangeIns["in_price"] = $price_sum;
+	$arrChangeIns["in_price"] = 0;
 	$arrChangeIns["com_percent"] = $row["com_percent"];
 	$arrChangeIns["company_type"] = 5; //LoginManager::getUserLoginInfo("company_type");
 

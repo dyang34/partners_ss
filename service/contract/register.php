@@ -99,7 +99,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     </td>
 
                     <th>청약일</th>
-                    <td><input type="text"  class="input-search" name="" id="" readonly value="<?=date('Y.m.d')?>"></td>
+                    <td><input type="text"  class="input-search" name="" id="" readonly value="<?=date('Y-m-d')?>"></td>
                 </tr>
             </tbody>
         </table>
@@ -892,7 +892,7 @@ $(document).ready(function() {
         return false;
     });
 
-    // 나이대별 플랜 변경시.
+    // 여행지역 변경시.
     $(document).on('change','select[name=nation_srch]',function() {
         chk_submit_button(fg_auto_calc);
         return false;
