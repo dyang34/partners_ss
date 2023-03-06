@@ -51,23 +51,16 @@ for($i=1;$i<=$cnt_cal_type;$i++) {
         <div class="panel" id="cal_type_<?=$i?>-panel">
             <!-- 주니어(0~15세 미만) -->
             <table class="table-white">
-<?php
-    if ($cnt_plan_type >= 3) {
-?>        
-
                 <colgroup>
                     <col width="*">
 <?php                    
     for($j=0;$j<$cnt_plan_type;$j++) {                    
 ?>                        
-                    <col width="22%">
+                    <col width="<?=11+(11*(4-$cnt_plan_type))?>%">
 <?php
     }
 ?>                                        
                 </colgroup>
-<?php
-    }
-?>
                 <thead>
                     <tr>
                         <th>보장명</th>

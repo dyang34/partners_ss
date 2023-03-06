@@ -71,7 +71,7 @@ $session_key = date("Ymd")."|".$trip_type."|".$nation."|".$term_day."|".$price_s
 if(!empty($join_name)) {
 
 	$arrIns = array();
-	$arrIns["company_type"] = 5; //LoginManager::getUserLoginInfo("company_type");
+	$arrIns["company_type"] = LoginManager::getUserLoginInfo("company_type");
 	$arrIns["join_name"] = $join_name;
 	$arrIns["member_no"] = $__CONFIG_MEMBER_NO;
 	$arrIns["session_key"] = $session_key;
@@ -134,7 +134,7 @@ if(!empty($join_name)) {
 	$arrChangeIns["change_price"] = $price_sum;
 	$arrChangeIns["in_price"] = 0;
 	$arrChangeIns["com_percent"] = $row["com_percent"];
-	$arrChangeIns["company_type"] = 5; //LoginManager::getUserLoginInfo("company_type");
+	$arrChangeIns["company_type"] = LoginManager::getUserLoginInfo("company_type");
 
 	HanaPlanChangeMgr::getInstance()->add($arrChangeIns);
 

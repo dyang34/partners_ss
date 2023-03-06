@@ -1,17 +1,66 @@
+<?php
+require_once $_SERVER['DOCUMENT_ROOT']."/include/common.php";
+
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/contract/HanaPlanMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/contract/HanaPlanMemberMgr.php";
+
+require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_array.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_type_array.php";
+
+if (!LoginManager::isUserLogined()) {
+    //    JsUtil::alertBack("비정상적인 접근입니다. (ErrCode:0x05)    ");
+    JsUtil::alertReplace("로그인이 필요합니다.    ","/");
+}
+
+$__CONFIG_COMPANY_TYPE = LoginManager::getUserLoginInfo("company_type");
+$__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
+if(!LoginManager::getUserLoginInfo("fg_not_common_plan")) {
+	$__CONFIG_MEMBER_NO = get_default_member_no(LoginManager::getUserLoginInfo("company_type"));
+}
+
+$hana_plan_no = RequestUtil::getParam("hana_plan_no", "");
+
+$row = HanaPlanMgr::getInstance()->getByKey($hana_plan_no);
+$trip_type = $row["trip_type"];
+
+$wq = new WhereQuery(true, true);
+//$wq->addAndString("member_no","=",$__CONFIG_MEMBER_NO);   here
+$wq->addAndString("hana_plan_no","=",$hana_plan_no);
+$rs = HanaPlanMemberMgr::getInstance()->getListDetail($wq);
+
+$arrMember = array();
+$arrCalType = array();
+if ($rs->num_rows > 0) {
+    for($i=0; $i<$rs->num_rows; $i++) {
+        $row_mem = $rs->fetch_assoc();
+
+        array_push($arrMember, $row_mem);
+        array_push($arrCalType, $row_mem["cal_type"]);
+    }
+}
+
+$arrCalType = array_unique($arrCalType);
+sort($arrCalType);
+?>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,width=device-width">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,width=device-width">
 
-  <title>가입 확인서</title>
+    <title>가입 확인서</title>
 
-  <link rel="stylesheet" type="text/css" href="/css/style.css?v=<?=time()?>">
-  <link rel="stylesheet" type="text/css" href="/css/basic.css?v=<?=time()?>">
-  <link rel="stylesheet" type="text/css" href="/css/button.css?v=<?=time()?>">
-  <link rel="stylesheet" type="text/css" href="/css/modal.css?v=<?=time()?>">
-  <script type="text/javascript" src="/js/jquery-3.6.1.min.js"></script>  
+    <link rel="stylesheet" type="text/css" href="/css/style.css?v=<?=time()?>">
+    <link rel="stylesheet" type="text/css" href="/css/basic.css?v=<?=time()?>">
+    <link rel="stylesheet" type="text/css" href="/css/button.css?v=<?=time()?>">
+    <link rel="stylesheet" type="text/css" href="/css/modal.css?v=<?=time()?>">
+
+    <script type="text/javascript" src="/js/jquery-3.6.1.min.js"></script>  
 </head>
 <body>
     <div class="cnfrm-wrap">
@@ -27,6 +76,7 @@
                     </div>
                 </div>
 
+                <!-- 기본 정보 start -->
                 <h4 class="sub-title">기본 정보</h4>
                 <table class="table-modal">
                     <colgroup>
@@ -38,213 +88,37 @@
                     <tbody>
                         <tr>
                             <th>여행사</th>
-                            <td class="left">참좋은</td>
+                            <td class="left"><?=LoginManager::getUserLoginInfo("com_name")?></td>
                             
                             <th>보험명</th>
-                            <td class="left">국내여행보험</td>
+                            <td class="left"><?=$arrInsuranceCompany[$row["company_type"]]." ".(($trip_type==1)?"국내":"해외")?>여행보험</td>
                         </tr>
                         <tr>
                             <th>대표피보험자</th>
-                            <td class="left">김철수</td>
+                            <td class="left"><?=$row["join_name"]?></td>
                             
-                            <th>가입기간</th>
-                            <td class="left">2022.10.15 〜 2022.10.17 </td>
+                            <th>여행기간</th>
+                            <td class="left"><?=$row["start_date"]?> 〜 <?=$row["end_date"]?> </td>
                         </tr>
                         <tr>
                             <th>청약일자</th>
-                            <td class="left">2023.01.01</td>
+                            <td class="left"><?=date('Y-m-d', $row["regdate"])?></td>
                             
-                            <th>가입인원원</th>
-                            <td class="left">1명</td>
+                            <th>가입인원</th>
+                            <td class="left"><?=number_format($rs->num_rows)?>명</td>
                         </tr>
                     </tbody>
                 </table>
 
-                <h4 class="sub-title">담보내용</h4>
-                <table class="table-modal">
-                    <colgroup>
-                        <col width="*">
-                        <col width="21%">
-                        <col width="21%">
-                        <col width="21%">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>보장명</th>
-                            <th>실속 플랜</th>
-                            <th>표준 플랜</th>
-                            <th>고급 플랜</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>상해사망/후유장애</th>
-                            <td>1억원 한도</td>
-                            <td>2억원 한도</td>
-                            <td>3억원 한도</td>
-                        </tr>
-                        <tr>
-                            <th>질병사망/고도후유장해</th>
-                            <td>1,000만원 지급</td>
-                            <td>3,000만원 지급</td>
-                            <td>5,000만원 지급</td>
-                        </tr>
-                        <tr>
-                            <th>
-                                휴대품손해(분실제외)<br>
-                                <span>*물품당 20만원 한도(공제 1만원)</span>
-                            </th>
-                            <td>50만원 한도</td>
-                            <td>100만원 한도</td>
-                            <td>200만원 한도</td>
-                        </tr>
-                        <tr>
-                            <th>상해 해외의료비</th>
-                            <td>1,000만원 한도</td>
-                            <td>2,000만원 한도</td>
-                            <td>3,000만원 한도</td>
-                        </tr>
-                        <tr>
-                            <th>
-                                질병 해외의료비<br>
-                                <span>*코로나 19 보장(검사비용 제외)</span>
-                            </th>
-                            <td>1,000만원 한도</td>
-                            <td>3,000만원 한도</td>
-                            <td>5,000만원 한도</td>
-                        </tr>
-                        <tr>
-                            <th>
-                                배상책임<br>
-                                <span>*자기부담 1만원</span>
-                            </th>
-                            <td>1,000만원 한도</td>
-                            <td>2,000만원 한도</td>
-                            <td>3,000만원 한도</td>
-                        </tr>
-                        <tr>
-                            <th>항공기/수하물 지연 결항 추가비용</th>
-                            <td>-</td>
-                            <td>10만원 한도</td>
-                            <td>20만원 한도</td>
-                        </tr>
-                        <tr>
-                            <th>여행중 중단사고 발생 추가비용</th>
-                            <td>-</td>
-                            <td>10만원 한도</td>
-                            <td>20만원 한도</td>
-                        </tr>
-                        <tr>
-                            <th>식중독보상금</th>
-                            <td>-</td>
-                            <td>10만원 한도</td>
-                            <td>20만원 한도</td>
-                        </tr>
-                        <tr>
-                            <th>특정감염병보상금</th>
-                            <td>-</td>
-                            <td>10만원 한도</td>
-                            <td>20만원 한도</td>
-                        </tr>
-                        <tr>
-                            <th>여권분실 재발급비용</th>
-                            <td>가입</td>
-                            <td>가입</td>
-                            <td>가입</td>
-                        </tr>
-                        <tr>
-                            <th>중대사고 구조송환비용</th>
-                            <td>1,000만원 한도</td>
-                            <td>3,000만원 한도</td>
-                            <td>5,000만원 한도</td>
-                        </tr>
-                        <tr>
-                            <th>항공기 납치</th>
-                            <td>1,000만원 한도</td>
-                            <td>3,000만원 한도</td>
-                            <td>5,000만원 한도</td>
-                        </tr>
-                        <tr>
-                            <th>여행중 자택 도난손해</th>
-                            <td>미가입</td>
-                            <td>미가입</td>
-                            <td>미가입</td>
-                        </tr>
-                        <tr>
-                            <th>상해 국내입원통원의료비</th>
-                            <td>
-                                1,000만원 한도<br>(자기부담금 20%)
-                            </td>
-                            <td>
-                                3,000만원 한도<br>(자기부담금 20%)
-                            </td>
-                            <td>
-                                5,000만원 한도<br>(자기부담금 20%)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>질병 국내입원통원의료비</th>
-                            <td>
-                                1,000만원 한도<br>(자기부담금 20%)
-                            </td>
-                            <td>
-                                3,000만원 한도<br>(자기부담금 20%)
-                            </td>
-                            <td>
-                                5,000만원 한도<br>(자기부담금 20%)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>상해 국내입원통원의료비</th>
-                            <td>
-                                1,000만원 한도<br>(자기부담금 30%)
-                            </td>
-                            <td>
-                                3,000만원 한도<br>(자기부담금 30%)
-                            </td>
-                            <td>
-                                5,000만원 한도<br>(자기부담금 30%)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>질병 국내입원통원의료비</th>
-                            <td>
-                                1,000만원 한도<br>(자기부담금 30%)
-                            </td>
-                            <td>
-                                3,000만원 한도<br>(자기부담금 30%)
-                            </td>
-                            <td>
-                                5,000만원 한도<br>(자기부담금 30%)
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>3대 비급여의료비</th>
-                            <td>
-                                가입<br>(자기부담금 30%)
-                            </td>
-                            <td>
-                                가입<br>(자기부담금 30%)
-                            </td>
-                            <td>
-                                가입<br>(자기부담금 30%)
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- 2페이지 start -->
-            <div class="section">
                 <h4 class="sub-title">피보험자별  상세</h4>
                 <table class="table-modal">
                     <colgroup>
                         <col width="7%">
-                        <col width="14%">
-                        <col width="17%">
-                        <col width="7%">
-                        <col width="17%">
-                        <col width="17%">
+                        <col width="15%">
+                        <col width="18%">
+                        <col width="12%">
+                        <col width="18%">
+                        <col width="18%">
                         <col width="*">
                     </colgroup>
                     <thead>
@@ -255,1210 +129,112 @@
                             <th>성별</th>
                             <th>플랜명</th>
                             <th>보험료</th>
-                            <th>비교</th>
+                            <th>비고</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>김철수</td>
-                            <td>1988.05.05</td>
-                            <td>남</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김영희</td>
-                            <td>1987.12.14</td>
-                            <td>여</td>
-                            <td>표준형</td>
-                            <td>3,000 원</td>
-                            <td>-</td>
-                        </tr>
+<?php
+if (count($arrMember) > 0) {
+    for($i=0; $i<count($arrMember); $i++) {
+
+        $jumin1 = decode_pass($arrMember[$i]["jumin_1"],$pass_key);
+        $jumin2_1 = substr(decode_pass($arrMember[$i]["jumin_2"],$pass_key),0,1);
+
+        if($jumin2_1=="1" || $jumin2_1=="2" || $jumin2_1=="5" || $jumin2_1=="6") {
+            $jumin1 = "19".substr($jumin1,0,2)."-".substr($jumin1,2,2)."-".substr($jumin1,4,2);
+        } else {
+            $jumin1 = "20".substr($jumin1,0,2)."-".substr($jumin1,2,2)."-".substr($jumin1,4,2);
+        }
+?>                    
+                        <tr>
+                            <td><?=$i+1?></td>
+                            <td><?=$arrMember[$i]["name"]?></td>
+                            <td><?=$jumin1?></td>
+                            <td><?=($arrMember[$i]["sex"]==1)?"남성":"여성"?></td>
+                            <td><?=$arrMember[$i]["plan_title"]?></td>
+                            <td><?=number_format($arrMember[$i]["plan_price"])?>원</td>
+                            <td></td>
+                        </tr>
+                        <?
+    }
+}
+?>
                     </tbody>
                 </table>
             </div>
+
+
+<?
+/*
+echo "<pre>";
+print_r($__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]["List"][$__CONFIG_MEMBER_NO][$trip_type]);
+//print_r($__ARR_CONFIG_PLAN_REPRE);
+//print_r($__ARR_CONFIG_PLAN_TYPE);
+echo "</pre>";
+exit;
+*/
+    $cnt_cal_type = count($__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]["List"][$__CONFIG_MEMBER_NO][$trip_type]);
+    for($i=0; $i<count($arrCalType); $i++) {
+        $arrPlanTypePrice = array();
+        $cnt_plan_type = count($__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]]);
+?>
+            <!-- 2페이지 start -->
+            <div class="section">
+                <!-- 담보내용 start -->
+                <h4 class="sub-title">담보내용 <?=$arrCalTypeTitle[$cnt_cal_type][$arrCalType[$i]-1]?></h4>
+                <table class="table-modal">
+                <colgroup>
+                    <col width="*">
+<?php                    
+        for($j=0;$j<$cnt_plan_type;$j++) {                    
+?>                        
+                    <col width="<?=11+(11*(4-$cnt_plan_type))?>%">
+<?php
+        }
+?>                                        
+                </colgroup>
+                    <thead>
+                        <tr>
+                            <th>보장명</th>
+<?php
+    for($j=0;$j<$cnt_plan_type;$j++) {
+        for($k=1;$k<=34;$k++) {
+            $arrPlanTypePrice[$k][$j] = $__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]][$j]["type_".$k."_text"];
+            $arrPlanTypePrice[$k][9] .= $__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]][$j]["type_".$k."_text"];
+        }
+?>    
+                        <th><?=$__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]][$j]["plan_title"]?></th>
+<?
+    }
+?>
+                        </tr>
+                    </thead>
+                    <tbody>
+<?php
+    for($k=1;$k<=count($arrPlanTypePrice);$k++) {
+
+        if(!empty($arrPlanTypePrice[$k][9])) {
+?>
+                    <tr>
+                        <th><?=$__ARR_CONFIG_PLAN_TYPE[$__CONFIG_COMPANY_TYPE][$__CONFIG_MEMBER_NO][$trip_type]["type_".$k]["title"]?></th>
+<?php
+            for($j=0;$j<$cnt_plan_type;$j++) {
+?>
+                        <td><?=$arrPlanTypePrice[$k][$j]?></td>
+<?php
+               }
+?>
+                    </tr>
+<?                
+        }
+    }
+?>
+                    </tbody>
+                </table>
+            </div>
+<?
+}
+?>
         </div>
     </div>
 </body>

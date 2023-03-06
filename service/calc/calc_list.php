@@ -20,6 +20,52 @@ if(!LoginManager::getUserLoginInfo("fg_not_common_plan")) {
 include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 ?>
     <div class="check-box-wrap">
+        <div class="search-shnch-wrap">
+            <table class="table-search">
+                <colgroup>
+                    <col width="133px">
+                    <col width="370px">
+                    <col width="133px">
+                    <col width="370px">
+                    <col width="*">
+                    <col width="370px">
+                    <col width="90px">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th>신청일</th>
+                        <td class="inp">
+                            <div class="date_picker">
+                                <input type="text" class="picker" name="start_date" id="start_date" readonly placeholder="YYYY.MM.DD">
+                            </div>
+                            <span class="picker-interval">~</span>
+                            <div class="date_picker">
+                                <input type="text" class="picker" name="end_date" id="end_date" readonly placeholder="YYYY.MM.DD">
+                            </div>
+                        </td>
+
+                        <th>신청자</th>
+                        <td>
+                            <input type="text"  class="input-search" name="" id="" value="홍길동">
+                        </td>
+
+                        <th>기타</th>
+                        <td>
+                            <div class="select-box">
+                                <select name="">
+                                    <option value="">적당한옵션1</option>
+                                    <option value="">적당한옵션2</option>
+                                    <option value="">적당한옵션3</option>
+                                </select>
+                            </div>
+                        </td>
+
+                        <td rowspan="1" class="flow-btn"><a class="button search">검색</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
         <div class="adjustm-list-wrap">
             <h2>정산 내역</h2>
 

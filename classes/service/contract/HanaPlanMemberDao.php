@@ -65,6 +65,18 @@ class HanaPlanMemberDao extends A_Dao
         return $db->query($sql);
 	}
 	
+	function selectDetail($db, $wq) {
+	    
+	    $sql =" select no,member_no,hana_plan_no,plan_state,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name "
+			 ."			,(select cal_type from plan_code_hana a where a.plan_code= m.plan_code order by no desc limit 1) as cal_type "
+	         ." from hana_plan_member m"
+	         .$wq->getWhereQuery()
+	         .$wq->getOrderByQuery()
+	         ;
+
+        return $db->query($sql);
+	}
+	
 	function selectPerPage($db, $wq, $pg) {
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
 			."		select @rnum:=0, no,member_no,hana_plan_no,plan_state,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name "
