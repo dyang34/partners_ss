@@ -113,6 +113,7 @@ $wq->addOrderBy("member_no","asc");
 $wq->addOrderBy("trip_type","asc");
 $wq->addOrderBy("cal_type","asc");
 $wq->addOrderBy("plan_type","asc");
+$wq->addOrderBy("sort","asc");
 $rs = PlanCodeHanaMgr::getInstance()->getList($wq);
 
 for($i=0;$i<$rs->num_rows;$i++) {
