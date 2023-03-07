@@ -57,11 +57,12 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             <table class="table-list">
                 <colgroup>
                     <col width="5%">
-                    <col width="8%">
-                    <col width="8%">
-                    <col width="15%">
+                    <col width="7%">
+                    <col width="7%">
                     <col width="10%">
                     <col width="10%">
+                    <col width="7%">
+                    <col width="7%">
                     <col width="10%">
                     <col width="10%">
                     <col width="10%">
@@ -72,6 +73,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         <th>no</th>
                         <th>진행상태</th>
                         <th>피보험자</th>
+                        <th>영문성명</th>
                         <th>주민등록번호</th>
                         <th>성별</th>
                         <th>보험나이</th>
@@ -94,6 +96,7 @@ if ($rs->num_rows > 0) {
                         <td><?=$i+1?></td>
                         <td><?=$arrPlanStateText[$row["plan_list_state"]]?></td>
                         <td><?=$row_mem["name"]?></td>
+                        <td><?=$row_mem["name_eng"]?></td>
                         <td><?=$jumin?></td>
                         <td><?=($row_mem["sex"]==1)?"남성":"여성"?></td>
                         <td><?=$row_mem["age"]?>세</td>
