@@ -106,10 +106,10 @@ if(window.location.protocol == "http:"){
                     <div class="login-inputbox-wrap">
                         <ul class="clearfix inb">
                             <li>
-                                <input type="text" class="input-login" name="uid" id="uid"  placeholder="admin ID">
+                                <input type="text" class="input-login" name="uid" id="uid" value="<?=$b2b_udirect_ss_ck_uid?>" placeholder="admin ID">
                             </li>
                             <li>
-                                <input type="password" class="input-login" name="upw" id="upw"  placeholder="password">
+                                <input type="password" class="input-login" name="upw" id="upw" placeholder="password">
                             </li>
                             <li>
                                 <a href="#;" onClick="javascript:login_submit();return false;" class="button blue">LOGIN</a>
@@ -118,10 +118,10 @@ if(window.location.protocol == "http:"){
                         <div class="save-find">
                             <div class="check-box-save">
                                 <div class="checkbox">
-                                    <input type="checkbox" id="nologin" name="ck_auto" value="1" />
+                                    <input type="checkbox" id="nologin" name="ck_auto" value="1" <?=$b2b_udirect_ss_ck_uid?"checked='checked'":""?>/>
                                     <label for="nologin"></label>
                                 </div>
-                                자동 로그인
+                                아이디 저장<?/*자동 로그인*/?>
                             </div>
                             <div class="find-right-area">
                                 <a href="/service/member/forget.php" class="link-find">아이디 찾기</a>
@@ -139,6 +139,7 @@ if(window.location.protocol == "http:"){
     </div>
 
 <?php
+/*
 if ($b2b_udirect_ss_ck_auto=="b2b_udirect_ss_auto_login" && !empty($b2b_udirect_ss_ck_uid)) {
 ?>
 
@@ -155,6 +156,7 @@ document.autoLoginForm.submit();
 
 <?php 
 }
+*/
 ?>       
         
 <script src="/js/ValidCheck.js"></script>
