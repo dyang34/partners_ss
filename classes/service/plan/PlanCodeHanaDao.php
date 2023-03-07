@@ -18,7 +18,7 @@ class PlanCodeHanaDao extends A_Dao
 
 	function selectByKey($db, $key) {
 		 
-		$sql =" select no,member_no,trip_type,plan_code,cal_type,plan_type,plan_title,plan_title_src,plan_start_age,plan_end_age,company_type,type_1,type_2,type_3,type_4,type_5,type_6,type_7,type_8,type_9,type_10,type_11,type_12,type_13,type_14,type_15,type_16,type_17,type_18,type_19,type_20,type_21,type_22,type_23,type_24,type_25,type_26,type_27,type_28,type_29,type_30,type_31,type_32,type_33,type_34,type_1_text,type_2_text,type_3_text,type_4_text,type_5_text,type_6_text,type_7_text,type_8_text,type_9_text,type_10_text,type_11_text,type_12_text,type_13_text,type_14_text,type_15_text,type_16_text,type_17_text,type_18_text,type_19_text,type_20_text,type_21_text,type_22_text,type_23_text,type_24_text,type_25_text,type_26_text,type_27_text,type_28_text,type_29_text,type_30_text,type_31_text,type_32_text,type_33_text,type_34_text "
+		$sql =" select no,member_no,trip_type,plan_code,cal_type,plan_type,plan_title,plan_title_src,plan_start_age,plan_end_age,company_type,type_1,type_2,type_3,type_4,type_5,type_6,type_7,type_8,type_9,type_10,type_11,type_12,type_13,type_14,type_15,type_16,type_17,type_18,type_19,type_20,type_21,type_22,type_23,type_24,type_25,type_26,type_27,type_28,type_29,type_30,type_31,type_32,type_33,type_34,type_1_text,type_2_text,type_3_text,type_4_text,type_5_text,type_6_text,type_7_text,type_8_text,type_9_text,type_10_text,type_11_text,type_12_text,type_13_text,type_14_text,type_15_text,type_16_text,type_17_text,type_18_text,type_19_text,type_20_text,type_21_text,type_22_text,type_23_text,type_24_text,type_25_text,type_26_text,type_27_text,type_28_text,type_29_text,type_30_text,type_31_text,type_32_text,type_33_text,type_34_text, sort "
 			 ." from plan_code_hana "
 			 ." where no = ".$this->quot($db, $key)
 		 	 ;
@@ -36,7 +36,7 @@ class PlanCodeHanaDao extends A_Dao
 
 	function selectFirst($db, $wq) {
 
-		$sql =" select no,member_no,trip_type,plan_code,cal_type,plan_type,plan_title,plan_title_src,plan_start_age,plan_end_age,company_type,type_1,type_2,type_3,type_4,type_5,type_6,type_7,type_8,type_9,type_10,type_11,type_12,type_13,type_14,type_15,type_16,type_17,type_18,type_19,type_20,type_21,type_22,type_23,type_24,type_25,type_26,type_27,type_28,type_29,type_30,type_31,type_32,type_33,type_34,type_1_text,type_2_text,type_3_text,type_4_text,type_5_text,type_6_text,type_7_text,type_8_text,type_9_text,type_10_text,type_11_text,type_12_text,type_13_text,type_14_text,type_15_text,type_16_text,type_17_text,type_18_text,type_19_text,type_20_text,type_21_text,type_22_text,type_23_text,type_24_text,type_25_text,type_26_text,type_27_text,type_28_text,type_29_text,type_30_text,type_31_text,type_32_text,type_33_text,type_34_text "
+		$sql =" select no,member_no,trip_type,plan_code,cal_type,plan_type,plan_title,plan_title_src,plan_start_age,plan_end_age,company_type,type_1,type_2,type_3,type_4,type_5,type_6,type_7,type_8,type_9,type_10,type_11,type_12,type_13,type_14,type_15,type_16,type_17,type_18,type_19,type_20,type_21,type_22,type_23,type_24,type_25,type_26,type_27,type_28,type_29,type_30,type_31,type_32,type_33,type_34,type_1_text,type_2_text,type_3_text,type_4_text,type_5_text,type_6_text,type_7_text,type_8_text,type_9_text,type_10_text,type_11_text,type_12_text,type_13_text,type_14_text,type_15_text,type_16_text,type_17_text,type_18_text,type_19_text,type_20_text,type_21_text,type_22_text,type_23_text,type_24_text,type_25_text,type_26_text,type_27_text,type_28_text,type_29_text,type_30_text,type_31_text,type_32_text,type_33_text,type_34_text, sort "
 			 ." from plan_code_hana"
 			 .$wq->getWhereQuery()
 			 .$wq->getOrderByQuery()
@@ -56,7 +56,7 @@ class PlanCodeHanaDao extends A_Dao
 
 	function select($db, $wq) {
 	    
-	    $sql =" select no,member_no,trip_type,plan_code,cal_type,plan_type,plan_title,plan_title_src,plan_start_age,plan_end_age,company_type,type_1,type_2,type_3,type_4,type_5,type_6,type_7,type_8,type_9,type_10,type_11,type_12,type_13,type_14,type_15,type_16,type_17,type_18,type_19,type_20,type_21,type_22,type_23,type_24,type_25,type_26,type_27,type_28,type_29,type_30,type_31,type_32,type_33,type_34,type_1_text,type_2_text,type_3_text,type_4_text,type_5_text,type_6_text,type_7_text,type_8_text,type_9_text,type_10_text,type_11_text,type_12_text,type_13_text,type_14_text,type_15_text,type_16_text,type_17_text,type_18_text,type_19_text,type_20_text,type_21_text,type_22_text,type_23_text,type_24_text,type_25_text,type_26_text,type_27_text,type_28_text,type_29_text,type_30_text,type_31_text,type_32_text,type_33_text,type_34_text "
+	    $sql =" select no,member_no,trip_type,plan_code,cal_type,plan_type,plan_title,plan_title_src,plan_start_age,plan_end_age,company_type,type_1,type_2,type_3,type_4,type_5,type_6,type_7,type_8,type_9,type_10,type_11,type_12,type_13,type_14,type_15,type_16,type_17,type_18,type_19,type_20,type_21,type_22,type_23,type_24,type_25,type_26,type_27,type_28,type_29,type_30,type_31,type_32,type_33,type_34,type_1_text,type_2_text,type_3_text,type_4_text,type_5_text,type_6_text,type_7_text,type_8_text,type_9_text,type_10_text,type_11_text,type_12_text,type_13_text,type_14_text,type_15_text,type_16_text,type_17_text,type_18_text,type_19_text,type_20_text,type_21_text,type_22_text,type_23_text,type_24_text,type_25_text,type_26_text,type_27_text,type_28_text,type_29_text,type_30_text,type_31_text,type_32_text,type_33_text,type_34_text, sort "
 	         ." from plan_code_hana"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -67,7 +67,7 @@ class PlanCodeHanaDao extends A_Dao
 	
 	function selectPerPage($db, $wq, $pg) {
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
-			."		select @rnum:=0, no,member_no,trip_type,plan_code,cal_type,plan_type,plan_title,plan_title_src,plan_start_age,plan_end_age,company_type,type_1,type_2,type_3,type_4,type_5,type_6,type_7,type_8,type_9,type_10,type_11,type_12,type_13,type_14,type_15,type_16,type_17,type_18,type_19,type_20,type_21,type_22,type_23,type_24,type_25,type_26,type_27,type_28,type_29,type_30,type_31,type_32,type_33,type_34,type_1_text,type_2_text,type_3_text,type_4_text,type_5_text,type_6_text,type_7_text,type_8_text,type_9_text,type_10_text,type_11_text,type_12_text,type_13_text,type_14_text,type_15_text,type_16_text,type_17_text,type_18_text,type_19_text,type_20_text,type_21_text,type_22_text,type_23_text,type_24_text,type_25_text,type_26_text,type_27_text,type_28_text,type_29_text,type_30_text,type_31_text,type_32_text,type_33_text,type_34_text "
+			."		select @rnum:=0, no,member_no,trip_type,plan_code,cal_type,plan_type,plan_title,plan_title_src,plan_start_age,plan_end_age,company_type,type_1,type_2,type_3,type_4,type_5,type_6,type_7,type_8,type_9,type_10,type_11,type_12,type_13,type_14,type_15,type_16,type_17,type_18,type_19,type_20,type_21,type_22,type_23,type_24,type_25,type_26,type_27,type_28,type_29,type_30,type_31,type_32,type_33,type_34,type_1_text,type_2_text,type_3_text,type_4_text,type_5_text,type_6_text,type_7_text,type_8_text,type_9_text,type_10_text,type_11_text,type_12_text,type_13_text,type_14_text,type_15_text,type_16_text,type_17_text,type_18_text,type_19_text,type_20_text,type_21_text,type_22_text,type_23_text,type_24_text,type_25_text,type_26_text,type_27_text,type_28_text,type_29_text,type_30_text,type_31_text,type_32_text,type_33_text,type_34_text, sort "
 			." 		from plan_code_hana a "
 			." 		INNER JOIN ( "
 	        ."			select no as idx from plan_code_hana a "
@@ -114,7 +114,7 @@ class PlanCodeHanaDao extends A_Dao
 
 	function selectPlanListByCalType($db, $wq) {
 
-		$sql =" SELECT a.company_type, a.member_no, a.trip_type, a.plan_type, a.cal_type, plan_code, a.plan_start_age, a.plan_end_age, a.plan_title "
+		$sql =" SELECT a.company_type, a.member_no, a.trip_type, a.plan_type, a.cal_type, plan_code, a.plan_start_age, a.plan_end_age, a.plan_title, a.sort "
 			." , b.plan_title as plan_repre_title, b.plan_type as plan_repre_type "
 			." 	FROM plan_code_hana a "
 			." 	LEFT JOIN ( "

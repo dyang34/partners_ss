@@ -44,7 +44,6 @@ $wq->addOrderBy("no", "desc");
 
 $rs = HanaPlanMgr::getInstance()->getListReprePerPage($wq, $pg);
 
-$arrStateUpdatable = [1,2,4,5,6];
 include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 ?>
 
@@ -124,13 +123,13 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <colgroup>
                         <col width="4%">
 
-                        <col width="6%">
+                        <col width="7%">
                         <col width="5%">
 
                         <col width="7%">
 
-                        <col width="7%">
-                        <col width="7%">
+                        <col width="5%">
+                        <col width="5%">
 
                         <col width="7%">
                         <col width="7%">
@@ -140,7 +139,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 
                         <col width="12%">
                         <col width="*">
-                        <col width="8%">
+                        <col width="7%">
                     </colgroup>
                     <thead>
                         <tr>
@@ -154,9 +153,9 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                             <th rowspan="2">플랜코드</th>
                             
                             <th rowspan="2">대표 피보험자</th>
-                            <th rowspan="2">보험료</th>
-
                             <th rowspan="2">주민등록번호</th>
+
+                            <th rowspan="2">보험료</th>
                             <th rowspan="2">증권번호</th>
 
                             <th rowspan="2">여행지</th>
@@ -185,20 +184,20 @@ if ($rs->num_rows > 0) {
                         
                             <td rowspan="2"><?=number_format($pg->getMaxNumOfPage() - $i)?></td><!-- no -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=date('Y-m-d', $row["regdate"])?></a></td><!-- 청약일 -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=$arrPlanStateText[$row["plan_list_state"]]?></a></td><!-- 진행상태 -->
+                            <td rowspan="2"><a href="<?=$link_url?>" name="plan_list_state_text"><?=$arrPlanStateText[$row["plan_list_state"]]?></a></td><!-- 진행상태 -->
                             <td><a href="<?=$link_url?>"><?=$row["start_date"]?></a></td><!-- 여행시작일 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_title"]?></a></td><!-- 플랜명 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_code"]?></a></td><!-- 플랜코드 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=$row["name"]?></a></td><!-- 대표 피보험자 -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=number_format($row["price_sum"])?></a></td><!-- 보험료 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=$jumin?></a></td><!-- 주민등록번호 -->
+                            <td rowspan="2"><a href="<?=$link_url?>"><?=number_format($row["price_sum"])?></a></td><!-- 보험료 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_join_code"]?$row["plan_join_code"]:$row["plan_join_code_replace"]?></a></td><!-- 증권번호 -->
                             <td rowspan="2" class="tvl-dest"><a href="<?=$link_url?>"><?=$row["trip_type"]=="1"?"국내일원":$row["nation_txt"]?></a></td><!-- 여행지 -->
                             <td><a href="<?=$link_url?>"><?=$row["add_info1"]?></a></td><!-- 추가정보1 -->
                             <td rowspan="2">
 <?php
 
-        if($row["end_date"]>=date("Y-m-d") && in_array($row["plan_list_state"], $arrStateUpdatable)) {
+        if($row["end_date"]>=date("Y-m-d") && in_array($row["plan_list_state"], $arrPlanStateUpdatable)) {
 ?>
                                 <a mode="three" class="button mdfy btn-check-mdfy" hana_plan_no="<?=$row["no"]?>">수정</a>
 <?php
@@ -217,7 +216,7 @@ if ($rs->num_rows > 0) {
     }
 } else {
 ?>
-                <tr><td colspan="9" class="no-data">No Data.</td></tr>
+                <tr><td colspan="13" class="no-data">No Data.</td></tr>
 <?php
 }
 ?>
@@ -247,50 +246,22 @@ if ($rs->num_rows > 0) {
                         </select>
                     </div>
                     <textarea name="" id="req_content" class="textarea"></textarea>
-				</div>				
+                    
+                    <div class="btn-cent">
+                        <a name="btnRequestSave" class="button blue">저장</a>
+                        <a class="md-close button black">취소</a>
+                    </div>
+				</div>
             </div>
         </div>
     </div>
-    
-    <script>
-        $(".btn-check-mdfy").click(function(){
-
-            let plan_list_state = $(this).attr('plan_list_state');
-
-            $.ajax({
-                type : "POST",
-                url : "/service/ajax/get_plan_request.php",
-                data : { 'company_type' : '<?=LoginManager::getUserLoginInfo("company_type")?>' , 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'hana_plan_no' : $(this).attr("hana_plan_no") },
-                dataType : 'json',
-                async : false,
-                success : function(data, status)
-                {
-                    if(data.RESULTCD == "200") {
-                        if(data.DATA.change_state == 1) {
-                            $('#req_content').text(data.DATA.content);
-                            $('select[name=change_type]').val(data.DATA.change_type);
-                        }
-                    } else {
-                        if(Number(data.RESULTCD) >= 900) {
-                            alert(data.RESULTMSG);
-                        }
-                    }
-                },
-                error : function(err)
-                {
-                    alert(err.responseText);
-                }
-            });
-            
-            $("#check-modify-modal").removeAttr("class").addClass($(this).attr("mode"));
-        });
-
-    </script>
-
 <!-- Modal 수정 end -->
 
 <script src="/js/ValidCheck.js"></script>	
 <script type="text/javascript">
+
+let g_req_obj;
+
 // 달력 script
 $(document).ready(function() {
     $("#start_date, #end_date").datepicker({
@@ -328,6 +299,79 @@ $(document).ready(function() {
         }
         
         f.submit();	
+    });
+
+    $(document).on("click",".btn-check-mdfy",function() {
+
+        g_req_obj = $(this);
+        //let plan_list_state = g_req_obj.attr('plan_list_state');
+
+        $.ajax({
+            type : "POST",
+            url : "/service/ajax/get_plan_request.php",
+            data : { 'company_type' : '<?=LoginManager::getUserLoginInfo("company_type")?>' , 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'hana_plan_no' : $(this).attr("hana_plan_no") },
+            dataType : 'json',
+            async : false,
+            success : function(data, status)
+            {
+                if(data.RESULTCD == "200") {
+
+                    if(data.DATA.no !== undefined && data.DATA.change_state == 1 ) {
+
+                        $('#req_content').text(data.DATA.content);
+                        $('select[name=change_type]').val(data.DATA.change_type);
+                    }
+
+                    $("#check-modify-modal").removeAttr("class").addClass(g_req_obj.attr("mode"));
+
+                } else {
+                    if(Number(data.RESULTCD) >= 900) {
+                        alert(data.RESULTMSG);
+                    }
+                }
+            },
+            error : function(err)
+            {
+                alert(err.responseText);
+            }
+        });
+
+        //return false;
+    });
+
+    $(document).on("click","a[name=btnRequestSave]",function() {
+
+        if($('#req_content').val().trim()=="") {
+            alert("요청 내역을 입력해 주십시오.    ");
+            $('#req_content').focus();
+            return false;
+        }
+
+        $.ajax({
+            type : "POST",
+            url : "/service/ajax/plan_request_ins.php",
+            data : { 'company_type' : '<?=LoginManager::getUserLoginInfo("company_type")?>' , 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'hana_plan_no' : g_req_obj.attr("hana_plan_no"), 'change_type' : $('select[name=change_type]').val(), 'content' : $('#req_content').val() },
+            dataType : 'json',
+            async : false,
+            success : function(data, status)
+            {
+                if(data.RESULTCD == "200") {
+                    g_req_obj.closest("tr").find("a[name=plan_list_state_text]").html(data.STATUS_TEXT);
+                } else {
+                    if(Number(data.RESULTCD) >= 900) {
+                        alert(data.RESULTMSG);
+                    }
+                }
+            },
+            error : function(err)
+            {
+                alert(err.responseText);
+            }
+        });
+
+        close_modal();
+
+        return false;
     });
 });
 

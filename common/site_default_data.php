@@ -28,4 +28,6 @@ $arrPlanChageStateText = [
     2=>"수정완료",
     3=>"취소완료"
 ];
+
+$arrPlanStateUpdatable = [1,2,4,5,6];
 ?>
