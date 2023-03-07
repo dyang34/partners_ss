@@ -869,7 +869,7 @@ $(document).ready(function() {
         chg_member_plan(0, 200);
         calc_price(fg_auto_calc);
         
-        $('.btn-flan-info').attr('trip_type', tripType);
+        //$('.btn-flan-info').attr('trip_type', tripType);
 
         return false;
     });
