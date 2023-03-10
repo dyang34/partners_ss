@@ -38,12 +38,13 @@ if ($rs->num_rows > 0) {
         $row_mem = $rs->fetch_assoc();
 
         array_push($arrMember, $row_mem);
-        array_push($arrCalType, $row_mem["cal_type"]);
+        //array_push($arrCalType, $row_mem["cal_type"]);
+        array_push($arrCalType, ["cal_type"=>$row_mem["cal_type"], "plan_type"=>$row_mem["plan_type"], "plan_code"=>$row_mem["plan_code"], "plan_title"=>$row_mem["plan_title"]]);
     }
 }
 
-$arrCalType = array_unique($arrCalType);
-sort($arrCalType);
+$arrCalType = array_unique($arrCalType, SORT_REGULAR);
+$arrCalType = array_values($arrCalType);
 ?>
 
 <!DOCTYPE html>
@@ -91,7 +92,7 @@ sort($arrCalType);
                             <td class="left"><?=LoginManager::getUserLoginInfo("com_name")?></td>
                             
                             <th>보험명</th>
-                            <td class="left"><?=$arrInsuranceCompany[$row["company_type"]]." ".(($trip_type==1)?"국내":"해외")?>여행보험</td>
+                            <td class="left"><?=$arrInsuranceCompany[$row["company_type"]]." ".$arrTripType[$trip_type]."보험"?></td>
                         </tr>
                         <tr>
                             <th>대표피보험자</th>
@@ -115,9 +116,9 @@ sort($arrCalType);
                     <colgroup>
                         <col width="7%">
                         <col width="15%">
-                        <col width="18%">
+                        <col width="15%">
                         <col width="12%">
-                        <col width="18%">
+                        <col width="15%">
                         <col width="18%">
                         <col width="*">
                     </colgroup>
@@ -128,8 +129,8 @@ sort($arrCalType);
                             <th>생년월일</th>
                             <th>성별</th>
                             <th>플랜명</th>
+                            <th>플랜코드</th>
                             <th>보험료</th>
-                            <th>비고</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -152,8 +153,8 @@ if (count($arrMember) > 0) {
                             <td><?=$jumin1?></td>
                             <td><?=($arrMember[$i]["sex"]==1)?"남성":"여성"?></td>
                             <td><?=$arrMember[$i]["plan_title"]?></td>
+                            <td><?=$arrMember[$i]["plan_code"]?></td>
                             <td><?=number_format($arrMember[$i]["plan_price"])?>원</td>
-                            <td></td>
                         </tr>
                         <?
     }
@@ -166,13 +167,6 @@ if (count($arrMember) > 0) {
 
 <?
 /*
-echo "<pre>";
-print_r($__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]["List"][$__CONFIG_MEMBER_NO][$trip_type]);
-//print_r($__ARR_CONFIG_PLAN_REPRE);
-//print_r($__ARR_CONFIG_PLAN_TYPE);
-echo "</pre>";
-exit;
-*/
     $cnt_cal_type = count($__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]["List"][$__CONFIG_MEMBER_NO][$trip_type]);
     for($i=0; $i<count($arrCalType); $i++) {
         $arrPlanTypePrice = array();
@@ -197,43 +191,90 @@ exit;
                         <tr>
                             <th>보장명</th>
 <?php
-    for($j=0;$j<$cnt_plan_type;$j++) {
-        for($k=1;$k<=34;$k++) {
-            $arrPlanTypePrice[$k][$j] = $__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]][$j]["type_".$k."_text"];
-            $arrPlanTypePrice[$k][9] .= $__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]][$j]["type_".$k."_text"];
-        }
+        for($j=0;$j<$cnt_plan_type;$j++) {
+            for($k=1;$k<=34;$k++) {
+                $arrPlanTypePrice[$k][$j] = $__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]][$j]["type_".$k."_text"];
+                $arrPlanTypePrice[$k][9] .= $__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]][$j]["type_".$k."_text"];
+            }
 ?>    
                         <th><?=$__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]][$j]["plan_title"]?></th>
 <?
-    }
+        }
 ?>
                         </tr>
                     </thead>
                     <tbody>
 <?php
-    for($k=1;$k<=count($arrPlanTypePrice);$k++) {
+        for($k=1;$k<=count($arrPlanTypePrice);$k++) {
 
-        if(!empty($arrPlanTypePrice[$k][9])) {
+            if(!empty($arrPlanTypePrice[$k][9])) {
 ?>
                     <tr>
                         <th><?=$__ARR_CONFIG_PLAN_TYPE[$__CONFIG_COMPANY_TYPE][$__CONFIG_MEMBER_NO][$trip_type]["type_".$k]["title"]?></th>
 <?php
-            for($j=0;$j<$cnt_plan_type;$j++) {
-?>
-                        <td><?=$arrPlanTypePrice[$k][$j]?></td>
+                for($j=0;$j<$cnt_plan_type;$j++) {
+    ?>
+                            <td><?=$arrPlanTypePrice[$k][$j]?></td>
 <?php
-               }
+                }
 ?>
                     </tr>
 <?                
+            }
         }
-    }
 ?>
                     </tbody>
                 </table>
             </div>
 <?
-}
+    }
+*/    
+
+
+    $cnt_cal_type = count($__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]["List"][$__CONFIG_MEMBER_NO][$trip_type]);
+    for($i=0; $i<count($arrCalType); $i++) {
+        $arrPlanTypePrice = array();
+        $cnt_plan_type = count($__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]["cal_type"]]);
+?>
+        <!-- 2페이지 start -->
+        <div class="section">
+            <!-- 담보내용 start -->
+            <h4 class="sub-title">담보내용 <?=$arrCalTypeTitle[$cnt_cal_type][$arrCalType[$i]["cal_type"]-1]?> <?=$arrCalType[$i]["plan_title"]?>(<?=$arrCalType[$i]["plan_code"]?>)</h4>
+            <table class="table-modal">
+            <colgroup>
+                <col width="70%">
+                <col width="*">
+            </colgroup>
+                <thead>
+                    <tr>
+                        <th>보장명</th>
+                        <th>보장금액</th>
+                    </tr>
+                </thead>
+                <tbody>
+<?php
+        for($j=0;$j<$cnt_plan_type;$j++) {
+            if ($__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]["cal_type"]][$j]["plan_code"]==$arrCalType[$i]["plan_code"]) {
+                for($k=1;$k<=34;$k++) {
+                    if(!empty($__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]["cal_type"]][$j]["type_".$k."_text"])) {
+?>
+                    <tr>
+                        <th><?=$__ARR_CONFIG_PLAN_TYPE[$__CONFIG_COMPANY_TYPE][$__CONFIG_MEMBER_NO][$trip_type]["type_".$k]["title"]?></th>
+                        <td><?=$__ARR_CONFIG_PLAN[$__CONFIG_COMPANY_TYPE]['List'][$__CONFIG_MEMBER_NO][$trip_type][$arrCalType[$i]["cal_type"]][$j]["type_".$k."_text"]?></td>
+                    </tr>
+<?php
+                    }
+                }
+
+                break;
+            }
+        }
+?>
+                </tbody>
+            </table>
+        </div>
+<?
+    }
 ?>
         </div>
     </div>

@@ -13,20 +13,11 @@ if (!LoginManager::isUserLogined()) {
 
 $menuNo=[1,0];
 
+$trip_type = RequestUtil::getParam("trip_type","2");
+
 $__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
 if(!LoginManager::getUserLoginInfo("fg_not_common_plan")) {
 	$__CONFIG_MEMBER_NO = get_default_member_no(LoginManager::getUserLoginInfo("company_type"));
-}
-
-if($_REQUEST["fg_admin"]=="Y") {
-require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_array.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_type_array.php";
-echo "<pre>";
-print_r($__ARR_CONFIG_PLAN);
-//print_r($__ARR_CONFIG_PLAN_REPRE);
-//print_r($__ARR_CONFIG_PLAN_TYPE);
-echo "</pre>";
-//exit;
 }
 
 $arrNation = array();
@@ -122,6 +113,9 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                 <tr>
                     <th>여행종류 <em class="bulStyle1">*</em><a class="btn-travel-type" motion="three"><i class="icon-question"></i></a></th>
                     <td>
+<?php
+    if($_GET["trip_type_show"]=="Y") {
+?>        
                         <div class="radio-wrap">
                             <input type="radio" id="trvTypeChk2" name="trip_type" value="2" checked='checked'>
                             <label for="trvTypeChk2">해외</label>
@@ -132,23 +126,38 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                             <label for="trvTypeChk1">국내</label>
                             <div class="check"></div>
                         </div>
+<?php
+    } else {
+?>    
+                        <input type="hidden" name="trip_type" value="<?=$trip_type?>" />
+                        <input type="text"  class="input-search" name="" id="" readonly value="<?=$arrTripType[$trip_type]?>">
+<?php
+    }
+?>
+
                     </td>
 
                     <th>여행지역 <em class="bulStyle1">*</em><a class="btn-travel-area" motion="three"><i class="icon-globe"></i></a></th>   
                     <td class="nation">
+<?php
+    if($trip_type=="2") {
+?>
                         <div name="div_nation_2">
                             <select name="nation_srch" class="sel_item" >
                                 <option value="">여행지역 선택</option>
 <?php                                     	
-	foreach($arrNation as $key => $value) {
+	    foreach($arrNation as $key => $value) {
 ?>
                                 <option value="<?=$key?>"><?=$value?></option>
 <?php
-}
+        }
 ?>
                             </select>
                         </div>
-		                <div name="div_nation_1" class="tbl-div" style="display:none;">국내일원</div>
+<?php
+    }
+?>
+                        <div name="div_nation_1" class="tbl-div" style="<?=$trip_type=="2"?"display:none;":""?>">국내일원</div>
                         <input type="hidden" name="nation" value=""/>
                     </td>
 
@@ -312,10 +321,10 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         <th class="navy">주민등록번호</th>
                         <th>성별</th>
                         <th>나이</th>
-                        <th>구분</th>
+                        <th>연령대</th>
                         <th>플랜코드</th>
                         <th>플랜명</th>
-                        <th>보험료</th>
+                        <th>보험료(원)</th>
                     </tr>
                 </thead>
                 <tbody name="tbody_nm">
@@ -422,11 +431,12 @@ function reset_Select2() {  // Select 리셋시 사용.
 const fg_auto_calc = <?=$_GET['fg_auto_calc']!="N"?"true":"false"?>;
 const g_company_type = "<?=LoginManager::getUserLoginInfo("company_type")?>";
 const g_member_no = "<?=$__CONFIG_MEMBER_NO?>";
+let tripType = "<?=$trip_type?>";
+//let tripType="2";
 
 let mc_consult_submitted = false;
-
 let g_obj_td;
-let tripType="2";
+
 let default_plan_type = 3;
 let str_plan_type, plan_repre_title;
 let arr_plan_type_sub_cal;
@@ -464,8 +474,13 @@ const tr_contents = '<tr class="tr_input" tr_error_cnt="0">'
                     + '</tr>';
 
 $(document).ready(function() {
-    var today = new Date();
-    var settingDate;
+    let today = new Date();
+    let maxday = new Date();
+    
+    maxday.setMonth(maxday.getMonth()+6);
+    maxday.setDate(maxday.getDate()-1);
+
+    let settingDate;
 //    var tomorrow = new Date(Date.parse(today) + (1000 * 60 * 60 * 24));
 
     /************* 테이블 내 cell 이동, tr 생성 Start *************/
@@ -535,7 +550,7 @@ $(document).ready(function() {
         monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
         buttonText: "Select date",
         minDate: today,
-        maxDate: "+6M",
+        maxDate: maxday,
         onClose: function( selectedDate ) {
             //$("#end_date").val("");
 
@@ -869,15 +884,13 @@ $(document).ready(function() {
         chg_member_plan(0, 200);
         calc_price(fg_auto_calc);
         
-        //$('.btn-flan-info').attr('trip_type', tripType);
-
         return false;
     });
 
     // 대표 플랜 변경시.
     $(document).on('change','select[name=plan_repre_type]',function() {
-        for(i=1;i<cnt_cal_type;i++) {
-            $('select[name=plan_type_sub_cal'+i+'] option[plan_type*="'+$(this).val()+'"]').prop("selected", true);
+        for(i=1;i<=cnt_cal_type;i++) {
+            $('select[name=plan_type_sub_cal'+i+'] option[plan_type*="'+$(this).val()+'"][plan_sort=\'0\']').prop("selected", true);
         }
 
         chg_member_plan(0, 200);
@@ -909,13 +922,13 @@ $(document).ready(function() {
             return false;
         }
 
-        if($('input[name=trip_type]:checked').val()==1) {
+        if(tripType=="1") {
             $('input[name=nation]').val("0");
         } else {
             $('input[name=nation]').val($('select[name=nation_srch]').val());
         }
 
-<?php        
+<?php
         if($arrManager) {
 ?>
         $('input[name=manager_name]').val($('select[name=manager_idx] option:checked').text());
@@ -938,7 +951,7 @@ $(document).ready(function() {
 	$(document).on('click', '.btn-flan-info', function() {
 		let motion = $(this).attr("motion");
 
-		get_plan_desc(g_company_type, g_member_no, $('input[name=trip_type]:checked').val(), $(this).attr("cal_type"));
+        get_plan_desc(g_company_type, g_member_no, tripType, $(this).attr("cal_type"));
 
 		$("#flan-info-modal").removeAttr("class").addClass(motion);
 	});
@@ -950,7 +963,7 @@ $(document).ready(function() {
         let plan_code = obj_tr.find('input[name="plan_code[]"').val();
         g_obj_td = $(this);
 
-		get_plan_choice(g_company_type, g_member_no, $('input[name=trip_type]:checked').val(), cal_type, plan_code);
+        get_plan_choice(g_company_type, g_member_no, tripType, cal_type, plan_code);
 
 		$("#flan-select-modal").removeAttr("class").addClass($(this).attr("motion"));
 	});
@@ -971,7 +984,7 @@ $(document).ready(function() {
 
     $("#end_date").datepicker("disable");
     numbering_row();
-    get_plan_repre_list('<?=LoginManager::getUserLoginInfo("company_type")?>','<?=$__CONFIG_MEMBER_NO?>','2');
+    get_plan_repre_list('<?=LoginManager::getUserLoginInfo("company_type")?>','<?=$__CONFIG_MEMBER_NO?>', tripType);
 
     if(!fg_auto_calc) {
         $('a[name=btnCalc]').show();
@@ -1125,7 +1138,7 @@ const set_row_price = function(obj) {
 
         if (jumin) {
             obj_tr = obj.closest('tr');
-            price = get_member_price(g_company_type, g_member_no, $('input[name=trip_type]:checked').val(), plan_code, gender, age_insu, $('input[name=start_date]').val(), $('input[name=end_date]').val());
+            price = get_member_price(g_company_type, g_member_no, tripType, plan_code, gender, age_insu, $('input[name=start_date]').val(), $('input[name=end_date]').val());
 
             if (price > 0) {
                 //obj.closest('td').next().next().next().next().next().next().children('.td_last_obj').val(price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
@@ -1279,12 +1292,14 @@ const get_plan_repre_list = function(p_company_type, p_member_no, p_trip_type) {
                         age_from = item_sub.plan_start_age;
                         age_to = item_sub.plan_end_age;
                     }
-                    
-					plan_type_sub_list += "<option value=\""+item_sub.plan_code+"\" plan_type=\""+item_sub.plan_type+"\" ";
-					if(item_sub.plan_type.includes(default_plan_type)) {
+
+                    plan_type_sub_options = cal_type_text + " " + item_sub.plan_code + " (";
+					plan_type_sub_list += "<option value=\""+item_sub.plan_code+"\" plan_type=\""+item_sub.plan_type+"\" plan_title=\""+item_sub.plan_title+"\" plan_sort=\""+item_sub.sort+"\" ";
+					if(item_sub.plan_type.includes(default_plan_type) && item_sub.sort==0) {
 						plan_type_sub_list += "selected='selected'";
 					}
-					plan_type_sub_list += ">"+plan_type_sub_title+" "+item_sub.plan_title+"</option>";
+					//plan_type_sub_list += ">"+plan_type_sub_title+" "+item_sub.plan_title+"</option>";
+                    plan_type_sub_list += ">"+plan_type_sub_options+item_sub.plan_title+")</option>";
 				});
 
                 $('span[name=title_plan_type_sub_cal'+idx+']').html(plan_type_sub_title);
@@ -1359,7 +1374,8 @@ const get_member_plan = function(age_insu, age_std) {   // 보험 나이, 만 �
     if(age_insu==15 && age_std == 14) {
         rtn_plan_code = $('select[name=plan_type_sub_cal1]').val();
         rtn_plan_type = $('select[name=plan_type_sub_cal1] option:selected').attr('plan_type');
-        rtn_plan_title = $('select[name=plan_type_sub_cal1] option:selected').text();
+        //rtn_plan_title = $('select[name=plan_type_sub_cal1] option:selected').text();
+        rtn_plan_title = $('select[name=plan_type_sub_cal1]').attr('cal_type_text') + " (" + $('select[name=plan_type_sub_cal1]').attr('age_from')+"~"+$('select[name=plan_type_sub_cal1]').attr('age_to')+"세) "+$('select[name=plan_type_sub_cal1] option:selected').attr('plan_title');
         cal_type = 1;
         cal_type_text = $('select[name=plan_type_sub_cal1]').attr('cal_type_text');
     } else {
@@ -1367,7 +1383,8 @@ const get_member_plan = function(age_insu, age_std) {   // 보험 나이, 만 �
             if(Number($(this).attr('age_from')) <= age_insu && Number($(this).attr('age_to')) >= age_insu) {
                 rtn_plan_code = $(this).val();
                 rtn_plan_type = $(this).find(':selected').attr('plan_type');
-                rtn_plan_title = $(this).find(':selected').text();
+                //rtn_plan_title = $(this).find(':selected').text();
+                rtn_plan_title = $(this).attr('cal_type_text') + " (" + $(this).attr('age_from')+"~"+$(this).attr('age_to')+"세) "+$(this).find(':selected').attr('plan_title');
                 cal_type = $(this).attr('cal_type');
                 cal_type_text = $(this).attr('cal_type_text');
                 
@@ -1451,7 +1468,7 @@ const calc_price = function(fg_process) {
                 type : "POST",
                 url : "/service/ajax/get_plan_price_arr_ajax.php",
 //                data : data,
-                data : { 'company_type' : '<?=LoginManager::getUserLoginInfo("company_type")?>' , 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'trip_type' : $('input[name=trip_type]:checked').val(), 'plan_code' : p_plan_code, 'gender' : p_gender, 'age' : p_age, 'start_date' : $('input[name=start_date]').val(), 'end_date' : $('input[name=end_date]').val() },
+                data : { 'company_type' : '<?=LoginManager::getUserLoginInfo("company_type")?>' , 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'trip_type' : tripType, 'plan_code' : p_plan_code, 'gender' : p_gender, 'age' : p_age, 'start_date' : $('input[name=start_date]').val(), 'end_date' : $('input[name=end_date]').val() },
                 dataType : 'json',
                 async : false,
                 success : function(data, status)
@@ -1538,7 +1555,7 @@ const chk_all_set_field = function(fg_msg, fg_chk_price) {
 
     let rtn_val = true, fg_exist_data = false;;
 
-    if($('input[name=trip_type]:checked').val()=="2" && $('select[name=nation_srch]').val()=="") {
+    if(tripType=="2" && $('select[name=nation_srch]').val()=="") {
         if(fg_msg) {
             alert("여행지역을 선택해 주십시오.    ");
         }

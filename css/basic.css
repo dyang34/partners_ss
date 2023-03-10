@@ -22,44 +22,87 @@ header {
   display: flex; align-items: center;
   height: 65px;
 }
+
+/************************** gnb style css */
 .head-wrap nav {
   display: flex; 
   align-items: center; flex-direction: row;
   height: 65px;
-  position: absolute; top: 0; left: 13%;
+  position: absolute; top: 0; left: 13%; z-index: 10;
 }
-.head-wrap nav a {
+.head-wrap nav > ul {
+  display: flex;
+  flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: center;
+}
+.head-wrap nav > ul li {
   position: relative;
-  line-height: 65px;
+  height: 65px;
+}
+.head-wrap nav > ul li a {
+  display: block;
   font-family: var(--font-family-noto);
-  font-size: var(--font-size-18); font-weight: 500; color: var(--color-white);
+  font-size: var(--font-size-18); font-weight: 500;
+  line-height: 65px; color: var(--color-white);
   padding: 0 50px;
 }
-.head-wrap nav a:before {
-  content: "";
-  position: absolute; top: 0; left: 0;
-  width: 1px; height: 100%;
-  background-color: rgba(255, 255, 255, .15);
-}
-.head-wrap nav a:first-child:before {
-  content: "";
-  position: absolute; top: 0; left: 0;
-  width: 1px; height: 100%;
-  background-color: rgba(0, 0, 0, .45);
-}
-.head-wrap nav a:after {
-  content: "";
-  position: absolute; top: 0; right: 0;
-  width: 1px; height: 100%;
-  background-color: rgba(0, 0, 0, .45);
-}
-.head-wrap nav a:hover {
+.head-wrap nav > ul li a:hover {
   background-color: rgba(0, 0, 0, .35);  
 }
-.head-wrap nav a:active,
-.head-wrap nav a.active {
-  background-color: #00A0DF;
+.head-wrap nav > ul li.active,
+.head-wrap nav > ul li.active a:hover {
+  background-color: rgba(0, 160, 223, 1);
 }
+.head-wrap nav > ul li:before {
+  content: "";
+  position: absolute; top: 0; left: 0;
+  width: 1px; height: 65px;
+  background-color: rgba(255, 255, 255, .15);
+}
+.head-wrap nav > ul li:after {
+  content: "";
+  position: absolute; top: 0; right: 0;
+  width: 1px; height: 65px;
+  background-color: rgba(0, 0, 0, .45);
+}
+.head-wrap nav > ul li > ul#submenu {
+  position: absolute; left: 0; top: 35px; z-index: -1;
+  opacity: 0;
+  width: 100%;
+  visibility: hidden;
+  transition: all .3s;
+}
+.head-wrap nav > ul li:hover > ul#submenu {
+  opacity: 1;
+  visibility: visible;
+  transition: all .3s;
+  top: 65px;
+}
+.head-wrap nav > ul li > ul#submenu li {
+  background-color: var(--color-black);
+  border-bottom: 1px solid rgba(255, 255, 255, .25);
+  height: 35px;
+}
+.head-wrap nav > ul li > ul#submenu li:last-child {
+  border-color: rgba(0, 0, 0, .35);
+}
+.head-wrap nav > ul li > ul#submenu li:after,
+.head-wrap nav > ul li > ul#submenu li:before {
+  width: 0; height: 0;
+  display: none;
+}
+.head-wrap nav > ul li > ul#submenu li a {
+  display: block;
+  font-size: var(--font-size-13); font-weight: 500;
+  line-height: 35px;
+  padding: 0 0; text-align: center;
+}
+.head-wrap nav > ul li > ul#submenu li:hover,
+.head-wrap nav > ul li > ul#submenu li:hover a {
+  background-color: var(--color-navy);
+  border-color: rgba(0, 0, 0, .55);
+  color: var(--color-yellow);
+}
+/**************************************** End */
 .head-wrap .box-btn-head {
   position: absolute; top: 0; right: 0;
   display: flex; align-items: center;
@@ -68,6 +111,9 @@ header {
 .head-wrap .box-btn-head > a:first-child {
   margin-right: 5px;
 }
+
+
+
 /************************************* footer style */
 footer {
   background-color: #1C2B40;
@@ -163,6 +209,12 @@ footer .foot-wrap h1 {
   background-color: #1C2B40;
   font-weight: bold;
 }
+.table-search tbody td:first-child {
+  border-left: 0px;
+}
+.table-search tbody td {
+  border-right: 1px solid #1E2C42;
+}
 .table-search tbody th em.bulStyle1 {
   color: var(--color-coral);
   display: inline-block;
@@ -174,6 +226,11 @@ footer .foot-wrap h1 {
   vertical-align: top;
   font-size: 0; padding: 0; margin: 0;
 }
+.table-search tbody td.last {
+  background-color: var(--color-back);
+  border-color: var(--color-back);
+}
+
 /*
 .table-search tbody td.inpt > .select-box:before,
 .table-search tbody td.inpt > .select-box:after {
@@ -320,6 +377,11 @@ a:hover .icon-question, a:hover .icon-globe {
   position: absolute; top: 0; right: 0;
   height: 100%;
 }
+.table-list tbody tr td a.change:active,
+.table-list tbody tr td a.change:focus {
+  transform: translate(0px, 0px);
+  box-shadow: inset 0px 0px 0px 0px rgb(0,0,0, 0);
+}
 .table-list tbody tr td.flan {
   text-align: left;
 }
@@ -333,7 +395,9 @@ a:hover .icon-question, a:hover .icon-globe {
 .table-list tbody tr td a:hover {
   color: var(--color-aqua);
 }
-
+.table-list tbody tr td a.mdfy:hover {
+  color: var(--color-black);
+}
 .table-list tbody tr td a.change:hover {
   color: rgba(255, 255, 255, .55);
 }
@@ -364,14 +428,20 @@ a:hover .icon-question, a:hover .icon-globe {
   border: 1px solid var(--color-ligthGray); background-color: var(--color-white);
   vertical-align: middle; word-break: keep-all;
 }
-.table-white thead {
+/* .table-white thead {
+  position: -webkit-sticky; 
   position: sticky; top: 0px; z-index: 13;
-  border-bottom: 1px solid var(--color-ligthGray);
-}
+  border: 1px solid var(--color-ligthGray);
+  border-top: 0px;
+} */
 .table-white thead tr th {
+  position: -webkit-sticky; 
+  position: sticky; top: 0px; z-index: 13;
   background-color: #e5e5e5;
   font-weight: 700;
-  border-top: 0;
+  border: 1px solid var(--color-ligthGray);
+  border-top: 0px;
+  border-collapse: separate;
 }
 .table-white tbody tr th {
   font-weight: 700;
@@ -394,7 +464,10 @@ a:hover .icon-question, a:hover .icon-globe {
   font-weight: 500; font-size: 0; text-align: center;
   margin: 35px 0 25px;
 }
-.paginate a {
+.paginate > ul li {
+  display: inline-block;
+}
+.paginate > ul li a {
   position: relative;
   vertical-align: middle;
   display: inline-block; zoom: 1;
@@ -403,48 +476,48 @@ a:hover .icon-question, a:hover .icon-globe {
   font-size: 14px; line-height: 26px; color: rgba(255, 255, 255, .75);
   margin: 0 3px; padding: 0px;
 }
-.paginate a.active {
+.paginate > ul li a.active {
   color: var(--color-aqua);
   background: transparent;
   border: 1px solid var(--color-aqua);
 }
-.paginate a.first, .paginate a.last {
+.paginate > ul li a.first, .paginate > ul li a.last {
   width: 27px; height: 26px;
 }
-.paginate a.prev {
+.paginate > ul li a.prev {
   width: 27px; height: 26px;
   margin-right: 10px;
 }
-.paginate a.next {
+.paginate > ul li a.next {
   width: 27px; height: 26px;
   margin-left: 10px;
 }
-.paginate a i {
+.paginate > ul li a i {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -50%);
 }
-.paginate a.first i.prev-arrow-double {
+.paginate > ul li a.first i.prev-arrow-double {
   display: block;
   width: 13px; height: 13px;
   background-color: rgba(255, 255, 255, .75); background-size: 100%;
   -webkit-mask: url('/img/service/icon-prev-arrow-double.svg?en') no-repeat center;
           mask: url('/img/service/icon-prev-arrow-double.svg?en') no-repeat center;
 }
-.paginate a.last i.next-arrow-double {
+.paginate > ul li a.last i.next-arrow-double {
   display: block;
   width: 13px; height: 13px;
   background-color: rgba(255, 255, 255, .75); background-size: 100%;
   -webkit-mask: url('/img/service/icon-next-arrow-double.svg?en') no-repeat center;
           mask: url('/img/service/icon-next-arrow-double.svg?en') no-repeat center;
 }
-.paginate a.prev i.prev-arrow {
+.paginate > ul li a.prev i.prev-arrow {
   display: block;
   width: 13px; height: 13px;
   background-color: rgba(255, 255, 255, .75); background-size: 100%;
   -webkit-mask: url('/img/service/icon-prev-arrow.svg?en') no-repeat center;
           mask: url('/img/service/icon-prev-arrow.svg?en') no-repeat center;
 }
-.paginate a.next i.next-arrow {
+.paginate > ul li a.next i.next-arrow {
   display: block;
   width: 13px; height: 13px;
   background-color: rgba(255, 255, 255, .75); background-size: 100%;

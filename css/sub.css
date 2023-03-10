@@ -153,32 +153,22 @@
   margin: 30px auto 0;
 }
 .search-shnch-wrap {
-  margin: 0px auto;
-  background-color: #33445E;
-  padding: 25px 0;
+  margin: 0px auto; padding: 0;
+  /* background-color: #33445E; */
+  /* padding: 25px 0 0; */
 }
-.search-shnch-wrap .shnch-hstry {
-  width: 1066px;
-  margin: 0 auto;
-}
-.search-shnch-wrap .shnch-hstry table tr td {
+.search-shnch-wrap  table tr td {
   font-size: 0;
 }
-.search-shnch-wrap .shnch-hstry table tr td .date_picker {
-  width: 100%;
+.search-shnch-wrap table tr td.flow-btn a.search {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.search-shnch-wrap .shnch-hstry table tr td .date_picker img {
-  position: absolute; top: 5px; right: 10px;
-}
-.search-shnch-wrap .shnch-hstry table tr td .input-search {
+.search-shnch-wrap  table tr td .input-search {
   display: inline-block;
   width: calc(100% - 70px);
-}
-.search-shnch-wrap .shnch-hstry table tr td .search {
-  display: inline-block;
-  width: 70px; height: 28px; line-height: 28px;
-  padding: 0 0;
-  vertical-align: top;
 }
 
 .table-list-wrap .table-history-wrap {
@@ -186,12 +176,18 @@
   width: 100%; height: 100%;
   border-top: 1px solid var(--color-black);
 }
-.table-list-wrap .table-history-wrap > .table-list tbody tr td.tvl-dest {
-  width: calc(479px - 20px);
+.table-list-wrap .table-history-wrap > .table-list tbody tr td.tvl-dest a {
+  /* width: 460px; *
   text-overflow: ellipsis;
-  overflow: hidden;
   white-space: nowrap;
-  padding: 5px 10px;
+  overflow: hidden;
+  /* padding: 5px 10px; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .table-list-wrap .table-history-wrap > .table-list tbody tr:nth-child(4n + 3) td,
 .table-list-wrap .table-history-wrap > .table-list tbody tr:nth-child(4n + 4) td {
@@ -199,14 +195,18 @@
 }
 .table-list-wrap .table-history-wrap .table-list tbody tr td a.mdfy {
   display: block;
-  padding: 0;
+  padding: 0; margin: 0 auto;
   width: 70px;
-  margin: 0 auto;
+  font-size: var(--font-size-12);
 }
 .table-list-wrap .table-history-wrap .table-list tbody tr td span.mdfy-text {
   display: block;
   padding: 0;
   line-height: 1.2; margin-top: 5px;
+}
+.table-list-wrap .table-history-wrap .table-list tbody tr td .no-data {
+  text-align: center;
+  height: 150px; line-height: 150px;
 }
 .table-list-wrap .paginate {
   width: 100%;
@@ -241,6 +241,9 @@
 .check-box-wrap .table-list tbody tr td {
   padding: 8px 10px;
   height: auto; line-height: 1.2;
+}
+.check-box-wrap .adjustm-list-wrap {
+  margin-top: 20px;
 }
 .check-box-wrap .adjustm-list-wrap > h2 {
   position: relative;

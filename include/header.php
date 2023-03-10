@@ -14,12 +14,22 @@ include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
     <header>
         <div class="head-wrap">
             <h1><img src="/img/common/logo-toursafe.png" alt="투어세이프 로고"></h1>
-            <nav>
-                <a href="/service/contract/register.php" class="<?=($menuNo[0]==1)?"active":""?>">보험 가입</a>
-                <a href="/service/contract/inquiry.php" class="<?=($menuNo[0]==2)?"active":""?>">신청내역 조회/수정</a>
-                <a href="/service/calc/calc_list.php" class="<?=($menuNo[0]==3)?"active":""?>">정산관리</a>
-                <a href="/service/claim/info.php" class="<?=($menuNo[0]==4)?"active":""?>">청구안내</a>
-                <a href="/service/customer/notice.php" class="<?=($menuNo[0]==5)?"active":""?>">고객센터</a>
+            <nav>                
+                <ul class="clearfix inb">
+                    <li class="<?=($menuNo[0]==1)?"active":""?>"><a href="/service/contract/register.php">보험 가입</a>
+                        <ul id="submenu">
+                            <li><a href="/service/contract/register.php?trip_type=1"><?=$arrTripType[1]?></a></li>
+                            <li><a href="/service/contract/register.php?trip_type=2"><?=$arrTripType[2]?></a></li>
+<?/*                            
+                            <li><a href="/service/contract/register.php">해외장기체류</a></li>
+*/?>                            
+                        </ul>
+                    </li>
+                    <li class="<?=($menuNo[0]==2)?"active":""?>"><a href="/service/contract/inquiry.php">신청내역 조회/수정</a></li>
+                    <li class="<?=($menuNo[0]==3)?"active":""?>"><a href="/service/calc/calc_list.php">실적관리</a></li>
+                    <li class="<?=($menuNo[0]==4)?"active":""?>"><a href="/service/claim/info.php">청구안내</a></li>
+                    <li class="<?=($menuNo[0]==5)?"active":""?>"><a href="/service/customer/notice.php">고객센터</a></li>
+                </ul>
             </nav>
 <?php
 if (LoginManager::isUserLogined()) {

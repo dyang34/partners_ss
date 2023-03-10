@@ -145,9 +145,9 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 /* PLACEHOLDER */
-::-webkit-input-placeholder { color: #aaa; }
-     :-ms-input-placeholder { color: #aaa; }
-         ::-moz-placeholder { color: #aaa; }
+::-webkit-input-placeholder { color: rgba(255, 255, 255, .38); }
+     :-ms-input-placeholder { color: rgba(255, 255, 255, .38); }
+         ::-moz-placeholder { color: rgba(255, 255, 255, .38); }
 input:focus::-webkit-input-placeholder, textarea:focus::-webkit-input-placeholder { color: transparent; }
           input:focus:-ms-input-placeholder, textarea:focus:-ms-input-placeholder { color: transparent; }
                   input:focus::-moz-placeholder, textarea:focus::-moz-placeholder { color: transparent; }

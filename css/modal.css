@@ -30,7 +30,7 @@
   border: 1px solid var(--color-ligthGray);
 }
 #check-modify-modal .modal-bg .modal-cont {
-  max-width: 400px; width: 400px; height: 250px;
+  max-width: 400px; width: 400px; height: 300px;
 }
 #check-modify-modal .modal-bg .modal-cont .select-box select {
   color: var(--color-black);
@@ -50,6 +50,24 @@
   border: 1px solid var(--color-ligthGray);
   margin-top: 5px;
 }
+#check-modify-modal .modal-bg .modal-cont .btn-cent {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+#check-modify-modal .modal-bg .modal-cont .btn-cent a {
+  font-size: var(--font-size-13); font-weight: 700;
+  color: var(--color-white);
+  width: 70px; border-radius: 3px;
+  margin-left: 5px; padding: 9px 22px;
+}
+#check-modify-modal .modal-bg .modal-cont .btn-cent a:first-child {
+  margin-left: 0px;
+}
+#check-modify-modal .modal-bg .modal-cont .btn-cent a.black:hover {
+  background-color: var(--color-red);
+}
+
 .modal-bg .modal-cont .title {
   position: relative;
   width: 100%; height: 50px;
@@ -210,6 +228,25 @@
 .tab-cont::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, .05);
 }
+
+/* 스크롤바 설정*/
+.table-wrap::-webkit-scrollbar,
+.table-wrap::-webkit-scrollbar {
+  height: 8px;
+}
+/* 스크롤바 막대 설정*/
+.table-wrap::-webkit-scrollbar-thumb,
+.table-wrap::-webkit-scrollbar-thumb {
+  background: var(--color-blue); border: 1px solid var(--color-navy);
+  border-radius: 4px;
+}
+/* 스크롤바 뒷 배경 설정*/
+.table-wrap::-webkit-scrollbar-track,
+.table-wrap::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, .05);
+}
+
+
 
 .panel::-webkit-scrollbar-track, .tab-cont::-webkit-scrollbar-track {
   border-bottom: 1px solid var(--color-ligthGray);
@@ -494,6 +531,96 @@
   color:#000;
   border-top: 3px solid var(--color-blue);
 }
+.flansel-cont.plan-modal-second,
+.panel.plan-modal-second {
+  overflow: auto;
+}
+.plan-modal-second .plan-table-box {
+  overflow: hidden;
+  width: 670px; height: 580px;
+  display: table;
+  table-layout: fixed;
+}
+.plan-modal-second .plan-table-box .table-wrap {
+  width: 100%; height: 100%;
+  overflow: auto;
+}
+.plan-modal-second .plan-table-box .table-wrap ul.thead {
+  position: sticky; top: 0px; z-index: 13;
+  display: table-row;
+}
+.plan-modal-second .plan-table-box .table-wrap > ul.thead li {
+  display: table-cell;
+  font-size: 0; color: var(--color-black);
+  background-color: #e5e5e5;
+  border-right: 1px solid var(--color-ligthGray); border-bottom: 1px solid var(--color-ligthGray);
+  min-width: 110px; padding: 1rem;
+}
+.plan-modal-second .plan-table-box .table-wrap > ul.tbody-tr {
+  display: table-row;
+}
+.plan-modal-second .plan-table-box .table-wrap > ul.tbody-tr li {
+  display: table-cell;
+  font-size: 0; color: var(--color-black);
+  border-right: 1px solid var(--color-ligthGray); border-bottom: 1px solid var(--color-ligthGray);
+  min-width: 110px; height: 46px;
+  background-color: #fff;
+}
+.plan-modal-second .plan-table-box .table-wrap > ul.tbody-tr li span {
+  display: flex;
+  align-items: center; justify-content: flex-end;
+  color: #626262; font-size: var(--font-size-13); 
+  padding: 0 1rem; height: 100%;
+}
+.plan-modal-second .plan-table-box .table-wrap > ul.thead li:first-child,
+.plan-modal-second .plan-table-box .table-wrap > ul.tbody-tr li:first-child {
+  position: sticky; left: 0;
+  /* background-color: #e5e5e5; */
+  border-right: 1px solid var(--color-ligthGray); border-bottom: 1px solid var(--color-ligthGray);  
+}
+.plan-modal-second .plan-table-box .table-wrap > ul.thead li:first-child {
+  z-index: 13;
+}
+.plan-modal-second .plan-table-box .table-wrap > ul.tbody-tr li:first-child span {
+  color: var(--color-black); font-weight: bold;
+  justify-content: center;
+}
+.plan-modal-second .plan-table-box .table-wrap > ul.thead li:first-child,
+.plan-modal-second .plan-table-box .table-wrap > ul.tbody-tr li:first-child {
+  min-width: 190px;
+  border-left: 1px solid var(--color-ligthGray);
+}
+.plan-modal-second .plan-table-box .table-wrap > ul.thead li span {
+  display: flex;
+  align-items: center; justify-content: center;
+  color: var(--color-black); font-weight: bold; font-size: .75rem;
+}
+.flansel-cont.plan-modal-second .plan-table-box .table-wrap > ul.thead li {
+  padding: .55rem 1rem;
+}
+.flansel-cont.plan-modal-second .plan-table-box .table-wrap > ul.thead li span {
+  display: flex;
+  align-items: center; justify-content: space-between;
+  line-height: 1.4;
+}
+.flansel-cont.plan-modal-second .plan-table-box .table-wrap > ul.thead li:first-child span {
+  justify-content: center;
+  height: 34px;
+}
+.flansel-cont.plan-modal-second .plan-table-box .table-wrap > ul.thead li span a.gray,
+.flansel-cont.plan-modal-second .plan-table-box .table-wrap > ul.thead li span a.choice {
+  padding: .25rem 0 .30rem;
+  width: 50px;
+  line-height: 1.2; border: 0;
+}
+.plan-modal-second .plan-table-box .table-wrap > ul.tbody-tr li.active {
+  background-color: #ddf5fd;
+}
+.table-wrap > ul.tbody-tr li.plan-alone,
+.table-wrap > ul.thead li.plan-alone {
+  width: 200px;
+} 
+
 
 /******************** TAB css style 02 */
 .tabMenu-warp {
@@ -647,24 +774,28 @@
 @media print {
   @page {
     size: 21cm 29.7cm; /* A4 */
-    margin:0; padding: 0;
-  }
-  body header, 
-  body .check-box-wrap,
-  #enrl-cnfr-modal .modal-bg .modal-cont h2.title,
-  .btn-printer {
-    display: none;
+    margin: 15mm 0 5mm; padding: 0;
   }
   * {
     -webkit-print-color-adjust: exact; /* background(백 그라운드)사용 시 해당 속성을 보여 주게 합니다 */
     print-color-adjust: exact;
+  }
+  .cnfrm-wrap {
+    padding: 0 20px;
+  }
+  .btn-printer {
+    display: none;
+  }
+  .printer-wrap .section:first-child {
+    margin-top: 0px;
   }
   .cnfrm-wrap .title h2 {
     text-align: center;
   }
   .printer-wrap .section { 
     display: block;
-    page-break-before:always;
+    page-break-before: always;
+    margin-top: 0rem;
   }
   .table-modal thead tr th, .table-modal tbody tr th,
   .table-modal tbody tr td {

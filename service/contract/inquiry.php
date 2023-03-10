@@ -121,20 +121,20 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             <div class="table-history-wrap">
                 <table class="table-list">
                     <colgroup>
-                        <col width="4%">
+                        <col width="3%">
 
+                        <col width="7%">
                         <col width="7%">
                         <col width="5%">
 
                         <col width="7%">
 
-                        <col width="5%">
-                        <col width="5%">
+                        <col width="9%">
 
                         <col width="7%">
                         <col width="7%">
 
-                        <col width="8%">
+                        <col width="7%">
                         <col width="8%">
 
                         <col width="12%">
@@ -144,12 +144,12 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <thead>
                         <tr>
                             <th rowspan="2">no</th>
+                            <th rowspan="2">보험사</th>
                             <th rowspan="2">청약일</th>
                             <th rowspan="2">진행상태</th>
 
                             <th>여행시작일</th>
 
-                            <th rowspan="2">플랜명</th>
                             <th rowspan="2">플랜코드</th>
                             
                             <th rowspan="2">대표 피보험자</th>
@@ -183,14 +183,14 @@ if ($rs->num_rows > 0) {
                         <tr>
                         
                             <td rowspan="2"><?=number_format($pg->getMaxNumOfPage() - $i)?></td><!-- no -->
+                            <td rowspan="2"><a href="<?=$link_url?>"><?=$arrInsuranceCompany[$row["company_type"]]?></a></td><!-- 보험사 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=date('Y-m-d', $row["regdate"])?></a></td><!-- 청약일 -->
                             <td rowspan="2"><a href="<?=$link_url?>" name="plan_list_state_text"><?=$arrPlanStateText[$row["plan_list_state"]]?></a></td><!-- 진행상태 -->
                             <td><a href="<?=$link_url?>"><?=$row["start_date"]?></a></td><!-- 여행시작일 -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_title"]?></a></td><!-- 플랜명 -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_code"]?></a></td><!-- 플랜코드 -->
+                            <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_code"]." (".$row["plan_title"].")"?></a></td><!-- 플랜코드 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=$row["name"]?></a></td><!-- 대표 피보험자 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=$jumin?></a></td><!-- 주민등록번호 -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=number_format($row["price_sum"])?></a></td><!-- 보험료 -->
+                            <td rowspan="2"><a href="<?=$link_url?>"><?=number_format($row["price_sum"])?>원</a></td><!-- 보험료 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_join_code"]?$row["plan_join_code"]:$row["plan_join_code_replace"]?></a></td><!-- 증권번호 -->
                             <td rowspan="2" class="tvl-dest"><a href="<?=$link_url?>"><?=$row["trip_type"]=="1"?"국내일원":$row["nation_txt"]?></a></td><!-- 여행지 -->
                             <td><a href="<?=$link_url?>"><?=$row["add_info1"]?></a></td><!-- 추가정보1 -->
