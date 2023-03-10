@@ -67,9 +67,11 @@ class HanaPlanMemberDao extends A_Dao
 	
 	function selectDetail($db, $wq) {
 	    
-	    $sql =" select no,member_no,hana_plan_no,plan_state,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name "
-			 ."			,(select cal_type from plan_code_hana a where a.plan_code= m.plan_code order by no desc limit 1) as cal_type "
-	         ." from hana_plan_member m"
+	    $sql =" select m.no,m.member_no,m.hana_plan_no,m.plan_state,m.main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,m.plan_code,m.plan_title,m.plan_title_src,m.plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name "
+			 ."			,a.cal_type, a.plan_type, a.plan_type, a.sort "
+	         ." from hana_plan_member m "
+			 ." left join plan_code_hana a "
+			 ." on a.plan_code= m.plan_code "
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
 	         ;

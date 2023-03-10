@@ -48,58 +48,45 @@ for($i=1;$i<=$cnt_cal_type;$i++) {
     $cnt_plan_type = count($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i]);
 ?>    
 
-        <div class="panel" id="cal_type_<?=$i?>-panel">
-            <!-- 주니어(0~15세 미만) -->
-            <table class="table-white">
-                <colgroup>
-                    <col width="*">
-<?php                    
-    for($j=0;$j<$cnt_plan_type;$j++) {                    
-?>                        
-                    <col width="<?=11+(11*(4-$cnt_plan_type))?>%">
-<?php
-    }
-?>                                        
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>보장명</th>
+        <div class="panel plan-modal-second" id="cal_type_<?=$i?>-panel">
+            <!-- Flan start -->
+            <div class="plan-table-box">
+                <div class="table-wrap">                    
+                    <ul class="clearfix inb thead">
+                        <li><span>보장명</span></li>
 <?php
     for($j=0;$j<$cnt_plan_type;$j++) {
         for($k=1;$k<=34;$k++) {
             $arrPlanTypePrice[$k][$j] = $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["type_".$k."_text"];
             $arrPlanTypePrice[$k][9] .= $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["type_".$k."_text"];
         }
-?>    
-                        <th><?=$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_title"]?></th>
+?>
+                        <li class="<?=($cnt_plan_type<2)?"plan-alone":""?>"><span><?=$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_code"]." (".$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_title"].")"?></span></li>
 <?
     }
 ?>
-                    </tr>
-                </thead>
-                <tbody>
-
+                    </ul>
 <?php
     for($k=1;$k<=count($arrPlanTypePrice);$k++) {
 
         if(!empty($arrPlanTypePrice[$k][9])) {
 ?>
-                    <tr>
-                        <th><?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?></th>
+                    <ul class="clearfix inb tbody-tr">
+                        <li><span><?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?></span></li>
 <?php
             for($j=0;$j<$cnt_plan_type;$j++) {
 ?>
-                        <td><?=$arrPlanTypePrice[$k][$j]?></td>
+                        <li class="<?=($cnt_plan_type<2)?"plan-alone":""?>"><span><?=$arrPlanTypePrice[$k][$j]?></span></li>
 <?php
                }
 ?>
-                    </tr>
+                    </ul>
 <?                
         }
     }
 ?>
-                </tbody>
-            </table>
+                </div>
+            </div>
         </div>
 <?
 }

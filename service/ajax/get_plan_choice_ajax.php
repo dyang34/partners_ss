@@ -31,28 +31,20 @@ $cal_type_text_age = $cal_type_text." (".$age_from."~".$age_to."세)";
 </div>
 <!-- Flan Contents start -->
 <div class="flansel-box-wrap">
-    <div class="flansel-cont">
-        <!-- 주니어(0~15세 미만) -->
-        <table class="table-white">
+    <div class="flansel-cont plan-modal-second">
+        <!-- Flan start -->
+        <div class="plan-table-box">
+            <div class="table-wrap">
 <?php
     if ($cnt_plan_type >= 3) {
-?>        
-            <colgroup>
-                <col width="*">
-<?php                    
-    for($j=0;$j<$cnt_plan_type;$j++) {                    
-?>                        
-                    <col width="23%">
-<?php
-    }
-?>                                        
-            </colgroup>
+?>
+            <!-- <colgroup>
+            </colgroup> -->
 <?php
     }
 ?>
-            <thead>
-                <tr>
-                    <th>보장명</th>
+                <ul class="clearfix inb thead">
+                    <li><span>보장명</span></li>
 <?php
     $arrPlanTypePrice = array();
     for($j=0;$j<$cnt_plan_type;$j++) {
@@ -62,35 +54,43 @@ $cal_type_text_age = $cal_type_text." (".$age_from."~".$age_to."세)";
         }
 
         $plan_type_text = $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_title"];
-?>    
-                        <th><?=$plan_type_text?> <a class="button <?=($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_code"]==$plan_code)?"gray":"choice"?>" name="btnChoiceMemPlan" plan_code="<?=$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_code"]?>" plan_type="<?=$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_type"]?>" plan_title="<?=$cal_type_text_age." ".$plan_type_text?>">선택</a></th>
+        $plan_type_text_show = $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_code"]."<br/>[".$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_title"]."]";
+?>
+                    <li class="<?=($cnt_plan_type<2)?"plan-alone":""?>">
+                        <span>
+                            <?=$plan_type_text_show?>
+                            <a class="button <?=($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_code"]==$plan_code)?"gray":"choice"?>" name="btnChoiceMemPlan" plan_code="<?=$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_code"]?>" plan_type="<?=$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_type"]?>" plan_title="<?=$cal_type_text_age." ".$plan_type_text?>">선택</a>
+                        </span>
+                    </li>
 <?
     }
-?>                    
-                </tr>
-            </thead>
-            <tbody>
+?>
+                </ul>
             <?php
     for($k=1;$k<=count($arrPlanTypePrice);$k++) {
 
         if(!empty($arrPlanTypePrice[$k][9])) {
 ?>
-                    <tr>
-                        <th><?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?></th>
+                <ul class="clearfix inb tbody-tr">
+                    <li>
+                        <span><?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?></span>
+                    </li>
 <?php
             for($j=0;$j<$cnt_plan_type;$j++) {
 ?>
-                        <td class="<?=($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_code"]==$plan_code)?"active":""?>"><?=$arrPlanTypePrice[$k][$j]?></td>
+                    <li class="<?=($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_code"]==$plan_code)?"active":""?> <?=($cnt_plan_type<2)?"plan-alone":""?>">
+                        <span><?=$arrPlanTypePrice[$k][$j]?></span>
+                    </li>
 <?php
                }
 ?>
-                    </tr>
+                </ul>
 <?                
         }
     }
 ?>
-            </tbody>
-        </table>
+            </div>
+        </div>
     </div>
 </div>
 <!-- Flan Contents end -->
