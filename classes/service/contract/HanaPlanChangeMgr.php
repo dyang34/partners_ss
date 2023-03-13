@@ -97,6 +97,27 @@ class HanaPlanChangeMgr extends A_Mgr
         return $result;
     }
 
+    /*
+     *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
+     */
+    function getListMonthlySummary($wq, $wq_cancel) {
+        
+        $result = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            $result = HanaPlanChangeDao::getInstance()->selectMonthlySummary($db, $wq, $wq_cancel);
+            
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $result;
+    }
+
     function getCount($wq) {
         
         $result = null;
