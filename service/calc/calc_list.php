@@ -197,9 +197,9 @@ if ($rs->num_rows > 0) {
                         <td><?=$row["job_date"]?></td>
                         <td><?=$arrInsuranceCompany[$row["company_type"]]?></td>
                         <td><?=$arrTripType[$row["trip_type"]]?></td>
-                        <td class="right"><?=number_format($row["inq_in_price"])?>원</td>
+                        <td class="right"><?=number_format($row["inq_change_price"])?>원</td>
                         <td class="right"><?=number_format($row["inq_cnt"])?>건</td>
-                        <td class="right"><?=number_format($row["cancel_in_price"])?>원</td>
+                        <td class="right"><?=number_format($row["cancel_change_price"])?>원</td>
                         <td class="right"><?=number_format($row["cancel_cnt"])?>건</td>
                         <td class="right"><?=$row["com_percent"]?></td>
                         <td class="right"><?=number_format($row["commition"])?>원</td>

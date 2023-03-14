@@ -56,12 +56,15 @@ $arrCalType = array_values($arrCalType);
 
     <title>가입 확인서</title>
 
+    <link rel="shortcut icon" href="/img/common/favicon.ico" />
+    <link rel="apple-touch-icon-precomposed" href="/img/common/favicon.png"/>
+
     <link rel="stylesheet" type="text/css" href="/css/style.css?v=<?=time()?>">
     <link rel="stylesheet" type="text/css" href="/css/basic.css?v=<?=time()?>">
     <link rel="stylesheet" type="text/css" href="/css/button.css?v=<?=time()?>">
     <link rel="stylesheet" type="text/css" href="/css/modal.css?v=<?=time()?>">
 
-    <script type="text/javascript" src="/js/jquery-3.6.1.min.js"></script>  
+    <script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>  
 </head>
 <body>
     <div class="cnfrm-wrap">

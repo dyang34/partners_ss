@@ -84,15 +84,15 @@ class HanaPlanChangeDao extends A_Dao
 	
 	function selectMonthlySummary($db, $wq, $wq_cancel) {
 	
-		$sql =" SELECT company_type, job_date, trip_type, group_concat(distinct concat(com_percent,'%')) com_percent, SUM(inq_in_price) as inq_in_price, SUM(cancel_in_price) as cancel_in_price, SUM(inq_cnt) as inq_cnt, SUM(cancel_cnt) AS cancel_cnt, sum(commition) as commition "
+		$sql =" SELECT company_type, job_date, trip_type, group_concat(distinct concat(com_percent,'%')) com_percent, SUM(inq_change_price) as inq_change_price, SUM(cancel_change_price) as cancel_change_price, SUM(inq_cnt) as inq_cnt, SUM(cancel_cnt) AS cancel_cnt, sum(commition) as commition "
 			." FROM ( "
-			." 	SELECT a.company_type, trip_type, change_type, date_format(from_unixtime(a.regdate), '%Y-%m') as job_date, com_percent, in_price AS inq_in_price, 0 AS cancel_in_price, 1 inq_cnt, 0 AS cancel_cnt, round(in_price * com_percent / 100) as commition "
+			." 	SELECT a.company_type, trip_type, change_type, date_format(from_unixtime(a.regdate), '%Y-%m') as job_date, com_percent, change_price AS inq_change_price, 0 AS cancel_change_price, 1 inq_cnt, 0 AS cancel_cnt, round(change_price * com_percent / 100) as commition "
 			." 		FROM hana_plan_change a "
 			." 		LEFT JOIN hana_plan b "
 			." 		ON a.hana_plan_no = b.no "
 					.$wq->getWhereQuery()
 			." 	UNION ALL "
-			." 	SELECT a.company_type, trip_type, change_type, date_format(from_unixtime(a.change_date), '%Y-%m') as job_date, com_percent, 0 AS inq_in_price, in_price AS cancel_in_price, 0 inq_cnt, 1 AS cancel_cnt, round(in_price * com_percent / 100) as commition "
+			." 	SELECT a.company_type, trip_type, change_type, date_format(from_unixtime(a.change_date), '%Y-%m') as job_date, com_percent, 0 AS inq_change_price, change_price AS cancel_change_price, 0 inq_cnt, 1 AS cancel_cnt, round(change_price * com_percent / 100) as commition "
 			." 		FROM hana_plan_change a "
 			." 		LEFT JOIN hana_plan b "
 			." 		ON a.hana_plan_no = b.no "
