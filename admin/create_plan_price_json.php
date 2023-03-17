@@ -55,17 +55,17 @@ $rs = PlanCodePriceHanaMgr::getInstance()->getListTermDay($wq);
 for($i=0;$i<$rs->num_rows;$i++) {
 	$row = $rs->fetch_assoc();
 
-	if($prevPlanCode!=$row['plan_code'] && $prevPlanCode!="") {
+	if(($prevPlanCode!=$row['plan_code'] || $prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevPlanCode!="") {
 		$arrPlanPriceTripType[$prevPlanCode]=$arrPlanPricePlanCode;
 		$arrPlanPricePlanCode = array();
 	}
 
-	if($prevTripType!=$row['trip_type'] && $prevTripType!="") {
+	if(($prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevTripType!="") {
 		$arrPlanPriceMemberList[$prevTripType]=$arrPlanPriceTripType;
 		$arrPlanPriceTripType = array();
 	}
 
-	if($prevMemberNo!=$row['member_no'] && $prevMemberNo!="") {
+	if(($prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevMemberNo!="") {
 		$arrPlanPriceCompanyList[$prevMemberNo]=$arrPlanPriceMemberList;
 		$arrPlanPriceMemberList = array();
 	}
@@ -121,27 +121,27 @@ $prevCompanyType = $prevMemberNo = $prevTripType = $prevPlanCode = $prevSex = $p
 for($i=0;$i<$rs->num_rows;$i++) {
 	$row = $rs->fetch_assoc();
 
-	if($prevTermDay!=$row['term_day'] && $prevTermDay!="") {
+	if(($prevTermDay!=$row['term_day'] || $prevSex!=$row['sex'] || $prevPlanCode!=$row['plan_code'] || $prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevTermDay!="") {
 		$arrPlanPriceSex[$prevTermDay]=$arrPlanPriceTermDay;
 		$arrPlanPriceTermDay = array();
 	}
 
-	if($prevSex!=$row['sex'] && $prevSex!="") {
+	if(($prevSex!=$row['sex'] || $prevPlanCode!=$row['plan_code'] || $prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevSex!="") {
 		$arrPlanPricePlanCode[$prevSex]=$arrPlanPriceSex;
 		$arrPlanPriceSex = array();
 	}
 
-	if($prevPlanCode!=$row['plan_code'] && $prevPlanCode!="") {
+	if(($prevPlanCode!=$row['plan_code'] || $prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevPlanCode!="") {
 		$arrPlanPriceTripType[$prevPlanCode]=$arrPlanPricePlanCode;
 		$arrPlanPricePlanCode = array();
 	}
 
-	if($prevTripType!=$row['trip_type'] && $prevTripType!="") {
+	if(($prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevTripType!="") {
 		$arrPlanPriceMemberList[$prevTripType]=$arrPlanPriceTripType;
 		$arrPlanPriceTripType = array();
 	}
 
-	if($prevMemberNo!=$row['member_no'] && $prevMemberNo!="") {
+	if(($prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevMemberNo!="") {
 		$arrPlanPriceCompanyList[$prevMemberNo]=$arrPlanPriceMemberList;
 		$arrPlanPriceMemberList = array();
 	}

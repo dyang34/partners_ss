@@ -63,12 +63,12 @@ $prevCompanyType = $prevMemberNo = $prevTripType = "";
 for($i=0;$i<$rs->num_rows;$i++) {
 	$row = $rs->fetch_assoc();
 
-	if($prevTripType!=$row['trip_type'] && $prevTripType!="") {
+	if(($prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevTripType!="") {
 		$arrPlanTypeMemberList[$prevTripType]=$arrPlanTypeTripType;
 		$arrPlanTypeTripType = array();
 	}
 
-	if($prevMemberNo!=$row['member_no'] && $prevMemberNo!="") {
+	if(($prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevMemberNo!="") {
 		$arrPlanTypeCompanyList[$prevMemberNo]=$arrPlanTypeMemberList;
 		$arrPlanTypeMemberList = array();
 	}
