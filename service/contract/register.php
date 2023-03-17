@@ -1342,7 +1342,7 @@ const chg_member_plan = function(age_from, age_to) {
                     age_to = 15;
                 }
 */
-                if((tr_age >= age_from && tr_age <= age_to) || (age_to==14 && tr_age==15 && tr_age_std==14)) {
+                if(((tr_age >= age_from && tr_age <= age_to) || (age_to==14 && tr_age==15 && tr_age_std==14)) && !(age_from==15 && tr_age_std==14)) {
 
                     rtn_arr_val = get_member_plan(tr_age, tr_age_std);
 
