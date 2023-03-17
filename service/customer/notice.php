@@ -4,6 +4,8 @@ require_once $_SERVER['DOCUMENT_ROOT']."/include/common.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/Page.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/notice/FreeMgr.php";
 
 if (!LoginManager::isUserLogined()) {
     //    JsUtil::alertBack("비정상적인 접근입니다. (ErrCode:0x05)    ");
@@ -12,8 +14,33 @@ if (!LoginManager::isUserLogined()) {
 
 $menuNo=[5,1];
 
+$__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
+
+$currentPage = RequestUtil::getParam("currentPage", "1");
+$pageSize = RequestUtil::getParam("pageSize", "15");
+
+$pg = new Page($currentPage, $pageSize);
+
+$_order_by = RequestUtil::getParam("_order_by", "no");
+$_order_by_asc = RequestUtil::getParam("_order_by_asc", "desc");
+
+$wq = new WhereQuery(true, true);
+$wq->addAndIn("table_name",array("board_1","board_2"));
+$wq->addAndString("del_key","=","Y");
+$wq->addAndString("secret","=","N");
+
+$wq->addOrderBy("notice", "desc");
+$wq->addOrderBy($_order_by, $_order_by_asc);
+$wq->addOrderBy("no", "desc");
+
+$rs = FreeMgr::getInstance()->getListPerPage($wq, $pg);
+
 include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 ?>
+<form name="pageForm" method="get">
+    <input type="hidden" name="currentPage" value="<?=$currentPage?>">
+</form>
+
     <div class="check-box-wrap">
         <div class="customer-list-wrap">
 <?php
@@ -38,116 +65,57 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         </tr>
                     </thead>
                     <tbody>
+<?php
+if ($rs->num_rows > 0) {
+    for($i=0; $i<$rs->num_rows; $i++) {
+        $row = $rs->fetch_assoc();
+?>
                         <tr>
-                            <td>10</td>
+                            <td><?=number_format($pg->getMaxNumOfPage() - $i)?></td><!-- no -->
                             <td class="left">
-                                <a href="view.php">설날 휴무 안내</a>
+                                <a href="notice_view.php?no=<?=$row["no"]?>"><?=$row["title"]?></a>
                             </td>
-                            <td>관리자</td>
-                            <td>2023.01.01</td>
-                            <td>102</td>
+                            <td><?=$row["name"]?></td>
+                            <td><?=substr($row["regdate"],0,10)?></td>
+                            <td><?=number_format($row["hit"])?></td>
                         </tr>
-                        <tr>
-                            <td>9</td>
-                            <td class="left">
-                                <a href="view.php">설날 휴무 안내</a>
-                            </td>
-                            <td>관리자</td>
-                            <td>2023.01.01</td>
-                            <td>102</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td class="left">
-                                <a href="view.php">설날 휴무 안내</a>
-                            </td>
-                            <td>관리자</td>
-                            <td>2023.01.01</td>
-                            <td>102</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td class="left">
-                                <a href="view.php">설날 휴무 안내</a>
-                            </td>
-                            <td>관리자</td>
-                            <td>2023.01.01</td>
-                            <td>102</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td class="left">
-                                <a href="view.php">설날 휴무 안내</a>
-                            </td>
-                            <td>관리자</td>
-                            <td>2023.01.01</td>
-                            <td>102</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td class="left">
-                                <a href="view.php">설날 휴무 안내</a>
-                            </td>
-                            <td>관리자</td>
-                            <td>2023.01.01</td>
-                            <td>102</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td class="left">
-                                <a href="view.php">설날 휴무 안내</a>
-                            </td>
-                            <td>관리자</td>
-                            <td>2023.01.01</td>
-                            <td>102</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td class="left">
-                                <a href="view.php">설날 휴무 안내</a>
-                            </td>
-                            <td>관리자</td>
-                            <td>2023.01.01</td>
-                            <td>102</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td class="left">
-                                <a href="view.php">설날 휴무 안내</a>
-                            </td>
-                            <td>관리자</td>
-                            <td>2023.01.01</td>
-                            <td>102</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td class="left">
-                                <a href="view.php">설날 휴무 안내</a>
-                            </td>
-                            <td>관리자</td>
-                            <td>2023.01.01</td>
-                            <td>102</td>
-                        </tr>
+<?php
+    }
+} else {
+?>
+                <tr><td colspan="5" class="no-data">No Data.</td></tr>
+<?php
+}
+?>
+
                     </tbody>
                 </table>
             </div>
 
-            <!-- paginate start -->
-            <div class="paginate">
-                <a href="#;" class="first"><i class="prev-arrow-double"></i></a>
-                <a href="#;" class="prev"><i class="prev-arrow"></i></a>
-                
-                <a href="#;" class="active">1</a>
-                <a href="#;" class="">2</a>
-                <a href="#;" class="">3</a>
-                <a href="#;" class="">4</a>
-                <a href="#;" class="">5</a>
-                
-                <a href="#;" class="next"><i class="next-arrow"></i></a>
-                <a href="#;" class="last"><i class="next-arrow-double"></i></a>
-            </div>
+            <?=$pg->getNaviForFuncULifeB2B("goPage", "<<", "<", ">", ">>")?>
+
         </div>
     </div>
+
+    <script type="text/javascript">
+
+let g_req_obj;
+
+// 달력 script
+$(document).ready(function() {
+   
+});
+
+const goPage = function(page) {
+	var f = document.pageForm;
+	f.currentPage.value = page;
+	f.action = "notice.php";
+	f.submit();
+}
+</script>
+
 <?php
 include $_SERVER['DOCUMENT_ROOT']."/include/footer.php";
+
+$rs->free();
 ?>

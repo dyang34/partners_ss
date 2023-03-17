@@ -437,7 +437,7 @@ let tripType = "<?=$trip_type?>";
 let mc_consult_submitted = false;
 let g_obj_td;
 
-let default_plan_type = 3;
+let default_plan_type = 2;
 let str_plan_type, plan_repre_title;
 let arr_plan_type_sub_cal;
 let cnt_cal_type;
@@ -1337,12 +1337,12 @@ const chg_member_plan = function(age_from, age_to) {
 
             if(tr_age) {
                 tr_age = Number(tr_age);
-
+/*
                 if(age_to==14) {
                     age_to = 15;
                 }
-
-                if(tr_age >= age_from && tr_age <= age_to) {
+*/
+                if((tr_age >= age_from && tr_age <= age_to) || (age_to==14 && tr_age==15 && tr_age_std==14)) {
 
                     rtn_arr_val = get_member_plan(tr_age, tr_age_std);
 
