@@ -4,6 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/include/common.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_price_array.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_array.php";
 
 if(!LoginManager::isUserLogined()) {
 	$rtnVal['RESULTCD'] = "900";
@@ -105,11 +106,14 @@ for($i=0;$i<count($arr_plan_code);$i++) {
 	if($arr_plan_code[$i]) {
 		if ($trip_type=="2" && $arr_age[$i] >= 80 && $term_day > 30) {
 			array_push($arrPrice, -11);
+		} else if($arr_age[$i] > $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][count($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type])][0]["plan_end_age"]) {
+			array_push($arrPrice, -12);
 		} else {
+/*			
 			if($arr_age[$i] > 100) {
 				$arr_age[$i] = 100;
 			}
-			
+*/
 			array_push($arrPrice, $__ARR_CONFIG_PLAN_PRICE[$company_type][$member_no][$trip_type][$arr_plan_code[$i]][$arr_gender[$i]][$term_day][$arr_age[$i]]);
 		}
 	}

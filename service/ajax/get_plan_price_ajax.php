@@ -4,6 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/include/common.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_price_array.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_array.php";
 
 if(!LoginManager::isUserLogined()) {
 	$rtnVal['RESULTCD'] = "900";
@@ -36,11 +37,11 @@ $years = $end_year - $start_year;
 $months = ($years * 12) + (int)$end_month - (int)$start_month;
 $days = (int)$end_day - (int)$start_day;
 $hours = (int)$end_time - (int)$start_time;	
-
+/*
 if($age > 100) {
 	$age=100;
 }
-
+*/
 if(empty($company_type) || empty($member_no) || empty($trip_type) || empty($plan_code) || empty($gender) || empty($age) || empty($start_date) || empty($end_date)) {
 	$rtnVal['RESULTCD'] = "801";
 	$rtnVal['RESULTMSG'] = "필수 요청값 에러입니다.    ";
@@ -58,6 +59,13 @@ if ( $totalday <= 0) {
 if ( $totalday > 92) {
 	$rtnVal['RESULTCD'] = "902";
 	$rtnVal['RESULTMSG'] = "3개월 이내만 가입 가능합니다.";
+	echo json_encode($rtnVal);
+	exit;
+}
+
+if ($age > $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][count($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type])][0]["plan_end_age"]) {
+	$rtnVal['RESULTCD'] = "803";
+	$rtnVal['RESULTMSG'] = $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][count($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type])][0]["plan_end_age"]."세까지 가입 가능합니다.";
 	echo json_encode($rtnVal);
 	exit;
 }

@@ -131,7 +131,7 @@ if ($rs->num_rows > 0) {
         var _left = Math.ceil(( window.screen.width - _width )/2);
         var _top = Math.ceil(( window.screen.height - _height )/2);
 
-        window.open('/service/modal/cnfrm-sbscr.php?hana_plan_no=<?=$hana_plan_no?>', 'cnfrm', 'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top );
+        window.open('/service/modal/report_confirm.php?company_type=<?=$row["company_type"]?>&hana_plan_no=<?=$hana_plan_no?>', 'cnfrm', 'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top );
     }
 </script>
 

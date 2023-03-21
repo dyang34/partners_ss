@@ -223,7 +223,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <li class="title"><span name="title_plan_type_sub_cal1"></span> <a class="btn-flan-info" motion="three" cal_type="1"><i class="icon-question"></i></a></li>
                     <li>
                         <div class="select-box">
-                            <select name="plan_type_sub_cal1" class="cls_select_plan_sub" age_from="" age_to="">
+                            <select name="plan_type_sub_cal1" class="cls_select_plan_sub" age_from="" age_to="" age_to_limit="">
                             </select>
                         </div>
                     </li>
@@ -236,7 +236,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <li class="title"><span name="title_plan_type_sub_cal2"></span> <a class="btn-flan-info" motion="three" cal_type="2"><i class="icon-question"></i></a></li>
                     <li>
                         <div class="select-box">
-                            <select name="plan_type_sub_cal2" class="cls_select_plan_sub" age_from="" age_to="">
+                            <select name="plan_type_sub_cal2" class="cls_select_plan_sub" age_from="" age_to="" age_to_limit="">
                             </select>
                         </div>
                     </li>
@@ -249,7 +249,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <li class="title"><span name="title_plan_type_sub_cal3"></span> <a class="btn-flan-info" motion="three" cal_type="3"><i class="icon-question"></i></a></li>
                     <li>
                         <div class="select-box">
-                            <select name="plan_type_sub_cal3" class="cls_select_plan_sub" age_from="" age_to="">
+                            <select name="plan_type_sub_cal3" class="cls_select_plan_sub" age_from="" age_to="" age_to_limit="">
                             </select>
                         </div>
                     </li>
@@ -262,7 +262,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <li class="title"><span name="title_plan_type_sub_cal4"></span> <a class="btn-flan-info" motion="three" cal_type="4"><i class="icon-question"></i></a></li>
                     <li>
                         <div class="select-box">
-                            <select name="plan_type_sub_cal4" class="cls_select_plan_sub" age_from="" age_to="">
+                            <select name="plan_type_sub_cal4" class="cls_select_plan_sub" age_from="" age_to="" age_to_limit="">
                             </select>
                         </div>
                     </li>
@@ -441,6 +441,7 @@ let default_plan_type = 2;
 let str_plan_type, plan_repre_title;
 let arr_plan_type_sub_cal;
 let cnt_cal_type;
+let max_age;
 
 const arr_paste_col_idx = [2,3,4];
 const col_idx_jumin = 4;
@@ -899,7 +900,7 @@ $(document).ready(function() {
 
     // 나이대별 플랜 변경시.
     $(document).on('change','.cls_select_plan_sub',function() {
-        chg_member_plan($(this).attr('age_from'), $(this).attr('age_to'));
+        chg_member_plan($(this).attr('age_from'), $(this).attr('age_to_limit'));
         calc_price(fg_auto_calc);
 
         return false;
@@ -1206,6 +1207,10 @@ const change_tr_status = function(obj_tr, status) {
             err_msg = "[여행일 제한]";
             err_tooltip = "여행자보험 가입시 80세이상 고객님은 최대 1개월까지만 가입이 가능합니다.";
             break;
+        case -12:
+            err_msg = "[ 연령 제한 ]";
+            err_tooltip = max_age+"세까지만 가입 가능합니다.";
+            break;
     }
 /*
     if(err_msg) {
@@ -1240,6 +1245,7 @@ const numbering_row = function() {
 const get_plan_repre_list = function(p_company_type, p_member_no, p_trip_type) {
     let plan_type_sub_title = plan_type_sub_list = cal_type_text = "";
     let age_from = age_to = 0;
+    let idx_last;
 
 	$.ajax({
 		type : "POST",
@@ -1257,6 +1263,7 @@ const get_plan_repre_list = function(p_company_type, p_member_no, p_trip_type) {
             $('.div_plan_type').hide();
             $('.cls_select_plan_sub').attr('age_from','999');
             $('.cls_select_plan_sub').attr('age_to','999');
+            $('.cls_select_plan_sub').attr('age_to_limit','999');
 
             for(i=0;i<cnt_cal_type;i++) {
                 $('div[name=divPlantypeCal'+(i+1)+']').show();
@@ -1305,17 +1312,17 @@ const get_plan_repre_list = function(p_company_type, p_member_no, p_trip_type) {
                 $('span[name=title_plan_type_sub_cal'+idx+']').html(plan_type_sub_title);
                 $('select[name=plan_type_sub_cal'+idx+']').html(plan_type_sub_list);
                 $('select[name=plan_type_sub_cal'+idx+']').attr('age_from', age_from);
-                if (age_to == 100) {
-                    $('select[name=plan_type_sub_cal'+idx+']').attr('age_to', '200');
-                } else {
-                    $('select[name=plan_type_sub_cal'+idx+']').attr('age_to', age_to);
-                }
+                $('select[name=plan_type_sub_cal'+idx+']').attr('age_to', age_to);
+                $('select[name=plan_type_sub_cal'+idx+']').attr('age_to_limit', age_to);
                 $('select[name=plan_type_sub_cal'+idx+']').attr('cal_type', idx);
                 $('select[name=plan_type_sub_cal'+idx+']').attr('cal_type_text', cal_type_text);
 
+                idx_last = idx;
                 plan_type_sub_title = plan_type_sub_list = "";
-				
+                max_age = age_to;
 			});
+
+            $('select[name=plan_type_sub_cal'+idx_last+']').attr('age_to_limit', '200');
 		},
 		error : function(err)
 		{
@@ -1369,7 +1376,7 @@ const chg_member_plan = function(age_from, age_to) {
 
 // 1명 플랜 적용.
 const get_member_plan = function(age_insu, age_std) {   // 보험 나이, 만 나이.
-    let rtn_plan_code = rtn_plan_title = cal_type_text = "";
+    let rtn_plan_code = rtn_plan_type = rtn_plan_title = cal_type = cal_type_text = "";
 
     if(age_insu==15 && age_std == 14) {
         rtn_plan_code = $('select[name=plan_type_sub_cal1]').val();
@@ -1380,7 +1387,7 @@ const get_member_plan = function(age_insu, age_std) {   // 보험 나이, 만 �
         cal_type_text = $('select[name=plan_type_sub_cal1]').attr('cal_type_text');
     } else {
         $('.cls_select_plan_sub').each(function(idx, item){
-            if(Number($(this).attr('age_from')) <= age_insu && Number($(this).attr('age_to')) >= age_insu) {
+            if(Number($(this).attr('age_from')) <= age_insu && Number($(this).attr('age_to_limit')) >= age_insu) {
                 rtn_plan_code = $(this).val();
                 rtn_plan_type = $(this).find(':selected').attr('plan_type');
                 //rtn_plan_title = $(this).find(':selected').text();
@@ -1416,6 +1423,8 @@ const get_member_price = function(p_company_type, p_member_no, p_trip_type, p_pl
                         alert(data.RESULTMSG);
                     } else if(Number(data.RESULTCD) == 802) {
                         rtn_val = -11;
+                    } else if(Number(data.RESULTCD) == 803) {
+                        rtn_val = -12;
                     } else {
                         rtn_val = -1;
                     }
