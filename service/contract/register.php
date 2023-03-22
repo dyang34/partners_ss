@@ -785,7 +785,6 @@ $(document).ready(function() {
 
                     obj = $this.closest('table').find('tr:eq('+(row_idx+1)+') td:eq('+col_idx+') input[type=text]');
                     
-                    
                     if(col_idx==col_idx_jumin) {
 
                         obj.val(val_x.replace(/[^0-9]/g,''));
@@ -996,6 +995,10 @@ $(document).ready(function() {
 const asterisk_jumin_no = function(obj) {
 	let jumin_no = obj.val();
 
+    if (jumin_no.includes('******')) {
+        return false;
+    }
+
 	if(chk_pattern(obj.val(), 'jumin')) {
 		jumin_no = obj.val().toString().replace(/[^0-9]/g,'').replace(/([\d|*]{6})([\d|*]+)/, '$1$2');
 		obj.val(jumin_no.replace(jumin_no, jumin_no.replace(/(-?)([1-8]{1})([0-9]{6})\b/gi, '$1$2******')));
@@ -1031,7 +1034,7 @@ const chk_jumin = function(obj) {
                     age_insu = arr_age[0];
                     age_std = arr_age[1];
 
-                    if (age_insu >= 0) {
+                    if (age_insu >= 0 && age_std >= 0) {
                        
                         if (gender%2==0) {
                             //obj.closest('td').next().children('.td_last_obj').val("여성");

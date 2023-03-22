@@ -42,7 +42,7 @@ if($age > 100) {
 	$age=100;
 }
 */
-if(empty($company_type) || empty($member_no) || empty($trip_type) || empty($plan_code) || empty($gender) || empty($age) || empty($start_date) || empty($end_date)) {
+if(empty($company_type) || empty($member_no) || empty($trip_type) || empty($plan_code) || empty($gender) || $age=="" || empty($start_date) || empty($end_date)) {
 	$rtnVal['RESULTCD'] = "801";
 	$rtnVal['RESULTMSG'] = "필수 요청값 에러입니다.    ";
 	echo json_encode($rtnVal);
