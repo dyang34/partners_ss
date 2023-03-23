@@ -6,9 +6,9 @@ class UploadUtil
     static $Img_MaxFileSize 		= 10240000;
     static $Img_AllowFileType		= array("image/pjpeg", "image/jpeg", "image/gif", "image/png");
 
-    static $Excel_UpWebPath 	= "/_data/file/excel/";
-    static $Excel_MaxFileSize 	= 20480000;
-    static $Excel_AllowFileType	= array();
+    static $License_UpWebPath 	= "/data/biz_license/";
+    static $License_MaxFileSize 	= 2048000;
+    static $License_AllowFileType	= array("image/pjpeg", "image/jpeg", "image/gif", "image/png","application/pdf");
 
     static $denyfile = array("php","php3","exe","cgi","phtml","html","htm","pl","asp","jsp","inc","dll","webarchive","bin");
     
@@ -42,7 +42,7 @@ class UploadUtil
      exit;
      }
      */
-    static function upload2($tagName, $newFileName, $upWebPath, $maxFileSize, $allowFileType, $createYymmDir=false) {
+    static function upload2($tagName, $newFileName, $upWebPath, $maxFileSize, $allowFileType, $createYymmDir=false, $fg_root_external=false) {
         
         $ret = array();
         
@@ -96,13 +96,17 @@ class UploadUtil
                     $ret["newWebPath"] = $upWebPath.date("Ym")."/";
                 else
                     $ret["newWebPath"] = $upWebPath;
-                    
-                $ret["newFullPath"] = $_SERVER['DOCUMENT_ROOT'].$ret["newWebPath"];
+                
+                if (!$fg_root_external) {
+                    $ret["newFullPath"] = $_SERVER['DOCUMENT_ROOT'].$ret["newWebPath"];
+                } else {
+                    $ret["newFullPath"] = "/home/".$ret["newWebPath"];
+                }
                 
                 if ( !is_dir($ret["newFullPath"]) ) {
                     mkdir($ret["newFullPath"], 0777, true);
                 }
-                
+
                 if ( !move_uploaded_file($_FILES[$tagName]["tmp_name"], $ret["newFullPath"].$ret["newFileName"]) ) {
                     $ret["err_code"] = "505";
                     $ret["err_msg"] = "업로드 처리 오류 입니다.".$_FILES[$tagName]["tmp_name"]."|A|".$ret["newFullPath"].$ret["newFileName"];

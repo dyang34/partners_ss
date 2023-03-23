@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT']."/common/site_default_set.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/include/common.php";
 
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersMgr.php";
@@ -10,7 +10,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 <body id="wrap">
     <div class="join-box-wrap">
         <h2>파트너스 가입</h2>
-        <form name="writeForm" action="./join_mem_act.php" method="post">
+        <form name="writeForm" method="post" enctype="multipart/form-data">
             <input type="hidden" name="auto_defense" />
             <input type="hidden" name="mode" value="INS" />
             <div class="basic-wrap">
@@ -37,34 +37,38 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     </li>
                     <li>
                         <strong>사업자번호 <i class="icon-necessary"></i></strong>
-                        <input type="text" class="input-member" name="com_no" placeholder="‘-’ 없이 작성해주세요" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
+                        <input type="text" class="input-member" name="com_no" placeholder="숫자만 입력하세요." maxlength="10" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
                     </li>
                 </ul>
                 <div class="bsnsLic-area">
                     <strong>사업자 등록증<i class="icon-necessary"></i></strong>
                     <div class="add-file">
-                        <input type="file" name="str_Image1" id="addfile" class="add-file-input class_img" val1="2" val2="2">
+                        <input type="file" name="file_name" id="addfile" class="add-file-input class_img" val1="2" val2="2">
                         <div class="add-file-txt">파일 업로드</div>
                         <label for="addfile"><div class="add-file-btn">찾아보기</div></label>
                     </div>
                 </div>
+<?/*
+                        <a href="/lib/download.php?file_name=<?=urlencode('/home/data/biz_license/20211022094901.png')?>&file_real_name=<?=urlencode('오모.png')?>" target="_blank">다운로드</a>
+                        <a href="/lib/download.php?file_name=<?=urlencode('/home/data/biz_license/Z2023032316795529681.pdf')?>&file_real_name=<?=urlencode('오 모 abcd 1234.pdf')?>" target="_blank">다운로드</a>
+*/?>
                 <ul class="clearfix inb">
                     <li>
                         <strong>담당자<i class="icon-necessary"></i></strong>
-                        <input type="text" class="input-member" name="manager" placeholder="실명 입력">
+                        <input type="text" class="input-member" name="manager_name" placeholder="실명 입력">
                     </li>
                     <li>
                         <strong>전화번호<i class="icon-necessary"></i></strong>
-                        <input type="text" class="input-member" name="hphone" placeholder="‘-’ 없이 작성해주세요" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
+                        <input type="text" class="input-member" name="hphone" placeholder="숫자만 입력하세요." onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
                     </li>
                     
                     <li>
                         <strong>휴대폰<i class="icon-necessary"></i></strong>
-                        <input type="text" class="input-member" name="hphone2" placeholder="‘-’ 없이 작성해주세요" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
+                        <input type="text" class="input-member" name="hphone2" placeholder="숫자만 입력하세요." onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
                     </li>
                     <li>
                         <strong>이메일<i class="icon-necessary"></i></strong>
-                        <input type="text" class="input-member" name="email" placeholder="admin@admin.co.kr">
+                        <input type="text" class="input-member" name="email" placeholder="hong@udirect.co.kr">
                     </li>
                 </ul>
         
@@ -111,7 +115,7 @@ $(document).on("click","a[name=btnSave]",function() {
 	
 	let f = document.writeForm;
 
-	if ( VC_inValidText(f.uid, "ID") ) return false;
+    if ( VC_inValidText(f.uid, "ID") ) return false;
 	if ( VC_inValidText(f.upw, "패스워드") ) return false;
 	//var reg_engnum = /^[A-Za-z0-9+]{4,20}$/;
 	
@@ -129,24 +133,45 @@ $(document).on("click","a[name=btnSave]",function() {
 
 	if ( VC_inValidText(f.com_name, "회사명") ) return false;
 	if ( VC_inValidText(f.com_no, "사업자번호") ) return false;
-	if ( VC_inValidText(f.manager, "담당자") ) return false;
-	if ( VC_inValidText(f.hphone, "전화번호") ) return false;
-	if ( VC_inValidText(f.email, "이메일") ) return false;
+    if ( VC_inValidText(f.file_name, "사업자 등록증") ) return false;
+	if ( VC_inValidText(f.manager_name, "담당자") ) return false;
+
+    if ( VC_inValidText(f.hphone, "전화번호") ) return false;
+    if(f.com_no.value.length < 7) {
+        alert("전화번호를 확인해 주십시오.");
+        f.hphone.focus();
+        return false;
+    }
+
+    if ( VC_inValidText(f.hphone2, "휴대폰") ) return false;
+    if(f.com_no.value.length < 10) {
+        alert("휴대폰번호를 확인해 주십시오.");
+        f.hphone2.focus();
+        return false;
+    }
+
+    if ( VC_inValidText(f.email, "이메일") ) return false;
+    if(!chk_pattern(f.email.value, "email")) {
+        alert("이메일 형식이 일치하지 않습니다.    ");
+        f.email.focus();
+        return false;
+    }
+
+	if(!$('input[name=chk1]').is(':checked')) {
+		alert('이용약관에 동의해 주십시오.    ');
+		return false;
+	}
+
+    if(!$('input[name=chk2]').is(':checked')) {
+		alert('개인정보 수집 및 이용목적에 동의해 주십시오.    ');
+		return false;
+	}
 
 	if(!chk_uid(false)) {
 		return false;
 	}
 
-	if(!$('input[name=chk1]').is(':checked')) {
-		alert('첫번째 체크해줭');
-		return false;
-	}
-	
-	if(!$('input[name=chk2]').is(':checked')) {
-		alert('en번째 체크해줭');
-		return false;
-	}
-
+    f.action = "./join_mem_act.php";
 	f.auto_defense.value = "identicharmc!@";
 	mc_consult_submitted = true;
 
@@ -155,11 +180,11 @@ $(document).on("click","a[name=btnSave]",function() {
     return false;
 });
 
-let chk_uid = function(p_alert) {
+const chk_uid = function(p_alert) {
 	let rtnVal;
 
 	$.ajax({
-		url: '/service/member/chk_user_id_ajax.php',
+		url: '/service/ajax/chk_user_id_ajax.php',
 		type: 'POST',
 		dataType: "json",
 		async: false,
@@ -167,9 +192,10 @@ let chk_uid = function(p_alert) {
 		data: {
 			uid : $('input[name=uid]').val()
 		},
-		success: function (response) {
-			if(response.RESULTCD != 'SUCCESS') {
-				alert(response.RESULTMSG);
+		success: function (data, status)
+        {
+			if(data.RESULTCD != '200') {
+				alert(data.RESULTMSG);
 				$('input[name=uid]').focus();
 
 				rtnVal = false;
@@ -187,7 +213,7 @@ let chk_uid = function(p_alert) {
 
 	return rtnVal;
 }
-
+/*
 $(document).on('click','a[name=btnChkUid]', function() {
 	if($('input[name=uid]').val().trim()=="") {
 		alert("아이디를 입력해 주십시오.    ");
@@ -199,7 +225,7 @@ $(document).on('click','a[name=btnChkUid]', function() {
 
 	return false;
 });
-
+*/
 
 // finle upload
 var fileinput = document.querySelector(".add-file-input"),

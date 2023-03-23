@@ -18,7 +18,7 @@ class ToursafeMembersDao extends A_Dao
 
 	function selectByKey($db, $key) {
 		 
-		$sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan "
+		$sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan, manager_name "
 			 ." from toursafe_members "
 			 ." where no = ".$this->quot($db, $key)
 		 	 ;
@@ -36,7 +36,7 @@ class ToursafeMembersDao extends A_Dao
 
 	function selectFirst($db, $wq) {
 
-		$sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan "
+		$sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan, manager_name "
 			 ." from toursafe_members"
 			 .$wq->getWhereQuery()
 			 .$wq->getOrderByQuery()
@@ -56,7 +56,7 @@ class ToursafeMembersDao extends A_Dao
 
 	function select($db, $wq) {
 	    
-	    $sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan "
+	    $sql =" select no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan, manager_name "
 	         ." from toursafe_members"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -67,7 +67,7 @@ class ToursafeMembersDao extends A_Dao
 	
 	function selectPerPage($db, $wq, $pg) {
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
-			."		select @rnum:=0, no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan "
+			."		select @rnum:=0, no,mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,regdate,com_percent,com_percent_other,last_login,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2, fg_not_common_plan, manager_name "
 			." 		from toursafe_members a "
 			." 		INNER JOIN ( "
 	        ."			select no as idx from toursafe_members a "
@@ -132,7 +132,9 @@ class ToursafeMembersDao extends A_Dao
 	
 	function insert($db, $arrVal) {
 
-	    $sql =" insert toursafe_members(mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,com_percent,com_percent_other,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,file_real_name,file_name,insuran8,insuran9,insuran10,company_type,hphone2,regdate)"
+	    $sql =" insert toursafe_members(mem_type,mem_state,uid,upw,com_name,email,hphone,com_no,com_percent "
+//				.",com_percent_other,post_no,post_addr,post_addr_detail,fax_contact,web_site,com_open_date,etc,insuran1,insuran2,insuran3,insuran4,insuran5,insuran6,insuran7,insuran8,insuran9,insuran10 "
+				.",file_real_name,file_name,company_type,hphone2, manager_name,regdate)"
 	        ." values ('".$this->checkMysql($db, $arrVal["mem_type"])
 			."', '".$this->checkMysql($db, $arrVal["mem_state"])
 			."', '".$this->checkMysql($db, $arrVal["uid"])
@@ -142,6 +144,7 @@ class ToursafeMembersDao extends A_Dao
 			."', '".$this->checkMysql($db, $arrVal["hphone"])
 			."', '".$this->checkMysql($db, $arrVal["com_no"])
 			."', '".$this->checkMysql($db, $arrVal["com_percent"])
+/*			
 			."', '".$this->checkMysql($db, $arrVal["com_percent_other"])				
 			."', '".$this->checkMysql($db, $arrVal["post_no"])				
 			."', '".$this->checkMysql($db, $arrVal["post_addr"])				
@@ -150,8 +153,6 @@ class ToursafeMembersDao extends A_Dao
 			."', '".$this->checkMysql($db, $arrVal["web_site"])				
 			."', '".$this->checkMysql($db, $arrVal["com_open_date"])				
 			."', '".$this->checkMysql($db, $arrVal["etc"])				
-			."', '".$this->checkMysql($db, $arrVal["file_real_name"])				
-			."', '".$this->checkMysql($db, $arrVal["file_name"])				
 			."', '".$this->checkMysql($db, $arrVal["insuran1"])				
 			."', '".$this->checkMysql($db, $arrVal["insuran2"])				
 			."', '".$this->checkMysql($db, $arrVal["insuran3"])				
@@ -161,9 +162,13 @@ class ToursafeMembersDao extends A_Dao
 			."', '".$this->checkMysql($db, $arrVal["insuran7"])				
 			."', '".$this->checkMysql($db, $arrVal["insuran8"])				
 			."', '".$this->checkMysql($db, $arrVal["insuran9"])				
-			."', '".$this->checkMysql($db, $arrVal["insuran10"])				
+			."', '".$this->checkMysql($db, $arrVal["insuran10"])
+*/
+			."', '".$this->checkMysql($db, $arrVal["file_real_name"])				
+			."', '".$this->checkMysql($db, $arrVal["file_name"])				
 			."', '".$this->checkMysql($db, $arrVal["company_type"])				
 			."', '".$this->checkMysql($db, $arrVal["hphone2"])				
+			."', '".$this->checkMysql($db, $arrVal["manager_name"])				
 			."', unix_timestamp())"
 		;
 		

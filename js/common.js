@@ -10,6 +10,7 @@ const chk_pattern = function(p_val, p_type) {
 	const pattern_email = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 	const pattern_hp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/g;
 	let gender;
+	let l_yyyymmdd;
 
 	switch(p_type) {
 		case 'num':
@@ -30,7 +31,14 @@ const chk_pattern = function(p_val, p_type) {
 				if(gender=="9"||gender=="0") {
 					return false;
 				} else {
-					return checkValidDate(((gender=="1"||gender=="2"||gender=="5"||gender=="6")?"19":"20")+String(p_val).substring(0,2)+'-'+String(p_val).substring(2,4)+'-'+String(p_val).substring(4,6));
+
+					l_yyyymmdd = ((gender=="1"||gender=="2"||gender=="5"||gender=="6")?"19":"20")+String(p_val).substring(0,2)+'-'+String(p_val).substring(2,4)+'-'+String(p_val).substring(4,6);
+
+					if (l_yyyymmdd > dateFormat(new Date(), "yyyy-mm-dd")) {
+						return false;
+					} else {
+						return checkValidDate(l_yyyymmdd);
+					}
 				}
 			} else {
 				return false;
