@@ -54,7 +54,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 */?>
                 <ul class="clearfix inb">
                     <li>
-                        <strong>담당자<i class="icon-necessary"></i></strong>
+                        <strong>관리자<i class="icon-necessary"></i></strong>
                         <input type="text" class="input-member" name="manager_name" placeholder="실명 입력">
                     </li>
                     <li>
@@ -134,7 +134,7 @@ $(document).on("click","a[name=btnSave]",function() {
 	if ( VC_inValidText(f.com_name, "회사명") ) return false;
 	if ( VC_inValidText(f.com_no, "사업자번호") ) return false;
     if ( VC_inValidText(f.file_name, "사업자 등록증") ) return false;
-	if ( VC_inValidText(f.manager_name, "담당자") ) return false;
+	if ( VC_inValidText(f.manager_name, "관리자") ) return false;
 
     if ( VC_inValidText(f.hphone, "전화번호") ) return false;
     if(f.com_no.value.length < 7) {

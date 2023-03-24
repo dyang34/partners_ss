@@ -73,13 +73,19 @@ if($mode=="login"){
         $row_session["com_name"] = $row["com_name"];
         $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
 
+        $arr_manager = array();
+        array_push($arr_manager, array(
+            "idx"=>"0"
+            ,"manager_id"=>$row["uid"]
+            ,"name"=>$row["manager_name"]
+        ));
+
         $wq_manager = new WhereQuery(true, true);
         $wq_manager->addAndString("uid", "=", $row["uid"]);
         $wq_manager->addAndString2("fg_del", "=", "0");
         $wq_manager->addOrderBy("sort", "desc");
         $rs_manager = ToursafeMembersManagerMgr::getInstance()->getList($wq_manager);
 
-        $arr_manager = array();
         if($rs_manager->num_rows > 0) {
             for($i=0;$i<$rs_manager->num_rows;$i++) {
                 $row_manager = $rs_manager->fetch_assoc();
