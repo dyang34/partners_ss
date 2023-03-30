@@ -3,8 +3,11 @@ require_once $_SERVER['DOCUMENT_ROOT']."/include/common.php";
 
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_price_array.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_array.php";
+
+$CONFIG_TRIP_TYPE = RequestUtil::getParam("trip_type","");
+
+require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_price_array.php";
 
 if(!LoginManager::isUserLogined()) {
 	$rtnVal['RESULTCD'] = "900";
@@ -16,7 +19,6 @@ if(!LoginManager::isUserLogined()) {
 $term_day = -1;
 $company_type = RequestUtil::getParam("company_type","");
 $member_no = RequestUtil::getParam("member_no","");
-$trip_type = RequestUtil::getParam("trip_type","");
 $start_date = RequestUtil::getParam("start_date","");
 $end_date = RequestUtil::getParam("end_date","");
 $start_time = RequestUtil::getParam("start_time","00:00:00");
@@ -40,7 +42,7 @@ $months = ($years * 12) + (int)$end_month - (int)$start_month;
 $days = (int)$end_day - (int)$start_day;
 $hours = (int)$end_time - (int)$start_time;	
 
-if(empty($company_type) || empty($member_no) || empty($trip_type) || empty($arr_plan_code) || empty($arr_gender) || empty($arr_age) || empty($start_date) || empty($end_time)) {
+if(empty($company_type) || empty($member_no) || empty($CONFIG_TRIP_TYPE) || empty($arr_plan_code) || empty($arr_gender) || empty($arr_age) || empty($start_date) || empty($end_time)) {
 	$rtnVal['RESULTCD'] = "801";
 	$rtnVal['RESULTMSG'] = "필수 요청값 에러입니다.    ";
 	echo json_encode($rtnVal);
@@ -62,9 +64,9 @@ if ( $totalday > 92) {
 }
 
 if($totalday <= 27) {
-	for($i=0;$i<count($__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$trip_type][$arr_plan_code[0]]);$i++) {
-		if($totalday <= $__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$trip_type][$arr_plan_code[0]][$i]) {
-			$term_day = $__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$trip_type][$arr_plan_code[0]][$i];
+	for($i=0;$i<count($__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$CONFIG_TRIP_TYPE][$arr_plan_code[0]]);$i++) {
+		if($totalday <= $__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$CONFIG_TRIP_TYPE][$arr_plan_code[0]][$i]) {
+			$term_day = $__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$CONFIG_TRIP_TYPE][$arr_plan_code[0]][$i];
 			break;
 		}
 	}
@@ -104,9 +106,9 @@ if ( $term_day <= 0) {
 for($i=0;$i<count($arr_plan_code);$i++) {
 
 	if($arr_plan_code[$i]) {
-		if ($trip_type=="2" && $arr_age[$i] >= 80 && $term_day > 30) {
+		if ($CONFIG_TRIP_TYPE=="2" && $arr_age[$i] >= 80 && $term_day > 30) {
 			array_push($arrPrice, -11);
-		} else if($arr_age[$i] > $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][count($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type])][0]["plan_end_age"]) {
+		} else if($arr_age[$i] > $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$CONFIG_TRIP_TYPE][count($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$CONFIG_TRIP_TYPE])][0]["plan_end_age"]) {
 			array_push($arrPrice, -12);
 		} else {
 /*			
@@ -114,7 +116,7 @@ for($i=0;$i<count($arr_plan_code);$i++) {
 				$arr_age[$i] = 100;
 			}
 */
-			array_push($arrPrice, $__ARR_CONFIG_PLAN_PRICE[$company_type][$member_no][$trip_type][$arr_plan_code[$i]][$arr_gender[$i]][$term_day][$arr_age[$i]]);
+			array_push($arrPrice, $__ARR_CONFIG_PLAN_PRICE[$company_type][$member_no][$CONFIG_TRIP_TYPE][$arr_plan_code[$i]][$arr_gender[$i]][$term_day][$arr_age[$i]]);
 		}
 	}
 }

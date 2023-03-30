@@ -57,8 +57,8 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             </colgroup>
             <tbody>
                 <tr>
-                    <th>회사명(여행사)</th>
-                    <td><input type="text" class="input-search" readonly value="<?=LoginManager::getUserLoginInfo("com_name")?>"></td>
+                    <th>보험사</th>
+                    <td><input type="text" class="input-search" readonly value="<?=$arrInsuranceCompany[LoginManager::getUserLoginInfo("company_type")]?>"></td>
 
                     <th>계약 담당자 <em class="bulStyle1">*</em></th>                    
                     <td>
@@ -164,12 +164,12 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <th>여행기간 <em class="bulStyle1">*</em></th>
                     <td class="inpt">
                         <div class="date_picker">
-                            <input type="text" class="picker" name="start_date" id="start_date" readonly placeholder="YYYY-MM-DD">
+                            <input type="text" class="picker format-date" name="start_date" id="start_date"  placeholder="YYYY-MM-DD" maxlength="10">
                         </div>
                         <input type="hidden" name="start_hour" id="start_hour" value="00" />
                         <span class="picker-interval">~</span>
                         <div class="date_picker">
-                            <input type="text" class="picker" name="end_date" id="end_date" readonly placeholder="YYYY-MM-DD">
+                            <input type="text" class="picker format-date" name="end_date" id="end_date"  placeholder="YYYY-MM-DD" maxlength="10">
                         </div>
                         <input type="hidden" name="end_hour" id="end_hour" value="24" />
                     </td>
@@ -584,8 +584,8 @@ $(document).ready(function() {
             });
 
             if(!$("#end_date").datepicker('getDate')) {
-                $("#end_date").datepicker("show");
-                $("#end_date").datepicker("");
+//                $("#end_date").datepicker("show");
+//                $("#end_date").datepicker("");
             } else {
                 calc_price(fg_auto_calc);
             }
@@ -612,6 +612,30 @@ $(document).ready(function() {
 //                $("#thai_day").val(days);
             }
         }
+    });
+
+    $(document).on("keyup", ".format-date", function() {
+//    $(".format-date").keyup(function() {
+        if( this.value.length > 10){
+            this.value = this.value.substr(0, 10);
+
+            alert("aaa");
+        }
+        var val         = this.value.replace(/\D/g, '');
+        var original    = this.value.replace(/\D/g, '').length;
+        var conversion  = '';
+        for(i=0;i<2;i++){
+            if (val.length > 4 && i===0) {
+                conversion += val.substr(0, 4) + '-';
+                val         = val.substr(4);
+            }
+            else if(original>6 && val.length > 2 && i===1){
+                conversion += val.substr(0, 2) + '-';
+                val         = val.substr(2);
+            }
+        }
+        conversion += val;
+        this.value = conversion;
     });
     /************* 달력 datepicker 설정 Start *************/
 
@@ -950,8 +974,20 @@ $(document).ready(function() {
 	// 플랜별 보장 내역 모달창 띄우기.
 	$(document).on('click', '.btn-flan-info', function() {
 		let motion = $(this).attr("motion");
+        let obj_a, plan_code_selected;
 
         get_plan_desc(g_company_type, g_member_no, tripType, $(this).attr("cal_type"));
+
+        //$('.cls_li_plan_type_desc').removeClass('active');
+
+        for(i=1;i<=cnt_cal_type;i++) {
+            plan_code_selected = $('select[name=plan_type_sub_cal'+i+']').val();
+            obj_a = $('a[name=btnChoicePlan][plan_code='+plan_code_selected+']');
+            obj_a.removeClass('choice');
+            obj_a.addClass('gray');
+
+            $('.cls_li_plan_type_desc[plan_code='+plan_code_selected+']').addClass('active');
+        }
 
 		$("#flan-info-modal").removeAttr("class").addClass(motion);
 	});
@@ -979,6 +1015,34 @@ $(document).ready(function() {
 
         set_row_price(g_obj_td);
 
+        return false;
+    });
+
+    $(document).on('click', 'a[name=btnChoicePlan]', function() {
+
+        let l_cal_type = $(this).attr('cal_type');
+        let l_plan_code = $(this).attr('plan_code');
+
+        $('a[name=btnChoicePlan][cal_type='+l_cal_type+']').removeClass('gray');
+        $('a[name=btnChoicePlan][cal_type='+l_cal_type+']').addClass('choice');
+        
+        $(this).removeClass('choice');
+        $(this).addClass('gray');
+
+        $('.cls_li_plan_type_desc[cal_type='+l_cal_type+']').removeClass('active');
+        $('.cls_li_plan_type_desc[plan_code='+l_plan_code+']').addClass('active');
+
+        $('select[name=plan_type_sub_cal'+l_cal_type+']').val($(this).attr('plan_code'));
+        $('select[name=plan_type_sub_cal'+l_cal_type+']').trigger('change');
+
+    /*
+        obj_tr.find('input[name="plan_code[]"').val($(this).attr('plan_code'));
+        obj_tr.find('input[name="plan_type[]"').val($(this).attr('plan_type'));
+        obj_tr.find('input[name="plan_title[]"').val($(this).attr('plan_title'));
+
+        chg_member_plan($(this).attr('age_from'), $(this).attr('age_to_limit'));
+        calc_price(fg_auto_calc);
+*/
         return false;
     });
 

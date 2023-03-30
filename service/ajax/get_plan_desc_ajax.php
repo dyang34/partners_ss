@@ -58,27 +58,44 @@ for($i=1;$i<=$cnt_cal_type;$i++) {
     for($j=0;$j<$cnt_plan_type;$j++) {
         for($k=1;$k<=34;$k++) {
             $arrPlanTypePrice[$k][$j] = $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["type_".$k."_text"];
-            $arrPlanTypePrice[$k][9] .= $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["type_".$k."_text"];
+            $arrPlanTypePrice[$k][19] .= $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["type_".$k."_text"]; // 해당 담보에 대해 모든 플랜이 보장하지 않는지 여부 체크.
         }
+
+        $plan_type_text = $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_title"];
+        $plan_type_text_show = $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_code"]."<br/>[".$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_title"]."]";
 ?>
-                        <li class="<?=($cnt_plan_type<2)?"plan-alone":""?>"><span><?=$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_code"]." (".$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_title"].")"?></span></li>
+<?/*
+                <li class="<?=($cnt_plan_type<2)?"plan-alone":""?>">
+                            <span>
+                            
+                                <?=$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_code"].
+                        " (".$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_title"].")"?>
+                            
+                            </span>
+                        </li>
+*/?>
+                        <li class="<?=($cnt_plan_type<2)?"plan-alone":""?>">
+                            <span>
+                                <?=$plan_type_text_show?>
+                                <a class="button choice" name="btnChoicePlan" cal_type="<?=$i?>" plan_code="<?=$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_code"]?>" plan_type="<?=$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_type"]?>" plan_title="<?=$cal_type_text_age." ".$plan_type_text?>">선택</a>
+                            </span>
+                        </li>
 <?
     }
 ?>
                     </ul>
 <?php
     for($k=1;$k<=count($arrPlanTypePrice);$k++) {
-
-        if(!empty($arrPlanTypePrice[$k][9])) {
+        if(!empty($arrPlanTypePrice[$k][19])) {
 ?>
                     <ul class="clearfix inb tbody-tr">
                         <li><span><?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?></span></li>
 <?php
             for($j=0;$j<$cnt_plan_type;$j++) {
 ?>
-                        <li class="<?=($cnt_plan_type<2)?"plan-alone":""?>"><span><?=$arrPlanTypePrice[$k][$j]?></span></li>
+                        <li class="cls_li_plan_type_desc <?=($cnt_plan_type<2)?"plan-alone":""?>" cal_type="<?=$i?>" plan_code="<?=$__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$i][$j]["plan_code"]?>"><span><?=$arrPlanTypePrice[$k][$j]?></span></li>
 <?php
-               }
+            }
 ?>
                     </ul>
 <?                

@@ -50,7 +50,7 @@ $cal_type_text_age = $cal_type_text." (".$age_from."~".$age_to."세)";
     for($j=0;$j<$cnt_plan_type;$j++) {
         for($k=1;$k<=34;$k++) {
             $arrPlanTypePrice[$k][$j] = $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["type_".$k."_text"];
-            $arrPlanTypePrice[$k][9] .= $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["type_".$k."_text"];
+            $arrPlanTypePrice[$k][19] .= $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["type_".$k."_text"];
         }
 
         $plan_type_text = $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$trip_type][$cal_type][$j]["plan_title"];
@@ -69,7 +69,7 @@ $cal_type_text_age = $cal_type_text." (".$age_from."~".$age_to."세)";
             <?php
     for($k=1;$k<=count($arrPlanTypePrice);$k++) {
 
-        if(!empty($arrPlanTypePrice[$k][9])) {
+        if(!empty($arrPlanTypePrice[$k][19])) {
 ?>
                 <ul class="clearfix inb tbody-tr">
                     <li>
