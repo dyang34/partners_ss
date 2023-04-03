@@ -285,9 +285,9 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     총보험료  <span class="number" name="spanTotalPrice">0</span>원
                 </div>
             </div>
-            <a href="#" name="btnAddRow" class="button add">추가</a>
-            <a href="#" name="btnDelRow" class="button delete">삭제</a>
-            <a href="#" name="btnCalc" class="button blue" style="display:none;">산출</a>
+            <a href="#" name="btnAddRow" class="button add" tabindex="-1">추가</a>
+            <a href="#" name="btnDelRow" class="button delete" tabindex="-1">삭제</a>
+            <a href="#" name="btnCalc" class="button blue" style="display:none;" tabindex="-1">산출</a>
         </div>
         <!-- table start -->
         <div class="table-wrap">
@@ -555,23 +555,38 @@ $(document).ready(function() {
         onClose: function( selectedDate ) {
             //$("#end_date").val("");
 
-            if($("#end_date").val() && $("#end_date").val() < selectedDate) {
-                $("#end_date").val("");
-            }
+            if(selectedDate!="") {
+                if(!checkValidDate(selectedDate)) {
+                    alert("여행시작일이 올바른 날짜가 아닙니다.    ");
+                    $("#start_date").val("");
+                    $("#start_date").focus();
+                    $("#start_date").datepicker("show");
+                    $("#end_date").val("");
+                    $("#end_date").datepicker("disable");
+                } else {
 
-            $("#end_date").datepicker("enable");
-            $("#end_date").datepicker("option", "minDate", new Date(Date.parse(selectedDate)) );
-            
-            if (tripType=='2') {
-                //$("#end_date").datepicker( "option", "maxDate", new Date(Date.parse(selectedDate) + (1000 * 60 * 60 * 24 * 90)) );
-                settingDate = new Date(Date.parse(treemonthcal(selectedDate, '3')));
-                settingDate.setDate(settingDate.getDate()-1);
-                $("#end_date").datepicker( "option", "maxDate", settingDate);
-            } else {
-                //$("#end_date").datepicker( "option", "maxDate", new Date(Date.parse(selectedDate) + (1000 * 60 * 60 * 24 * 30)) );
-                settingDate = new Date(Date.parse(treemonthcal(selectedDate, '1')));
-                settingDate.setDate(settingDate.getDate()-1);
-                $("#end_date").datepicker( "option", "maxDate", settingDate);
+                    if($("#end_date").val() && $("#end_date").val() < selectedDate) {
+                        $("#end_date").val("");
+                    }
+
+                    if (tripType=='2') {
+                        //$("#end_date").datepicker( "option", "maxDate", new Date(Date.parse(selectedDate) + (1000 * 60 * 60 * 24 * 90)) );
+                        settingDate = new Date(Date.parse(treemonthcal(selectedDate, '3')));
+                        settingDate.setDate(settingDate.getDate()-1);
+                    } else {
+                        //$("#end_date").datepicker( "option", "maxDate", new Date(Date.parse(selectedDate) + (1000 * 60 * 60 * 24 * 30)) );
+                        settingDate = new Date(Date.parse(treemonthcal(selectedDate, '1')));
+                        settingDate.setDate(settingDate.getDate()-1);
+                    }
+
+                    if($("#end_date").val() && $("#end_date").val() > dateFormat(settingDate)) {
+                        $("#end_date").val("");
+                    }
+
+                    $("#end_date").datepicker("enable");
+                    $("#end_date").datepicker("option", "minDate", new Date(Date.parse(selectedDate)) );
+                    $("#end_date").datepicker("option", "maxDate", settingDate);
+                }
             }
 
             $('table[name=tbl_contract] tr').each(function(index, item) {
@@ -583,12 +598,16 @@ $(document).ready(function() {
                 }
             });
 
-            if(!$("#end_date").datepicker('getDate')) {
-//                $("#end_date").datepicker("show");
-//                $("#end_date").datepicker("");
-            } else {
-                calc_price(fg_auto_calc);
-            }
+//            if($("#end_date").datepicker('getDate')) {
+                calendar_calc_price();
+//            }
+
+//                else {
+//                    $("#end_date").datepicker("show");
+//                    $("#end_date").datepicker("");
+
+//                    $("#end_date").focus();
+//                }
         }
     });
 
@@ -605,12 +624,23 @@ $(document).ready(function() {
         minDate: today,
         onClose: function( selectedDate ) {  
             if(selectedDate!="") {
-                var start = $('#start_date').datepicker('getDate');
-                var end   = $('#end_date').datepicker('getDate');
-                endDate = end.setDate(end.getDate() + 1);
-                var days = (endDate - start)/1000/60/60/24;
-//                $("#thai_day").val(days);
+
+                if(!checkValidDate(selectedDate)) {
+                    alert("여행종료일이 올바른 날짜가 아닙니다.    ");
+                    $("#end_date").val("");
+                    $("#end_date").focus();
+                    $("#end_date").datepicker("show");
+                } else {
+
+                    var start = $('#start_date').datepicker('getDate');
+                    var end   = $('#end_date').datepicker('getDate');
+                    endDate = end.setDate(end.getDate() + 1);
+                    var days = (endDate - start)/1000/60/60/24;
+    //                $("#thai_day").val(days);
+                }
             }
+
+            calendar_calc_price();
         }
     });
 
@@ -618,8 +648,6 @@ $(document).ready(function() {
 //    $(".format-date").keyup(function() {
         if( this.value.length > 10){
             this.value = this.value.substr(0, 10);
-
-            alert("aaa");
         }
         var val         = this.value.replace(/\D/g, '');
         var original    = this.value.replace(/\D/g, '').length;
@@ -639,12 +667,8 @@ $(document).ready(function() {
     });
     /************* 달력 datepicker 설정 Start *************/
 
-    $(document).on('change','#start_hour, #end_hour, #end_date', function() {
-        if(!check_hour_max()){
-            $('#end_date').val('');
-        }
-
-        calc_price(fg_auto_calc);
+    $(document).on('change','#start_hour, #end_hour', function() {
+        calendar_calc_price();
     });
     
     $(document).on('input, click', '.input_number', function(e) {
@@ -873,11 +897,13 @@ $(document).ready(function() {
 
     // 여행종류 변경.
     $(document).on('change','input[name=trip_type]',function() {
+
         if($(this).val()=="1") {
+
             $('div[name=div_nation_1]').show();
             $('div[name=div_nation_2]').hide();
 
-            if($('#start_date').val()) {
+            if(checkValidDate($('#start_date').val())) {
                 settingDate = new Date(Date.parse(treemonthcal($('#start_date').val(), '1')));
                 settingDate.setDate(settingDate.getDate()-1);
 
@@ -888,10 +914,11 @@ $(document).ready(function() {
                 $("#end_date").datepicker( "option", "maxDate", settingDate);
             }
         } else {
+
             $('div[name=div_nation_1]').hide();
             $('div[name=div_nation_2]').show();
             
-            if($('#start_date').val()) {
+            if(checkValidDate($('#start_date').val())) {
                 settingDate = new Date(Date.parse(treemonthcal($('#start_date').val(), '3')));
                 settingDate.setDate(settingDate.getDate()-1);
                 $("#end_date").datepicker( "option", "maxDate", settingDate );
@@ -900,8 +927,10 @@ $(document).ready(function() {
 
         tripType = $(this).val();
 
-        if(!check_hour_max()){
-            $('#end_date').val('');
+        if(checkValidDate($('#start_date').val()) && checkValidDate($('#end_date').val())) {
+            if(!check_hour_max()){
+                $('#end_date').val('');
+            }
         }
 
         get_plan_repre_list(g_company_type, g_member_no, $(this).val());
@@ -1089,7 +1118,7 @@ const chk_jumin = function(obj) {
 		case 'jumin_1':
 			if(fg_check && value_len > 0) {
 
-                if($('input[name=start_date]').val()) {
+                if(checkValidDate(start_date)) {
 
                     gender = obj.val().substring(6,7);
                     birthday = ((gender=="1"||gender=="2"||gender=="5"||gender=="6")?"19":"20")+obj.val().substring(0,2)+'-'+obj.val().substring(2,4)+'-'+obj.val().substring(4,6);
@@ -1159,6 +1188,20 @@ const chk_jumin = function(obj) {
                             obj_tr.find('input[name="price[]"]').val(""); // price
                         }
                     }
+                } else {
+                    obj_tr.find('input[name="gender_text[]"]').val(""); // gender_text
+                    obj_tr.find('input[name="gender[]"]').val(""); // gender
+                    obj_tr.find('input[name="age[]"]').val(""); // age
+                    obj_tr.find('input[name="age[]"]').attr("age_std",""); // age_std
+                    obj_tr.find('input[name="plan_code[]"]').val(""); // plan_code
+                    obj_tr.find('input[name="plan_type[]"]').val(""); // plan_type
+                    obj_tr.find('input[name="plan_title[]"]').val(""); // plan_title
+                    obj_tr.find('input[name="cal_type[]"]').val(""); // cal_type
+                    obj_tr.find('input[name="cal_type_text[]"]').val(""); // cal_type_text
+                    obj_tr.find('a[name="btnSearchPlan"]').removeClass("active-plan-chg");
+                    if(fg_auto_calc) {
+                        obj_tr.find('input[name="price[]"]').val(""); // price
+                    }
                 }
 			} else {
 /*                
@@ -1196,7 +1239,7 @@ const set_row_price = function(obj) {
     let obj_tr = obj.closest('tr');
     let gender, age_insu, plan_code;
 
-    if($('input[name=start_date]').val() && $('input[name=end_date]').val()) {
+    if(checkValidDate($('input[name=start_date]').val()) && checkValidDate($('input[name=end_date]').val()) && $('input[name=start_date]').val() <= $('input[name=end_date]').val()) {
         jumin = obj_tr.find('input[name="jumin[]"]').val();
         gender = obj_tr.find('input[name="gender[]"]').val(); // gender
         age_insu = obj_tr.find('input[name="age[]"]').val(); // age_insu
@@ -1474,7 +1517,7 @@ const get_member_plan = function(age_insu, age_std) {   // 보험 나이, 만 �
 const get_member_price = function(p_company_type, p_member_no, p_trip_type, p_plan_code, p_gender, p_age, p_start_date, p_end_date) {
     let rtn_val = -1;
 
-    if($('input[name=start_date]').val() && $('input[name=end_date]').val()) {
+    if(checkValidDate(p_start_date) && checkValidDate(p_end_date) && p_start_date <= p_end_date) {
         $.ajax({
             type : "POST",
             url : "/service/ajax/get_plan_price_ajax.php",
@@ -1511,12 +1554,22 @@ const get_member_price = function(p_company_type, p_member_no, p_trip_type, p_pl
     return rtn_val;
 }
 
+const calendar_calc_price = function() {
+    if(checkValidDate($('#start_date').val()) && checkValidDate($('#end_date').val())) {
+        if(!check_hour_max()){
+            $('#end_date').val('');
+        }
+    }
+
+    calc_price(fg_auto_calc);
+}
+
 // 전체 인원 가격 세팅.
 const calc_price = function(fg_process) {
     let data, idx=0;
     let p_plan_code = p_age = p_gender = comma_txt = "";
 
-    if($('input[name=start_date]').val() && $('input[name=end_date]').val() && fg_process) {
+    if(checkValidDate($('input[name=start_date]').val()) && checkValidDate($('input[name=end_date]').val())  && $('input[name=start_date]').val() <= $('input[name=end_date]').val() && fg_process) {
 
         $('table[name=tbl_contract] tr').each(function(index, item) {
             if(index>0) {
@@ -1639,27 +1692,18 @@ const chk_all_set_field = function(fg_msg, fg_chk_price) {
         return false;
     }
 
-    if (!$('input[name=start_date]').val()) {
+    if (!checkValidDate($('input[name=start_date]').val())) {
         if(fg_msg) {
-            alert("여행 시작일을 선택해 주십시오.    ");
+            alert("여행 시작일을 입력해 주십시오.    ");
             $('input[name=start_date]').datepicker("show");
         }
 
         return false;
     }
 
-    if (!$('input[name=end_date]').val()) {
+    if (!checkValidDate($('input[name=end_date]').val())) {
         if(fg_msg) {
-            alert("여행 종료일을 선택해 주십시오.    ");
-            $('input[name="end_date"]').datepicker("show");
-        }
-
-        return false;
-    }
-
-    if (!$('input[name=end_date]').val()) {
-        if(fg_msg) {
-            alert("여행 종료일을 선택해 주십시오.    ");
+            alert("여행 종료일을 입력해 주십시오.    ");
             $('input[name="end_date"]').datepicker("show");
         }
 

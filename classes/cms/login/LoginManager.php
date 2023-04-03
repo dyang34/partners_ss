@@ -73,7 +73,7 @@ class LoginManager
 	
 	static function isAdminLogined() {
 	    $login = LoginManager::getManagerLogin();
-	    if ( empty($login) || $login[mb_id]!="mtank") {
+	    if ( empty($login)) {
 	        return false;
 	    } else {
 	        return true;
