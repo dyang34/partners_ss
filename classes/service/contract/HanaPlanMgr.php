@@ -36,6 +36,25 @@ class HanaPlanMgr extends A_Mgr
         @ $db->close();
         return $row;
     }
+
+    function getByKey2($key) {
+        
+        $row = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            $row = HanaPlanDao::getInstance()->selectByKey2($db, $key);
+            
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $row;
+    }
+
     function getFirst($wq) {
         
         $row = null;
