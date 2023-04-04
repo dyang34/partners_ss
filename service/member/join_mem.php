@@ -41,10 +41,10 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     </li>
                 </ul>
                 <div class="bsnsLic-area">
-                    <strong>사업자 등록증<i class="icon-necessary"></i></strong>
+                    <strong>사업자 등록증 <i class="icon-necessary"></i></strong>
                     <div class="add-file">
                         <input type="file" name="file_name" id="addfile" class="add-file-input class_img" val1="2" val2="2">
-                        <div class="add-file-txt">파일 업로드</div>
+                        <div class="add-file-txt"></div>
                         <label for="addfile"><div class="add-file-btn">찾아보기</div></label>
                     </div>
                 </div>
@@ -54,20 +54,20 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 */?>
                 <ul class="clearfix inb">
                     <li>
-                        <strong>관리자<i class="icon-necessary"></i></strong>
+                        <strong>관리자 <i class="icon-necessary"></i></strong>
                         <input type="text" class="input-member" name="manager_name" placeholder="실명 입력">
                     </li>
                     <li>
-                        <strong>전화번호<i class="icon-necessary"></i></strong>
+                        <strong>전화번호 <i class="icon-necessary"></i></strong>
                         <input type="text" class="input-member" name="hphone" placeholder="숫자만 입력하세요." onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
                     </li>
                     
                     <li>
-                        <strong>휴대폰<i class="icon-necessary"></i></strong>
+                        <strong>휴대폰 <i class="icon-necessary"></i></strong>
                         <input type="text" class="input-member" name="hphone2" placeholder="숫자만 입력하세요." onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
                     </li>
                     <li>
-                        <strong>이메일<i class="icon-necessary"></i></strong>
+                        <strong>이메일 <i class="icon-necessary"></i></strong>
                         <input type="text" class="input-member" name="email" placeholder="hong@udirect.co.kr">
                     </li>
                 </ul>

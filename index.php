@@ -77,7 +77,7 @@ if(window.location.protocol == "http:"){
                     </div>
 
                     <div class="user-manual">
-                        <strong>사용자 메뉴얼</strong>
+                        <strong>사용자 매뉴얼</strong>
                         <a href="#;" class="button gray">다운로드</a>
                     </div>
 
@@ -86,7 +86,7 @@ if(window.location.protocol == "http:"){
                         <span class="tel-number">1800-9010</span>
                     </div>
                 </div>
-
+<?/*
                 <div class="banner">
                     <div class="swiper mySwiper">
                         <div class="swiper-wrapper">
@@ -96,6 +96,7 @@ if(window.location.protocol == "http:"){
                         <div class="swiper-pagination"></div>
                     </div>
                 </div>
+*/?>                
             </div>
             <div class="login-box-right">
                 <h2>투어세이프 파트너스 <span>로그인</span></h2>
