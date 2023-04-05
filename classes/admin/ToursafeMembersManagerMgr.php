@@ -201,5 +201,28 @@ class ToursafeMembersManagerMgr extends A_Mgr
         @ $db->close();
         return $isOk;
     }
+
+    function delete2($uid, $name) {
+        
+        $isOk = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            //$this->startTran($db);
+            
+            $isOk = ToursafeMembersManagerDao::getInstance()->delete2($db, $uid, $name);
+            
+            //$this->commit($db);
+            
+        } catch(Exception $e) {
+            //$this->rollback($db);
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $isOk;
+    }
 }
 ?>

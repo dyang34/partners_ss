@@ -100,7 +100,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             </div>
             
             <div class="center-button-area">
-                <a href="#;" name="btnSave" class="button blue">가입하기</a>
+                <a name="btnSave" class="button blue">가입하기</a>
             </div>
         </form>
     </div>
@@ -110,74 +110,76 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 let mc_consult_submitted = false;
 const reg_engnum = /^[A-Za-z0-9+\d$@$!%*#?&]{4,20}$/;
 
-$(document).on("click","a[name=btnSave]",function() {
-	if(mc_consult_submitted == true) { return false; }
-	
-	let f = document.writeForm;
+$(document).ready(function() {
+    $(document).on("click","a[name=btnSave]",function() {
+        if(mc_consult_submitted == true) { return false; }
+        
+        let f = document.writeForm;
 
-    if ( VC_inValidText(f.uid, "ID") ) return false;
-	if ( VC_inValidText(f.upw, "패스워드") ) return false;
-	//var reg_engnum = /^[A-Za-z0-9+]{4,20}$/;
-	
-	if (!reg_engnum.test(f.upw.value)) {
-		alert("패스워드는 숫자와 영문, 일부 특수문자($@$!%*#?&)만 가능하며, 4~20자리여야 합니다.    ");
-		f.upw.focus();
-		return;
-	}
+        if ( VC_inValidText(f.uid, "ID") ) return false;
+        if ( VC_inValidText(f.upw, "패스워드") ) return false;
+        //var reg_engnum = /^[A-Za-z0-9+]{4,20}$/;
+        
+        if (!reg_engnum.test(f.upw.value)) {
+            alert("패스워드는 숫자와 영문, 일부 특수문자($@$!%*#?&)만 가능하며, 4~20자리여야 합니다.    ");
+            f.upw.focus();
+            return;
+        }
 
-	if (f.upw.value != f.upw_cfm.value) {
-		alert("패스워드 확인이 일치하지 않습니다.    ");
-		f.upw_cfm.focus();
-		return false;
-	}
+        if (f.upw.value != f.upw_cfm.value) {
+            alert("패스워드 확인이 일치하지 않습니다.    ");
+            f.upw_cfm.focus();
+            return false;
+        }
 
-	if ( VC_inValidText(f.com_name, "회사명") ) return false;
-	if ( VC_inValidText(f.com_no, "사업자번호") ) return false;
-    if ( VC_inValidText(f.file_name, "사업자 등록증") ) return false;
-	if ( VC_inValidText(f.manager_name, "관리자") ) return false;
+        if ( VC_inValidText(f.com_name, "회사명") ) return false;
+        if ( VC_inValidText(f.com_no, "사업자번호") ) return false;
+        if ( VC_inValidText(f.file_name, "사업자 등록증") ) return false;
+        if ( VC_inValidText(f.manager_name, "관리자") ) return false;
 
-    if ( VC_inValidText(f.hphone, "전화번호") ) return false;
-    if(f.com_no.value.length < 7) {
-        alert("전화번호를 확인해 주십시오.");
-        f.hphone.focus();
+        if ( VC_inValidText(f.hphone, "전화번호") ) return false;
+        if(f.hphone.value.length < 7) {
+            alert("전화번호를 확인해 주십시오.");
+            f.hphone.focus();
+            return false;
+        }
+
+        if ( VC_inValidText(f.hphone2, "휴대폰") ) return false;
+        if(!chk_pattern(f.hphone2.value, 'hp')) {
+            alert("휴대폰번호를 확인해 주십시오.");
+            f.hphone2.focus();
+            return false;
+        }
+
+        if ( VC_inValidText(f.email, "이메일") ) return false;
+        if(!chk_pattern(f.email.value, "email")) {
+            alert("이메일 형식이 일치하지 않습니다.    ");
+            f.email.focus();
+            return false;
+        }
+
+        if(!$('input[name=chk1]').is(':checked')) {
+            alert('이용약관에 동의해 주십시오.    ');
+            return false;
+        }
+
+        if(!$('input[name=chk2]').is(':checked')) {
+            alert('개인정보 수집 및 이용목적에 동의해 주십시오.    ');
+            return false;
+        }
+
+        if(!chk_uid(false)) {
+            return false;
+        }
+
+        f.action = "./join_mem_act.php";
+        f.auto_defense.value = "identicharmc!@";
+        mc_consult_submitted = true;
+
+        f.submit();	
+
         return false;
-    }
-
-    if ( VC_inValidText(f.hphone2, "휴대폰") ) return false;
-    if(f.com_no.value.length < 10) {
-        alert("휴대폰번호를 확인해 주십시오.");
-        f.hphone2.focus();
-        return false;
-    }
-
-    if ( VC_inValidText(f.email, "이메일") ) return false;
-    if(!chk_pattern(f.email.value, "email")) {
-        alert("이메일 형식이 일치하지 않습니다.    ");
-        f.email.focus();
-        return false;
-    }
-
-	if(!$('input[name=chk1]').is(':checked')) {
-		alert('이용약관에 동의해 주십시오.    ');
-		return false;
-	}
-
-    if(!$('input[name=chk2]').is(':checked')) {
-		alert('개인정보 수집 및 이용목적에 동의해 주십시오.    ');
-		return false;
-	}
-
-	if(!chk_uid(false)) {
-		return false;
-	}
-
-    f.action = "./join_mem_act.php";
-	f.auto_defense.value = "identicharmc!@";
-	mc_consult_submitted = true;
-
-    f.submit();	
-
-    return false;
+    });
 });
 
 const chk_uid = function(p_alert) {

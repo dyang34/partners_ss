@@ -83,7 +83,7 @@ if($mode=="login"){
         $wq_manager = new WhereQuery(true, true);
         $wq_manager->addAndString("uid", "=", $row["uid"]);
         $wq_manager->addAndString2("fg_del", "=", "0");
-        $wq_manager->addOrderBy("sort", "desc");
+        $wq_manager->addOrderBy("sort", "asc");
         $rs_manager = ToursafeMembersManagerMgr::getInstance()->getList($wq_manager);
 
         if($rs_manager->num_rows > 0) {

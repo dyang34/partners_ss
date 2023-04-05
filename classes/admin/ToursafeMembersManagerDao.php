@@ -161,5 +161,13 @@ class ToursafeMembersManagerDao extends A_Dao
 			return $db->query($sql);
 		}
 	}	
+
+	function delete2($db, $uid, $name) {
+	    if ($uid && $name) {
+	    	$sql =" update toursafe_members_manager set fg_del=1 where uid = ".$this->quot($db, $uid)." and name = ".$this->quot($db, $name);
+
+			return $db->query($sql);
+		}
+	}	
 }
 ?>

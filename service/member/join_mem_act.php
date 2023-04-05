@@ -8,6 +8,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/UpdateQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersManagerMgr.php";
 
 header("Cache-Control:no-cache");
 header("Pragma:no-cache");
@@ -23,6 +24,8 @@ $manager_name = RequestUtil::getParam("manager_name", "");
 $hphone = RequestUtil::getParam("hphone", "");
 $hphone2 = RequestUtil::getParam("hphone2", "");
 $email = RequestUtil::getParam("email", "");
+$arr_manager_name_add = RequestUtil::getParam("manager_name_add","");
+$arr_manager_name_del = RequestUtil::getParam("manager_name_del","");
 
 $auto_defense = RequestUtil::getParam("auto_defense", "");
 
@@ -60,7 +63,7 @@ try {
         }
 
         if (empty($manager_name)) {
-            JsUtil::alertBack("담당자를 입력해 주십시오.   ");
+            JsUtil::alertBack("관리자를 입력해 주십시오.   ");
             exit;
         }
 
@@ -123,6 +126,107 @@ try {
         ToursafeMembersMgr::getInstance()->add($arrIns);
 
         JsUtil::alertReplace("등록되었습니다.    ", "/");
+    } else if($mode=="UPD") {
+        
+        if (!LoginManager::isUserLogined()) {
+            JsUtil::alertReplace("로그인이 필요합니다.    ","/");
+            exit;
+        }
+
+        if (empty($com_name)) {
+            JsUtil::alertBack("회사명을 입력해 주십시오.   ");
+            exit;
+        }
+        
+        if (empty($com_no)) {
+            JsUtil::alertBack("사업자번호를 입력해 주십시오.   ");
+            exit;
+        }
+
+        if (empty($manager_name)) {
+            JsUtil::alertBack("관리자를 입력해 주십시오.   ");
+            exit;
+        }
+
+        if (empty($hphone)) {
+            JsUtil::alertBack("전화번호를 입력해 주십시오.   ");
+            exit;
+        }
+
+        if (empty($hphone2)) {
+            JsUtil::alertBack("휴대폰 번호를 입력해 주십시오.   ");
+            exit;
+        }
+
+        if (empty($email)) {
+            JsUtil::alertBack("이메일을 입력해 주십시오.   ");
+            exit;
+        }
+
+        for($i=0;$i<count($arr_manager_name_del);$i++) {
+            for($j=0;$j<count($arr_manager_name_add);$j++) {
+                if($arr_manager_name_del[$i]==$arr_manager_name_add[$j]) {
+                    $arr_manager_name_del[$i] = "";
+                    $arr_manager_name_add[$j] = "";
+                }
+            }    
+        }
+
+        $uq = new UpdateQuery();
+
+        if (!empty($upw)) {
+            if ($upw != $upw_cfm) {
+                JsUtil::alertBack("패스워드 확인이 일치하지 않습니다.   ");
+                exit;
+            }
+
+            $uq->add("upw",strtoupper(hash("sha256", md5($upw))));
+        }
+
+        if ($_FILES["file_name"]["name"]) {
+        
+            $newFileName = UploadUtil::getNewFileName();
+            $ret = UploadUtil::upload2("file_name", $newFileName, UploadUtil::$License_UpWebPath, UploadUtil::$License_MaxFileSize, UploadUtil::$License_AllowFileType, false, true);
+            if ( !empty($ret["err_code"]) ) {
+                JsUtil::alertBack($ret["err_msg"]." ErrCode : ".$ret["err_code"]);
+                exit;
+            }
+    
+            $newWebPath = $ret["newWebPath"];
+            $newFileName = $ret["newFileName"];
+            $fileExtName = $ret["fileExtName"];
+            $fileSize = $ret["fileSize"];
+
+            $uq->add("file_real_name",$_FILES["file_name"]["name"]);
+            $uq->add("file_name","/home".$newWebPath.$newFileName);
+        }
+        
+        $uq->add("com_name",$com_name);
+        $uq->add("com_no",$com_no);
+        $uq->add("manager_name",$manager_name);
+        $uq->add("hphone",encode_pass($hphone,$pass_key));
+        $uq->add("hphone2",encode_pass($hphone2,$pass_key));
+        $uq->add("email",encode_pass($email,$pass_key));
+        
+        ToursafeMembersMgr::getInstance()->edit($uq, LoginManager::getUserLoginInfo("uid"));
+
+        for($i=0;$i<count($arr_manager_name_del);$i++) {
+            if(!empty($arr_manager_name_del[$i])) {
+                ToursafeMembersManagerMgr::getInstance()->delete2(LoginManager::getUserLoginInfo("uid"), $arr_manager_name_del[$i]);
+            }
+        }
+
+        for($i=0;$i<count($arr_manager_name_add);$i++) {
+            if(!empty($arr_manager_name_add[$i])) {
+                $arrManagerIns = array();
+                $arrManagerIns["uid"] = LoginManager::getUserLoginInfo("uid");
+                $arrManagerIns["name"] = $arr_manager_name_add[$i];
+
+                ToursafeMembersManagerMgr::getInstance()->add($arrManagerIns);
+            }
+        }
+
+        JsUtil::alertReplace("수정되었습니다.    ", "/service/member/join_mem_modify.php");
     } else {
         JsUtil::alertBack("잘못된 경로로 접근하였습니다. (ErrCode:0x09)   ");
         exit;
