@@ -12,12 +12,16 @@ function encode_pass($str,$s_key) {
 }
 
 function decode_pass($str,$s_key) {
-    $s_vector_iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_3DES, MCRYPT_MODE_ECB), MCRYPT_RAND);
+    if($str=="") {
+        return "";
+    } else {
+        $s_vector_iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_3DES, MCRYPT_MODE_ECB), MCRYPT_RAND);
+        
+        $de_str = pack("H*", $str); //hex로 변환한 ascii를 binary로 변환
+        $out_str = mcrypt_decrypt(MCRYPT_3DES, $s_key, $de_str, MCRYPT_MODE_ECB, $s_vector_iv);
     
-    $de_str = pack("H*", $str); //hex로 변환한 ascii를 binary로 변환
-    $out_str = mcrypt_decrypt(MCRYPT_3DES, $s_key, $de_str, MCRYPT_MODE_ECB, $s_vector_iv);
-    
-    return $out_str;
+        return trim($out_str);
+    }
 }
 
 function get_default_member_no($company_type) {

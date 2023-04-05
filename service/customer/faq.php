@@ -22,62 +22,56 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             <div class="accordion-wrap">
                 <div class="set">
                     <div class="title active">
-                        <a href="#">가입 방법, 가입 방법, 가입 방법, 가입 방법, 가입 방법, 가입 방법 <i class="icon-accordion"></i> </a>
+                        <a href="#">단체여행인데 한번 가입 할 수 있나요? <i class="icon-accordion"></i> </a>
                     </div>
                     <div class="content" style="display: block;">
-                        <p>미성년자의 경우 개인정보 동의란 (또는 위임사항)에 부모님(법정대리인)이 서명</p>
+                        <p>네 가능합니다. 가입자 모두 동일한 플랜을 설정하거나 각자 다른 플랜을 설정 할 수도 있습니다.</p>
                     </div>
                 </div>
 
                 <div class="set">
                     <div class="title">
-                        <a href="#">가입 방법, 가입 방법, 가입 방법, 가입 방법, 가입 방법, 가입 방법 <i class="icon-accordion"></i> </a>
+                        <a href="#">보험사 별로 가입 할 수 있나요? <i class="icon-accordion"></i> </a>
                     </div>
                     <div class="content">
-                        <p>ⓐ 해외여행 : 여권사본, 출입국증명서 (여권 스탬프면 사본으로 대체 가능)</p>
-                        <p class="type-dash">
-                            ⓑ 국내여행 : 신분증사본<br>
-                            * 미성년자의 경우 등본 or 가족관계증명서 추가 첨부
-                        </p>
+                        <p>현재는 삼성화재만 가능 하며, 추후 보험사별 가입할 수 있도록 제공 예정입니다.</p>
                     </div>
                 </div>
 
                 <div class="set">
                     <div class="title">
-                        <a href="#">가입 방법, 가입 방법, 가입 방법, 가입 방법, 가입 방법, 가입 방법 <i class="icon-accordion"></i> </a>
+                        <a href="#">정보를 잘 못 입력해서 수정하고 싶은데 버튼이 안보여요? <i class="icon-accordion"></i> </a>
                     </div>
                     <div class="content">
-                        <p>ⓐ 해외여행 : 여권사본, 출입국증명서 (여권 스탬프면 사본으로 대체 가능)</p>
-                        <p class="type-dash">
-                            ⓑ 국내여행 : 신분증사본<br>
-                            * 미성년자의 경우 등본 or 가족관계증명서 추가 첨부
-                        </p>
+                        <p>수정은 출발일 전일까지만 할 수 있습니다.</p>
                     </div>
                 </div>
 
                 <div class="set">
                     <div class="title">
-                        <a href="#">가입 방법, 가입 방법, 가입 방법, 가입 방법, 가입 방법, 가입 방법 <i class="icon-accordion"></i> </a>
+                        <a href="#">수정/취소는 어떻게 하나요? <i class="icon-accordion"></i> </a>
                     </div>
                     <div class="content">
-                        <p>ⓐ 해외여행 : 여권사본, 출입국증명서 (여권 스탬프면 사본으로 대체 가능)</p>
-                        <p class="type-dash">
-                            ⓑ 국내여행 : 신분증사본<br>
-                            * 미성년자의 경우 등본 or 가족관계증명서 추가 첨부
-                        </p>
+                        <p>신청내역 조회/수정 메뉴에서 검색 후 오른쪽 수정 버튼을 클릭 후 수정접수 또는 취소접수로 등록 해주시면 됩니다.</p>
                     </div>
                 </div>
 
                 <div class="set">
                     <div class="title">
-                        <a href="#">가입 방법, 가입 방법, 가입 방법, 가입 방법, 가입 방법, 가입 방법 <i class="icon-accordion"></i> </a>
+                        <a href="#">정산은 어떻게 하나요? <i class="icon-accordion"></i> </a>
                     </div>
                     <div class="content">
-                        <p>ⓐ 해외여행 : 여권사본, 출입국증명서 (여권 스탬프면 사본으로 대체 가능)</p>
-                        <p class="type-dash">
-                            ⓑ 국내여행 : 신분증사본<br>
-                            * 미성년자의 경우 등본 or 가족관계증명서 추가 첨부
-                        </p>
+                        <p>매월 1회 인보이스를 발행하며, 내역에 따라 입금하시면 됩니다.</p>
+                    </div>
+                </div>
+
+                <div class="set">
+                    <div class="title">
+                        <a href="#">해외여행보험 가입불가 국가는 어떻게 알 수 있나요? <i class="icon-accordion"></i> </a>
+                    </div>
+                    <div class="content">
+                        <p>외교통상부 사이트에서 확인할 수 있으며, 해외여행경보 3,4단계(철수권고, 여행금지)에 해당되는 국가는 가입할 수 없습니다.</p>
+                        <p class="type-dash">외교통상부 홈페이지 바로가기(<a href="http://www.0404.go.kr" target="_blank">http://www.0404.go.kr</a>)</p>
                     </div>
                 </div>
             </div>

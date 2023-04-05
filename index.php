@@ -78,7 +78,10 @@ if(window.location.protocol == "http:"){
 
                     <div class="user-manual">
                         <strong>사용자 매뉴얼</strong>
-                        <a href="#;" class="button gray">다운로드</a>
+                        <a href="/lib/download.php?file_name=<?=urlencode('/home/partners_ss/public_html/download/여행자보험 B2B 사용자 매뉴얼.pdf_')?>&file_real_name=<?=urlencode('여행자보험 B2B 사용자 매뉴얼.pdf')?>&type=pdf" target="_blank" class="button gray">다운로드</a>
+<?/*                        
+                        <a href="/lib/download.php?file_name=<?=urlencode('/home/partners_ss/public_html/download/manual_.pdf')?>&file_real_name=<?=urlencode('여행자보험 B2B 사용자 매뉴얼.pdf')?>&type=pdf" target="_blank" class="button gray">다운로드</a>
+*/?>                        
                     </div>
 
                     <div class="join-contact">
