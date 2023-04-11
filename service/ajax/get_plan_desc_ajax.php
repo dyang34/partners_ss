@@ -89,7 +89,13 @@ for($i=1;$i<=$cnt_cal_type;$i++) {
         if(!empty($arrPlanTypePrice[$k][19])) {
 ?>
                     <ul class="clearfix inb tbody-tr">
-                        <li><span><?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?></span></li>
+                        <li>
+                            <span><?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?>
+                                <div class="btn-mbal" c_title="<?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?>" c_content="<?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["content"]?>">
+                                    <i class="icon-tooltip">툴팁</i>
+                                </div>
+                            </span>
+                        </li>
 <?php
             for($j=0;$j<$cnt_plan_type;$j++) {
 ?>
@@ -110,3 +116,25 @@ for($i=1;$i<=$cnt_cal_type;$i++) {
 ?>
     </div>
 </div>
+
+<div id="question">
+	<div class="modal-bg">
+		<div class="modal-conts">
+			<h2 id="modal_paln_type_title"></h2>
+			<p id="modal_paln_type_content"></p>
+			<a href="#" class="close mdclose">닫기</a>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    $(".btn-mbal").click(function(){
+        $('#modal_paln_type_title').html($(this).attr("c_title"));
+        $('#modal_paln_type_content').html($(this).attr("c_content"));
+        $("#question").removeAttr("class").addClass("one");
+    });
+
+    $(".mdclose").click(function(){
+        $("#question").addClass("out");
+    });
+</script>
