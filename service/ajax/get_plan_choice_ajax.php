@@ -74,7 +74,7 @@ $cal_type_text_age = $cal_type_text." (".$age_from."~".$age_to."세)";
                 <ul class="clearfix inb tbody-tr">
                     <li>
                         <span><?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?>
-                            <div class="btn-mobal" c_title="<?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?>" c_content="<?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["content"]?>">
+                            <div class="btn-mobal btn_plan_type_info_choice" c_title="<?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?>" c_content="<?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["content"]?>">
                                 <i class="icon-tooltip">툴팁</i>
                             </div>
                         </span>
@@ -100,23 +100,32 @@ $cal_type_text_age = $cal_type_text." (".$age_from."~".$age_to."세)";
 <!-- Flan Contents end -->
 
 <div id="question-choice">
+    <div id="mask_plan_type_choice" class="mask_background"></div>
 	<div class="modal-bg">
-		<div class="modal-conts">
-            <h2 id="modal_paln_type_title"></h2>
-			<p id="modal_paln_type_content"></p>
+		<div class="modal-conts" style="z-index:20;">
+            <h2 id="modal_paln_type_choice_title"></h2>
+			<p id="modal_paln_type_choice_content"></p>
+<?/*            
 			<a href="#" class="close mdclose">닫기</a>
+*/?>            
 		</div>
 	</div>
 </div>
 
 <script type="text/javascript">
-    $(".btn-mobal").click(function(){
-        $('#modal_paln_type_title').html($(this).attr("c_title"));
-        $('#modal_paln_type_content').html($(this).attr("c_content"));
+$(document).ready(function() {
+    $(document).on('click', '.btn_plan_type_info_choice', function() {   // mouseover
+        $('#modal_paln_type_choice_title').html($(this).attr("c_title"));
+        $('#modal_paln_type_choice_content').html($(this).attr("c_content"));
         $("#question-choice").removeAttr("class").addClass("one");
+
+        $('#mask_plan_type_choice').css({'width':$('#question').width(),'height':$('#question').height()});  
+        $('#mask_plan_type_choice').show();
     });
 
-    $(".mdclose").click(function(){
+    $(document).on('click', '#mask_plan_type_choice', function() {
         $("#question-choice").addClass("out");
+        $('#mask_plan_type_choice').hide();
     });
+});
 </script>

@@ -91,7 +91,7 @@ for($i=1;$i<=$cnt_cal_type;$i++) {
                     <ul class="clearfix inb tbody-tr">
                         <li>
                             <span><?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?>
-                                <div class="btn-mbal" c_title="<?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?>" c_content="<?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["content"]?>">
+                                <div class="btn-mbal btn_plan_type_info_desc" c_title="<?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["title"]?>" c_content="<?=$__ARR_CONFIG_PLAN_TYPE[$company_type][$member_no][$trip_type]["type_".$k]["content"]?>">
                                     <i class="icon-tooltip">툴팁</i>
                                 </div>
                             </span>
@@ -118,23 +118,32 @@ for($i=1;$i<=$cnt_cal_type;$i++) {
 </div>
 
 <div id="question">
+    <div id="mask_plan_type_desc" class="mask_background"></div>
 	<div class="modal-bg">
-		<div class="modal-conts">
-			<h2 id="modal_paln_type_title"></h2>
-			<p id="modal_paln_type_content"></p>
+		<div class="modal-conts" style="z-index:20;">
+			<h2 id="modal_paln_type_desc_title"></h2>
+			<p id="modal_paln_type_desc_content"></p>
+<?/*            
 			<a href="#" class="close mdclose">닫기</a>
+*/?>            
 		</div>
 	</div>
 </div>
 
 <script type="text/javascript">
-    $(".btn-mbal").click(function(){
-        $('#modal_paln_type_title').html($(this).attr("c_title"));
-        $('#modal_paln_type_content').html($(this).attr("c_content"));
+$(document).ready(function() {
+    $(document).on('click', '.btn_plan_type_info_desc', function() {   // mouseover
+        $('#modal_paln_type_desc_title').html($(this).attr("c_title"));
+        $('#modal_paln_type_desc_content').html($(this).attr("c_content"));
         $("#question").removeAttr("class").addClass("one");
-    });
 
-    $(".mdclose").click(function(){
-        $("#question").addClass("out");
+        $('#mask_plan_type_desc').css({'width':$('#question').width(),'height':$('#question').height()});  
+        $('#mask_plan_type_desc').show();
     });
+    
+    $(document).on('click', '#mask_plan_type_desc', function() {
+        $("#question").addClass("out");
+        $('#mask_plan_type_desc').hide();
+    });
+});
 </script>
