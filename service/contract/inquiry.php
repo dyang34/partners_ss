@@ -178,7 +178,7 @@ if ($rs->num_rows > 0) {
         //$jumin = (double)decode_pass($row["jumin_1"],$pass_key).(double)decode_pass($row["jumin_2"],$pass_key);
         //$jumin = preg_replace("/([0-9]{6})([0-9])([0-9]+)/", "$1-$2******", $jumin);
 
-        $jumin = decode_pass($row["jumin_1"],$pass_key)."-".substr(decode_pass($row["jumin_2"],$pass_key),0,1)."******";
+        $jumin = trim(decode_pass($row["jumin_1"],$pass_key))."-".substr(trim(decode_pass($row["jumin_2"],$pass_key)),0,1)."******";
 ?>
                         <tr>
                         

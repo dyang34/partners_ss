@@ -148,8 +148,8 @@ $arrCalType = array_values($arrCalType);
 if (count($arrMember) > 0) {
     for($i=0; $i<count($arrMember); $i++) {
 
-        $jumin1 = decode_pass($arrMember[$i]["jumin_1"],$pass_key);
-        $jumin2_1 = substr(decode_pass($arrMember[$i]["jumin_2"],$pass_key),0,1);
+        $jumin1 = trim(decode_pass($arrMember[$i]["jumin_1"],$pass_key));
+        $jumin2_1 = substr(trim(decode_pass($arrMember[$i]["jumin_2"],$pass_key)),0,1);
 
         if($jumin2_1=="1" || $jumin2_1=="2" || $jumin2_1=="5" || $jumin2_1=="6") {
             $jumin1 = "19".substr($jumin1,0,2)."-".substr($jumin1,2,2)."-".substr($jumin1,4,2);

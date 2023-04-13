@@ -90,15 +90,15 @@ if(!empty($row["file_name"])) {
                         </li>
                         <li>
                             <strong>전화번호 <i class="icon-necessary"></i></strong>
-                            <input type="text" class="input-member" name="hphone" value="<?=decode_pass($row["hphone"],$pass_key)?>" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
+                            <input type="text" class="input-member" name="hphone" value="<?=trim(decode_pass($row["hphone"],$pass_key))?>" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
                         </li>
                         <li>
                             <strong>휴대폰 <i class="icon-necessary"></i></strong>
-                            <input type="text" class="input-member" name="hphone2" value="<?=decode_pass($row["hphone2"],$pass_key)?>" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
+                            <input type="text" class="input-member" name="hphone2" value="<?=trim(decode_pass($row["hphone2"],$pass_key))?>" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" pattern="[0-9]*">
                         </li>
                         <li>
                             <strong>이메일 <i class="icon-necessary"></i></strong>
-                            <input type="text" class="input-member" name="email" value="<?=decode_pass($row["email"],$pass_key)?>">
+                            <input type="text" class="input-member" name="email" value="<?=trim(decode_pass($row["email"],$pass_key))?>">
                         </li>
                     </ul>
                 </div>
