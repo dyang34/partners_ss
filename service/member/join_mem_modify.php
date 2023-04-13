@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT']."/include/common.php";
 
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersMgr.php";
