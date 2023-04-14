@@ -45,7 +45,7 @@ if(empty($row)) {
 문의사항이 있으시다면 언제든지 저희 고객센터(1800-9010)로 문의해주시기 바랍니다.<br/><br/>
 감사합니다.";
 
-	HiworksApiUtil::sendMail("bis", $email, "","", $email_title, $email_content);
+	HiworksApiUtil::sendMail("thekwons", $email, "","", $email_title, $email_content);
 	
 	$rtnVal['RESULTCD'] = "200";
 	$rtnVal['RESULTMSG'] = "SUCCESS";
