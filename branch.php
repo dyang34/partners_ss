@@ -6,9 +6,9 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 
 if (!LoginManager::isUserLogined()) {
-    JsUtil::alertReplace("비정상적인 접근입니다."."/");
-    exit;
+    //JsUtil::alertReplace("비정상적인 접근입니다."."/");
+    JsUtil::replace("/");
+} else {
+    JsUtil::replace("/service/contract/register.php");
 }
-
-JsUtil::replace("/service/contract/register.php");
 ?>

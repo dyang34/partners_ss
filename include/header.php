@@ -13,7 +13,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
 <!-- Header start -->
     <header>
         <div class="head-wrap">
-            <h1><img src="/img/common/logo-toursafe.png" alt="투어세이프 로고"></h1>
+            <h1><a href="/branch.php"><img src="/img/common/logo-toursafe.png" alt="투어세이프 로고"></a></h1>
             <nav>                
                 <ul class="clearfix inb">
                     <li class="<?=($menuNo[0]==1)?"active":""?>"><a href="/service/contract/register.php">보험 가입</a>

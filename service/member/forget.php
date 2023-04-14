@@ -24,17 +24,28 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             <!-- 아이디 찾기 start -->
             <form name="findIDForm">
                 <div class="panel" id="id-find-panel">
-                    <div class="id-area">
-                        <strong>기업명</strong>
-                        <input type="text" class="input-member" name="com_name" placeholder="기업명">
-                    </div>
-                    <div class="email-area">
-                        <strong>이메일주소</strong>
-                        <input type="text" class="input-member" name="email" placeholder="이메일주소">
-                    </div>
+                    <div name="divFindId">
+                        <div class="id-area">
+                            <strong>기업명</strong>
+                            <input type="text" class="input-member" name="com_name" placeholder="기업명">
+                        </div>
+                        <div class="email-area">
+                            <strong>이메일주소</strong>
+                            <input type="text" class="input-member" name="email" placeholder="이메일주소">
+                        </div>
                     
-                    <div class="center-button-area">
-                        <a name="btnFindID" class="button blue">확인</a>
+                        <div class="center-button-area">
+                            <a name="btnFindID" class="button blue">확인</a>
+                        </div>
+                    </div>
+                    <div name="divResult" style="display:none;">
+                        <div class="id-find-finish">
+                            <span>아이디 조회 결과 입력하신 정보와 일치하는 아이디는 아래와 같습니다.</span>
+                            <strong id="strong_find_id">ss_b2b</strong>
+                        </div>
+                        <div class="center-button-area">
+                            <a href="/" class="button blue">로그인 </a>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -85,7 +96,9 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                 success : function(data, status)
                 {
                     if(data.RESULTCD == "200") {
-                        $('#id-find-panel').html("<div class='div_find_id_result'>찾으시는 아이디는<br/><br/>"+data.RESULTMSG+"<br/><br/>입니다.</div>");
+                        $('#strong_find_id').html(data.RESULTMSG);
+                        $('div[name=divFindId').hide();
+                        $('div[name=divResult').show();
                     } else {
                         alert(data.RESULTMSG);
                     }
