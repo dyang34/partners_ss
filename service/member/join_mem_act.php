@@ -227,6 +227,30 @@ try {
         }
 
         JsUtil::alertReplace("수정되었습니다.    ", "/service/member/join_mem_modify.php");
+
+    } else if($mode=="UPD_PW") {
+
+        if (empty($uid)) {
+            JsUtil::alertBack("아이디 정보가 없습니다.    ");
+            exit;
+        }
+
+        if (empty($upw)) {
+            JsUtil::alertBack("패스워드를 입력해 주십시오.   ");
+            exit;
+        }
+
+        if ($upw != $upw_cfm) {
+            JsUtil::alertBack("패스워드 확인이 일치하지 않습니다.   ");
+            exit;
+        }
+
+        $uq = new UpdateQuery();
+        $uq->add("upw",strtoupper(hash("sha256", md5($upw))));
+
+        ToursafeMembersMgr::getInstance()->edit($uq, $uid);
+
+        JsUtil::alertReplace("변경되었습니다.    ", "/");
     } else {
         JsUtil::alertBack("잘못된 경로로 접근하였습니다. (ErrCode:0x09)   ");
         exit;
