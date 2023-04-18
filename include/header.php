@@ -50,6 +50,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
 <?php
     }
 ?>
+                    <li class="<?=($menuNo[0]==2)?"active":""?>"><a href="/service/contract/inquiry.php">신청내역 조회/수정</a></li>
                     <li class="<?=($menuNo[0]==3)?"active":""?>"><a href="/service/calc/calc_list.php">실적관리</a></li>
                     <li class="<?=($menuNo[0]==4)?"active":""?>"><a href="/service/claim/info.php">청구안내</a></li>
                     <li class="<?=($menuNo[0]==5)?"active":""?>"><a href="/service/customer/notice.php">고객센터</a></li>

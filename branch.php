@@ -21,7 +21,7 @@ if (!LoginManager::isUserLogined()) {
     } else if (!empty($trip_3_company_show)) {
         JsUtil::replace("/service/contract/register_long.php?trip_type=3");
     } else {
-        JsUtil::replace("/service/calc/calc_list.php");
+        JsUtil::replace("/service/contract/inquiry.php");
     }
 }
 ?>
