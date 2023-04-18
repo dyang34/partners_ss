@@ -104,6 +104,7 @@ class PlanCodeHanaDao extends A_Dao
 			.") AS a "
 			."LEFT JOIN plan_code_hana b "
 			."ON a.trip_type = b.trip_type "
+			."AND a.member_no = b.member_no "
 			."AND a.company_type = b.company_type "
 			."AND b.plan_type LIKE CONCAT('%',a.plan_type,'%') "
 			."ORDER BY a.company_type, a.member_no, a.trip_type, a.plan_type, b.cal_type "
