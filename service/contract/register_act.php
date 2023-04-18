@@ -99,6 +99,7 @@ if(!empty($join_name)) {
 	for($i=0;$i<count($arr_price);$i++) {
 		if(!empty($arr_price[$i]) && !empty($arr_name[$i]) && !empty($arr_jumin[$i])) {
 			$arrMemIns = array();
+			$arrMemIns["company_type"] = LoginManager::getUserLoginInfo("company_type");
 			$arrMemIns["member_no"] = $__CONFIG_MEMBER_NO;
 			$arrMemIns["hana_plan_no"] = $hana_plan_no;
 			$arrMemIns["name"] = $arr_name[$i];

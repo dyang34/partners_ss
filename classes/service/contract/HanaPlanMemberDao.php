@@ -160,8 +160,8 @@ class HanaPlanMemberDao extends A_Dao
 	            ."', '".$this->checkMysql($db, $arrVal["hphone"])
 	            ."', '".$this->checkMysql($db, $arrVal["email"])
 	            ."', '".$this->checkMysql($db, $arrVal["plan_code"])
-	            ."', (select plan_title from plan_code_hana where plan_code='".$this->checkMysql($db, $arrVal["plan_code"])."' limit 1)"
-				.", (select plan_title_src from plan_code_hana where plan_code='".$this->checkMysql($db, $arrVal["plan_code"])."' limit 1)"
+	            ."', (select plan_title from plan_code_hana where company_type= '".$this->checkMysql($db, $arrVal["company_type"])."' and plan_code='".$this->checkMysql($db, $arrVal["plan_code"])."' order by (case when member_no= ".$this->checkMysql($db, $arrVal["member_no"])." then 999999 else member_no end) desc limit 1)"
+				.", (select plan_title_src from plan_code_hana where company_type= '".$this->checkMysql($db, $arrVal["company_type"])."' and plan_code='".$this->checkMysql($db, $arrVal["plan_code"])."' order by (case when member_no= ".$this->checkMysql($db, $arrVal["member_no"])." then 999999 else member_no end) desc limit 1)"
 	            .", '".$this->checkMysql($db, $arrVal["plan_price"])
 	            ."', '".$this->checkMysql($db, $arrVal["sex"])
 	            ."', '".$this->checkMysql($db, $arrVal["age"])
