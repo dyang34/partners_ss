@@ -87,7 +87,7 @@ class PlanCodeHanaDao extends A_Dao
 			."FROM plan_code_hana "
 			.$wq->getWhereQuery()
 			."GROUP BY company_type, member_no, trip_type, plan_title "
-			."ORDER BY company_type, member_no, trip_type, MIN(cast(plan_type AS UNSIGNED )) "
+			."ORDER BY company_type, member_no, trip_type, MIN(cast(plan_type AS UNSIGNED )), case plan_title when '실속형' then 1 when '표준형' then 2 when '고급형' then 3 end desc "
 		;
 
 		return $db->query($sql);
