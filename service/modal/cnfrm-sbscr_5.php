@@ -37,7 +37,7 @@ $wq = new WhereQuery(true, true);
 $wq->addAndString("m.member_no","=",$member_no_org);
 $wq->addAndString("hana_plan_no","=",$hana_plan_no);
 $wq->addOrderBy("main_check","desc");
-$rs = HanaPlanMemberMgr::getInstance()->getListDetail($wq);
+$rs = HanaPlanMemberMgr::getInstance()->getListDetail($wq, $__CONFIG_MEMBER_NO);
 
 $arrMember = array();
 $arrCalType = array();

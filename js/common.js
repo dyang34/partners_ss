@@ -103,16 +103,16 @@ const dateDiff = function(_date1, _date2) {	// ,fg_add_1month
 	return diff;
 }
 
-const getStdAge = function(p_curdate, p_yyyymmdd) {	
+const getStdAge = function(p_stddate, p_yyyymmdd) {	
 
-	if(!checkValidDate(p_curdate) || !checkValidDate(p_yyyymmdd)) {
+	if(!checkValidDate(p_stddate) || !checkValidDate(p_yyyymmdd)) {
 		return -1;
 	}
 
 	let age;
 
-	const cur_yyyy = parseInt(String(p_curdate).substring(0,4),10);
-	const cur_mmdd = String(p_curdate).substring(5,7)+String(p_curdate).substring(8,10);
+	const cur_yyyy = parseInt(String(p_stddate).substring(0,4),10);
+	const cur_mmdd = String(p_stddate).substring(5,7)+String(p_stddate).substring(8,10);
 
 	let yyyy = parseInt(String(p_yyyymmdd).substring(0,4),10);
 	let mmdd = String(p_yyyymmdd).substring(5,7)+String(p_yyyymmdd).substring(8,10);
@@ -130,16 +130,16 @@ const getStdAge = function(p_curdate, p_yyyymmdd) {
 };
 
 //보험나이 계산
-const getInsuAge = function(p_curdate, p_yyyymmdd) {
+const getInsuAge = function(p_stddate, p_yyyymmdd) {
 
-	if(!checkValidDate(p_curdate) || !checkValidDate(p_yyyymmdd)) {
+	if(!checkValidDate(p_stddate) || !checkValidDate(p_yyyymmdd)) {
 		return -1;
 	}
 
 	let date = new Date(p_yyyymmdd);
 	date.setMonth(date.getMonth() - 6);
 
-    return [getStdAge(p_curdate, dateFormat(date)), getStdAge(p_curdate, p_yyyymmdd)];
+    return [getStdAge(p_stddate, dateFormat(date)), getStdAge(p_stddate, p_yyyymmdd)];
 };
 
 // 해외여행 3개월, 국내여행 1개월 이내 여부 Check.

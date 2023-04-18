@@ -14,16 +14,20 @@ if (!LoginManager::isUserLogined()) {
 $menuNo=[1,0];
 
 $trip_type = RequestUtil::getParam("trip_type","2");
+$company_type = LoginManager::getUserLoginInfo("company_type");
+$now_date = date('Y-m-d');
 
 $__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
 if(!LoginManager::getUserLoginInfo("fg_not_common_plan")) {
-	$__CONFIG_MEMBER_NO = get_default_member_no(LoginManager::getUserLoginInfo("company_type"));
+	$__CONFIG_MEMBER_NO = get_default_member_no($company_type);
 }
 
 $arrNation = array();
 $wq = new WhereQuery(true,true);
-if(LoginManager::getUserLoginInfo("company_type")=="2") {
+if($company_type=="2") {
     $wq->addAndString("use_type_meritz","=","1");
+} else if($company_type=="3") {
+    $wq->addAnd2("(use_type='Y' or no in ('512', '508', '509', '487')) ");
 } else {
     $wq->addAndString("use_type","=","Y");
 }
@@ -58,7 +62,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             <tbody>
                 <tr>
                     <th>보험사</th>
-                    <td><input type="text" class="input-search" readonly value="<?=$arrInsuranceCompany[LoginManager::getUserLoginInfo("company_type")]?>"></td>
+                    <td><input type="text" class="input-search" readonly value="<?=$arrInsuranceCompany[$company_type]?>"></td>
 
                     <th>계약 담당자 <em class="bulStyle1">*</em></th>                    
                     <td>
@@ -90,7 +94,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     </td>
 
                     <th>청약일</th>
-                    <td><input type="text"  class="input-search" name="" id="" readonly value="<?=date('Y-m-d')?>"></td>
+                    <td><input type="text"  class="input-search" name="" id="" readonly value="<?=$now_date?>"></td>
                 </tr>
             </tbody>
         </table>
@@ -429,8 +433,9 @@ function reset_Select2() {  // Select 리셋시 사용.
 */?>
 <script type="text/javascript">
 const fg_auto_calc = <?=$_GET['fg_auto_calc']!="N"?"true":"false"?>;
-const g_company_type = "<?=LoginManager::getUserLoginInfo("company_type")?>";
+const g_company_type = "<?=$company_type?>";
 const g_member_no = "<?=$__CONFIG_MEMBER_NO?>";
+const g_now_date = "<?=$now_date?>";
 let tripType = "<?=$trip_type?>";
 //let tripType="2";
 
@@ -1077,7 +1082,7 @@ $(document).ready(function() {
 
     $("#end_date").datepicker("disable");
     numbering_row();
-    get_plan_repre_list('<?=LoginManager::getUserLoginInfo("company_type")?>','<?=$__CONFIG_MEMBER_NO?>', tripType);
+    get_plan_repre_list(g_company_type,'<?=$__CONFIG_MEMBER_NO?>', tripType);
 
     if(!fg_auto_calc) {
         $('a[name=btnCalc]').show();
@@ -1123,7 +1128,12 @@ const chk_jumin = function(obj) {
                     gender = obj.val().substring(6,7);
                     birthday = ((gender=="1"||gender=="2"||gender=="5"||gender=="6")?"19":"20")+obj.val().substring(0,2)+'-'+obj.val().substring(2,4)+'-'+obj.val().substring(4,6);
 
-                    arr_age = getInsuAge(start_date, birthday);
+                    if (g_company_type=="1" || g_company_type=="3") {
+                        arr_age = getInsuAge(g_now_date, birthday);
+                    } else {
+                        arr_age = getInsuAge(start_date, birthday);
+                    }
+
                     age_insu = arr_age[0];
                     age_std = arr_age[1];
 
@@ -1459,7 +1469,7 @@ const chg_member_plan = function(age_from, age_to) {
                     age_to = 15;
                 }
 */
-                if(((tr_age >= age_from && tr_age <= age_to) || (age_to==14 && tr_age==15 && tr_age_std==14)) && !(age_from==15 && tr_age_std==14)) {
+                if(((tr_age >= age_from && tr_age <= age_to) || (age_to==14 && tr_age==15 && tr_age_std==14 && g_company_type!="3")) && !(age_from==15 && tr_age_std==14 && g_company_type!="3")) {
 
                     rtn_arr_val = get_member_plan(tr_age, tr_age_std);
 
@@ -1488,7 +1498,7 @@ const chg_member_plan = function(age_from, age_to) {
 const get_member_plan = function(age_insu, age_std) {   // 보험 나이, 만 나이.
     let rtn_plan_code = rtn_plan_type = rtn_plan_title = cal_type = cal_type_text = "";
 
-    if(age_insu==15 && age_std == 14) {
+    if(age_insu==15 && age_std==14 && g_company_type!="3") {
         rtn_plan_code = $('select[name=plan_type_sub_cal1]').val();
         rtn_plan_type = $('select[name=plan_type_sub_cal1] option:selected').attr('plan_type');
         //rtn_plan_title = $('select[name=plan_type_sub_cal1] option:selected').text();
@@ -1592,12 +1602,12 @@ const calc_price = function(fg_process) {
             //term_day = dateDiff($('input[name=start_date]').val(), $('input[name=end_date]').val(), false)+1;
 
 //            data = $("#writeForm").serialize();
-//            data += "&company_type=<?=LoginManager::getUserLoginInfo("company_type")?>&member_no=<?=$__CONFIG_MEMBER_NO?>&start_date="+$('input[name=start_date]').val()+"&end_date="+$('input[name=end_date]').val();
+//            data += "&company_type="+g_company_type+"&member_no=<?=$__CONFIG_MEMBER_NO?>&start_date="+$('input[name=start_date]').val()+"&end_date="+$('input[name=end_date]').val();
             $.ajax({
                 type : "POST",
                 url : "/service/ajax/get_plan_price_arr_ajax.php",
 //                data : data,
-                data : { 'company_type' : '<?=LoginManager::getUserLoginInfo("company_type")?>' , 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'trip_type' : tripType, 'plan_code' : p_plan_code, 'gender' : p_gender, 'age' : p_age, 'start_date' : $('input[name=start_date]').val(), 'end_date' : $('input[name=end_date]').val() },
+                data : { 'company_type' : g_company_type , 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'trip_type' : tripType, 'plan_code' : p_plan_code, 'gender' : p_gender, 'age' : p_age, 'start_date' : $('input[name=start_date]').val(), 'end_date' : $('input[name=end_date]').val() },
                 dataType : 'json',
                 async : false,
                 success : function(data, status)

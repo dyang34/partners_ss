@@ -78,7 +78,7 @@ class HanaPlanMemberMgr extends A_Mgr
     /*
      *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
      */
-    function getListDetail($wq) {
+    function getListDetail($wq, $plan_member_no) {
         
         $result = null;
         $db = null;
@@ -86,7 +86,7 @@ class HanaPlanMemberMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $result = HanaPlanMemberDao::getInstance()->selectDetail($db, $wq);
+            $result = HanaPlanMemberDao::getInstance()->selectDetail($db, $wq, $plan_member_no);
             
         } catch(Exception $e) {
             echo $e->getMessage();
