@@ -38,13 +38,13 @@ if($mode=="login"){
     }
     
     $wq = new WhereQuery(true, true);
-    $wq->addAndString("mem_type", "=", "2");
+//    $wq->addAndString("mem_type", "=", "2");
     $wq->addAndString("mem_state", "=", "2");
     $wq->addAndString("uid", "=", $uid);
     $wq->addAndString("upw", "=", $passwd);
 
     $row = ToursafeMembersMgr::getInstance()->getFirst($wq);
-
+ 
     if ( empty($row) ) {
         JsUtil::alertBack("아이디 또는 비밀번호가 잘못 입력 되었습니다.\n\n아이디와 비밀번호를 정확히 입력해 주세요.    ");
         exit;
@@ -72,6 +72,7 @@ if($mode=="login"){
         $row_session["uid"] = $row["uid"];
         $row_session["com_name"] = $row["com_name"];
         $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
+        $row_session["mem_type"] = $row["mem_type"];
         $row_session["arr_trip_1_company"] = array_filter(explode(',', $row["trip_1_company"]));
         $row_session["arr_trip_2_company"] = array_filter(explode(',', $row["trip_2_company"]));
         $row_session["arr_trip_3_company"] = array_filter(explode(',', $row["trip_3_company"]));
@@ -128,7 +129,7 @@ if($mode=="login"){
     }
     
     $wq = new WhereQuery(true, true);
-    $wq->addAndString("mem_type", "=", "2");
+//    $wq->addAndString("mem_type", "=", "2");
     $wq->addAndString("mem_state", "=", "2");
     $wq->addAndString("uid", "=", $uid);
     
@@ -150,6 +151,7 @@ if($mode=="login"){
         $row_session["uid"] = $row["uid"];
         $row_session["com_name"] = $row["com_name"];
         $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
+        $row_session["mem_type"] = $row["mem_type"];
         $row_session["arr_trip_1_company"] = array_filter(explode(',', $row["trip_1_company"]));
         $row_session["arr_trip_2_company"] = array_filter(explode(',', $row["trip_2_company"]));
         $row_session["arr_trip_3_company"] = array_filter(explode(',', $row["trip_3_company"]));

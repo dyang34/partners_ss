@@ -14,7 +14,9 @@ if (!LoginManager::isUserLogined()) {
     $trip_2_company_show = count(LoginManager::getUserLoginInfo('arr_trip_2_company'));
     $trip_3_company_show = count(LoginManager::getUserLoginInfo('arr_trip_3_company'));
 
-    if (!empty($trip_2_company_show)) {
+    if (LoginManager::getUserLoginInfo('mem_type') == "1") {
+        JsUtil::replace("/service/contract/inquiry.php");
+    } else if (!empty($trip_2_company_show)) {
         JsUtil::replace("/service/contract/register.php?trip_type=2");
     } else if (!empty($trip_1_company_show)) {
         JsUtil::replace("/service/contract/register.php?trip_type=1");

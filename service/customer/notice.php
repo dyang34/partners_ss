@@ -24,8 +24,14 @@ $pg = new Page($currentPage, $pageSize);
 $_order_by = RequestUtil::getParam("_order_by", "no");
 $_order_by_asc = RequestUtil::getParam("_order_by_asc", "desc");
 
-$wq = new WhereQuery(true, true);
-$wq->addAndIn("table_name",array("board_1","board_2"));
+echo LoginManager::getUserLoginInfo("mem_type");
+
+if (LoginManager::getUserLoginInfo("mem_type")=="2") {
+    $wq->addAndIn("table_name",array("board_1","board_2"));
+} else {
+    $wq->addAndIn("table_name",array("board_1","board_3"));
+}
+
 $wq->addAndString("del_key","=","Y");
 $wq->addAndString("secret","=","N");
 
