@@ -199,7 +199,7 @@ if ($rs->num_rows > 0) {
 
         if($row["end_date"]>=date("Y-m-d") && in_array($row["plan_list_state"], $arrPlanStateUpdatable)) {
 ?>
-                                <a mode="three" class="button mdfy btn-check-mdfy" hana_plan_no="<?=$row["no"]?>">수정</a>
+                                <a mode="three" class="button mdfy btn-check-mdfy" company_type="<?=$row["company_type"]?>" hana_plan_no="<?=$row["no"]?>">수정</a>
 <?php
         }
 ?>    
@@ -309,7 +309,7 @@ $(document).ready(function() {
         $.ajax({
             type : "POST",
             url : "/service/ajax/get_plan_request.php",
-            data : { 'company_type' : '<?=LoginManager::getUserLoginInfo("company_type")?>' , 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'hana_plan_no' : $(this).attr("hana_plan_no") },
+            data : { 'company_type' : $(this).attr("company_type"), 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'hana_plan_no' : $(this).attr("hana_plan_no") },
             dataType : 'json',
             async : false,
             success : function(data, status)
@@ -350,7 +350,7 @@ $(document).ready(function() {
         $.ajax({
             type : "POST",
             url : "/service/ajax/plan_request_ins.php",
-            data : { 'company_type' : '<?=LoginManager::getUserLoginInfo("company_type")?>' , 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'hana_plan_no' : g_req_obj.attr("hana_plan_no"), 'change_type' : $('select[name=change_type]').val(), 'content' : $('#req_content').val() },
+            data : { 'company_type' : g_req_obj.attr("company_type"), 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'hana_plan_no' : g_req_obj.attr("hana_plan_no"), 'change_type' : $('select[name=change_type]').val(), 'content' : $('#req_content').val() },
             dataType : 'json',
             async : false,
             success : function(data, status)

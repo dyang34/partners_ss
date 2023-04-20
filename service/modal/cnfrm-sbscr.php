@@ -20,7 +20,7 @@ $__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
 $member_no_org = $__CONFIG_MEMBER_NO;
 
 if(!LoginManager::getUserLoginInfo("fg_not_common_plan")) {
-	$__CONFIG_MEMBER_NO = get_default_member_no(LoginManager::getUserLoginInfo("company_type"));
+	$__CONFIG_MEMBER_NO = get_default_member_no($__CONFIG_COMPANY_TYPE);
 }
 
 $hana_plan_no = RequestUtil::getParam("hana_plan_no", "");

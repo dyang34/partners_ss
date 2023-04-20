@@ -12,7 +12,7 @@ if (!LoginManager::isUserLogined()) {
     JsUtil::alertReplace("로그인이 필요합니다.    ","/");
 }
 
-$__CONFIG_COMPANY_TYPE = LoginManager::getUserLoginInfo("company_type");
+//$__CONFIG_COMPANY_TYPE = LoginManager::getUserLoginInfo("company_type");
 $__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
 
 $wq = new WhereQuery(true, true);

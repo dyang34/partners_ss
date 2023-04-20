@@ -17,6 +17,7 @@ if (!LoginManager::isUserLogined()) {
 
 $__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
 
+$company_type = RequestUtil::getParam("company_type","");
 $manager_idx = RequestUtil::getParam("manager_idx","");
 $manager_name = RequestUtil::getParam("manager_name","");
 $trip_type = RequestUtil::getParam("trip_type","");
@@ -71,7 +72,7 @@ $session_key = date("Ymd")."|".$trip_type."|".$nation."|".$term_day."|".$price_s
 if(!empty($join_name)) {
 
 	$arrIns = array();
-	$arrIns["company_type"] = LoginManager::getUserLoginInfo("company_type");
+	$arrIns["company_type"] = $company_type;
 	$arrIns["join_name"] = $join_name;
 	$arrIns["member_no"] = $__CONFIG_MEMBER_NO;
 	$arrIns["session_key"] = $session_key;
@@ -99,7 +100,7 @@ if(!empty($join_name)) {
 	for($i=0;$i<count($arr_price);$i++) {
 		if(!empty($arr_price[$i]) && !empty($arr_name[$i]) && !empty($arr_jumin[$i])) {
 			$arrMemIns = array();
-			$arrMemIns["company_type"] = LoginManager::getUserLoginInfo("company_type");
+			$arrMemIns["company_type"] = $company_type;
 			$arrMemIns["member_no"] = $__CONFIG_MEMBER_NO;
 			$arrMemIns["hana_plan_no"] = $hana_plan_no;
 			$arrMemIns["name"] = $arr_name[$i];
@@ -135,7 +136,7 @@ if(!empty($join_name)) {
 	$arrChangeIns["change_price"] = $price_sum;
 	$arrChangeIns["in_price"] = 0;
 	$arrChangeIns["com_percent"] = $row["com_percent"];
-	$arrChangeIns["company_type"] = LoginManager::getUserLoginInfo("company_type");
+	$arrChangeIns["company_type"] = $company_type;
 
 	HanaPlanChangeMgr::getInstance()->add($arrChangeIns);
 

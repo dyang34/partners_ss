@@ -48,6 +48,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 <form name="writeForm" id="writeForm" method="post" autocomplete="off">
     <input type="hidden" name="auto_defense" />
     <input type="hidden" name="term_day" />
+    <input type="hidden" name="company_type" value="<?=$company_type?>" />
     <div class="search-basic-wrap">
         <h2>기본정보</h2>
         <table class="table-search">
