@@ -318,14 +318,17 @@ $(document).ready(function() {
 
                     if(data.DATA.no !== undefined && data.DATA.change_state == 1 ) {
 
-                        $('#req_content').text(data.DATA.content);
+                        $('#req_content').val(data.DATA.content);
                         $('select[name=change_type]').val(data.DATA.change_type);
                     }
 
                     $("#check-modify-modal").removeAttr("class").addClass(g_req_obj.attr("mode"));
 
+                } else if(Number(data.RESULTCD) == 900) {
+                        alert(data.RESULTMSG);
+                        location.replace('/');
                 } else {
-                    if(Number(data.RESULTCD) >= 900) {
+                    if(Number(data.RESULTCD) > 900) {
                         alert(data.RESULTMSG);
                     }
                 }
@@ -357,8 +360,12 @@ $(document).ready(function() {
             {
                 if(data.RESULTCD == "200") {
                     g_req_obj.closest("tr").find("a[name=plan_list_state_text]").html(data.STATUS_TEXT);
+                
+                } else if(Number(data.RESULTCD) == 900) {
+                        alert(data.RESULTMSG);
+                        location.replace('/');
                 } else {
-                    if(Number(data.RESULTCD) >= 900) {
+                    if(Number(data.RESULTCD) > 900) {
                         alert(data.RESULTMSG);
                     }
                 }

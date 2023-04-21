@@ -239,7 +239,7 @@ const check_hour_max = function() {
 
     var maxdate, max_month;	
 
-    if(tripType == "2"){
+    if(g_trip_type == "2"){
 //        maxdate = treemonthcal(stdate, '3');
         max_month = 3;
     } else {
@@ -247,8 +247,8 @@ const check_hour_max = function() {
         max_month = 1;
     }
     //console.log(maxdate+" "+sthour+" "+edhour);
-    if(!cutMaxTripday(stdate, enddate, max_month, sthour, edhour, tripType)){ // maxdate
-        if(tripType == "2"){
+    if(!cutMaxTripday(stdate, enddate, max_month, sthour, edhour, g_trip_type)){ // maxdate
+        if(g_trip_type == "2"){
             alert('단기해외여행자보험은 최대 3개월까지 가입가능합니다. 3개월 이상 가입 신청 시 유학(장기체류)보험으로 신청해주세요.');
         } else {
             alert('단기국내여행자보험은 최대 1개월까지 가입가능합니다.');

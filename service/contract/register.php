@@ -14,7 +14,11 @@ if (!LoginManager::isUserLogined()) {
 $menuNo=[1,0];
 
 $trip_type = RequestUtil::getParam("trip_type","2");
-$company_type = LoginManager::getUserLoginInfo("company_type");
+$company_type = RequestUtil::getParam("company_type","");
+if(empty($company_type)) {
+    $company_type = LoginManager::getUserLoginInfo("company_type");
+}
+
 $now_date = date('Y-m-d');
 
 $__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
@@ -62,8 +66,26 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             </colgroup>
             <tbody>
                 <tr>
-                    <th>보험사</th>
-                    <td><input type="text" class="input-search" readonly value="<?=$arrInsuranceCompany[$company_type]?>"></td>
+                    <th>보험사 <em class="bulStyle1">*</em></th>
+                    <td>
+<?php/*                        
+                        <input type="text" class="input-search" readonly value="<?=$arrInsuranceCompany[$company_type]?>">
+*/?>                        
+
+                        <div class="select-box">
+                            <select name="company_type">
+<?php
+//                                for($i=0;$i<count($arrManager);$i++) {
+?>
+                                <option value="<?=$company_type?>" <?=$company_type=="5"?"selected='selected'":""?>><?=$arrInsuranceCompany[$company_type]?></option>
+<?
+//                                }
+?>
+                            </select>
+                        </div>
+
+
+                    </td>
 
                     <th>계약 담당자 <em class="bulStyle1">*</em></th>                    
                     <td>
@@ -116,10 +138,10 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             </colgroup>
             <tbody>
                 <tr>
-                    <th>여행종류 <em class="bulStyle1">*</em><a class="btn-travel-type" motion="three"><i class="icon-question"></i></a></th>
+                    <th>여행종류 <em class="bulStyle1">*</em><a class="btn-travel-type" name="icon_trip_type_2" motion="three" style="<?=$trip_type=="1"?"display:none;":""?>"><i class="icon-question"></i></a></th>
                     <td>
 <?php
-    if($_GET["trip_type_show"]=="Y") {
+    if($_GET["fg_trip_type_show"]=="Y") {
 ?>        
                         <div class="radio-wrap">
                             <input type="radio" id="trvTypeChk2" name="trip_type" value="2" checked='checked'>
@@ -142,7 +164,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 
                     </td>
 
-                    <th>여행지역 <em class="bulStyle1">*</em><a class="btn-travel-area" motion="three"><i class="icon-globe"></i></a></th>   
+                    <th>여행지역 <em class="bulStyle1">*</em><a class="btn-travel-area" name="icon_trip_type_2" motion="three" style="<?=$trip_type=="1"?"display:none;":""?>"><i class="icon-globe"></i></a></th>   
                     <td class="nation">
 <?php
     if($trip_type=="2") {
@@ -437,8 +459,8 @@ const fg_auto_calc = <?=$_GET['fg_auto_calc']!="N"?"true":"false"?>;
 const g_company_type = "<?=$company_type?>";
 const g_member_no = "<?=$__CONFIG_MEMBER_NO?>";
 const g_now_date = "<?=$now_date?>";
-let tripType = "<?=$trip_type?>";
-//let tripType="2";
+let g_trip_type = "<?=$trip_type?>";
+//let g_trip_type="2";
 
 let mc_consult_submitted = false;
 let g_obj_td;
@@ -575,7 +597,7 @@ $(document).ready(function() {
                         $("#end_date").val("");
                     }
 
-                    if (tripType=='2') {
+                    if (g_trip_type=='2') {
                         //$("#end_date").datepicker( "option", "maxDate", new Date(Date.parse(selectedDate) + (1000 * 60 * 60 * 24 * 90)) );
                         settingDate = new Date(Date.parse(treemonthcal(selectedDate, '3')));
                         settingDate.setDate(settingDate.getDate()-1);
@@ -902,12 +924,27 @@ $(document).ready(function() {
     });
 
     // 여행종류 변경.
+    $(document).on('change','select[name=company_type]',function() {
+
+        alert($(this).val());
+
+        //location.href = 'register.php?company_type='+$(this).val();
+
+        get_plan_repre_list($(this).val(), g_member_no, g_trip_type);
+        chg_member_plan(0, 200);
+        calc_price(fg_auto_calc);
+
+        return false;
+    });
+
+    // 여행종류 변경.
     $(document).on('change','input[name=trip_type]',function() {
 
         if($(this).val()=="1") {
 
             $('div[name=div_nation_1]').show();
             $('div[name=div_nation_2]').hide();
+            $('a[name=icon_trip_type_2]').hide();
 
             if(checkValidDate($('#start_date').val())) {
                 settingDate = new Date(Date.parse(treemonthcal($('#start_date').val(), '1')));
@@ -923,6 +960,7 @@ $(document).ready(function() {
 
             $('div[name=div_nation_1]').hide();
             $('div[name=div_nation_2]').show();
+            $('a[name=icon_trip_type_2]').show();
             
             if(checkValidDate($('#start_date').val())) {
                 settingDate = new Date(Date.parse(treemonthcal($('#start_date').val(), '3')));
@@ -931,7 +969,7 @@ $(document).ready(function() {
             }
         }
 
-        tripType = $(this).val();
+        g_trip_type = $(this).val();
 
         if(checkValidDate($('#start_date').val()) && checkValidDate($('#end_date').val())) {
             if(!check_hour_max()){
@@ -981,7 +1019,7 @@ $(document).ready(function() {
             return false;
         }
 
-        if(tripType=="1") {
+        if(g_trip_type=="1") {
             $('input[name=nation]').val("0");
         } else {
             $('input[name=nation]').val($('select[name=nation_srch]').val());
@@ -1011,7 +1049,7 @@ $(document).ready(function() {
 		let motion = $(this).attr("motion");
         let obj_a, plan_code_selected;
 
-        get_plan_desc(g_company_type, g_member_no, tripType, $(this).attr("cal_type"));
+        get_plan_desc(g_company_type, g_member_no, g_trip_type, $(this).attr("cal_type"));
 
         //$('.cls_li_plan_type_desc').removeClass('active');
 
@@ -1034,7 +1072,7 @@ $(document).ready(function() {
         let plan_code = obj_tr.find('input[name="plan_code[]"').val();
         g_obj_td = $(this);
 
-        get_plan_choice(g_company_type, g_member_no, tripType, cal_type, plan_code);
+        get_plan_choice(g_company_type, g_member_no, g_trip_type, cal_type, plan_code);
 
 		$("#flan-select-modal").removeAttr("class").addClass($(this).attr("motion"));
 	});
@@ -1083,7 +1121,7 @@ $(document).ready(function() {
 
     $("#end_date").datepicker("disable");
     numbering_row();
-    get_plan_repre_list(g_company_type,'<?=$__CONFIG_MEMBER_NO?>', tripType);
+    get_plan_repre_list(g_company_type, g_member_no, g_trip_type);
 
     if(!fg_auto_calc) {
         $('a[name=btnCalc]').show();
@@ -1260,7 +1298,7 @@ const set_row_price = function(obj) {
 
         if (jumin) {
             obj_tr = obj.closest('tr');
-            price = get_member_price(g_company_type, g_member_no, tripType, plan_code, gender, age_insu, $('input[name=start_date]').val(), $('input[name=end_date]').val());
+            price = get_member_price(g_company_type, g_member_no, g_trip_type, plan_code, gender, age_insu, $('input[name=start_date]').val(), $('input[name=end_date]').val());
 
             if (price > 0) {
                 //obj.closest('td').next().next().next().next().next().next().children('.td_last_obj').val(price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","));
@@ -1379,71 +1417,80 @@ const get_plan_repre_list = function(p_company_type, p_member_no, p_trip_type) {
 //			console.log(data.RESULTCD);
 //			console.log(JSON.stringify(data)); // <> parse()
 
-            cnt_cal_type = data.CNT_CAL_TYPE;
+            if(data.RESULTCD == "200") {
+            
+                cnt_cal_type = data.CNT_CAL_TYPE;
         
-            $('.div_plan_type').hide();
-            $('.cls_select_plan_sub').attr('age_from','999');
-            $('.cls_select_plan_sub').attr('age_to','999');
-            $('.cls_select_plan_sub').attr('age_to_limit','999');
+                $('.div_plan_type').hide();
+                $('.cls_select_plan_sub').attr('age_from','999');
+                $('.cls_select_plan_sub').attr('age_to','999');
+                $('.cls_select_plan_sub').attr('age_to_limit','999');
 
-            for(i=0;i<cnt_cal_type;i++) {
-                $('div[name=divPlantypeCal'+(i+1)+']').show();
-            }
+                for(i=0;i<cnt_cal_type;i++) {
+                    $('div[name=divPlantypeCal'+(i+1)+']').show();
+                }
 
-			plan_repre_title = "";
-			str_plan_type = "";
-			arr_plan_type_sub_cal = new Array();
+                plan_repre_title = "";
+                str_plan_type = "";
+                arr_plan_type_sub_cal = new Array();
 
-            $.each(data.LIST_REPRE , function(idx, item){
+                $.each(data.LIST_REPRE , function(idx, item){
 
-                str_plan_type += "<option value=\""+idx+"\" ";
-				if(idx==default_plan_type) {
-					str_plan_type += "selected='selected'";
-				}
-
-				str_plan_type += ">"+item.plan_title+"</option>";
-			});
-
-            $('select[name=plan_repre_type]').html(str_plan_type);
-
-			$.each(data.LIST , function(idx, item){
-
-				$.each(item, function(idx_sub, item_sub){
-
-                    if(!arr_plan_type_sub_cal[idx_sub] ) {
-                        arr_plan_type_sub_cal[idx_sub] = new Array();
-					}
-
-                    if(plan_type_sub_title=="") {
-                        cal_type_text = arrCalTypeTitle[cnt_cal_type][idx-1];
-                        plan_type_sub_title = cal_type_text + " ("+item_sub.plan_start_age+"~"+item_sub.plan_end_age+"세)";
-                        age_from = item_sub.plan_start_age;
-                        age_to = item_sub.plan_end_age;
+                    str_plan_type += "<option value=\""+idx+"\" ";
+                    if(idx==default_plan_type) {
+                        str_plan_type += "selected='selected'";
                     }
 
-                    plan_type_sub_options = cal_type_text + " " + item_sub.plan_code + " (";
-					plan_type_sub_list += "<option value=\""+item_sub.plan_code+"\" plan_type=\""+item_sub.plan_type+"\" plan_title=\""+item_sub.plan_title+"\" plan_sort=\""+item_sub.sort+"\" ";
-					if(item_sub.plan_type.includes(default_plan_type) && item_sub.sort==0) {
-						plan_type_sub_list += "selected='selected'";
-					}
-					//plan_type_sub_list += ">"+plan_type_sub_title+" "+item_sub.plan_title+"</option>";
-                    plan_type_sub_list += ">"+plan_type_sub_options+item_sub.plan_title+")</option>";
-				});
+                    str_plan_type += ">"+item.plan_title+"</option>";
+                });
 
-                $('span[name=title_plan_type_sub_cal'+idx+']').html(plan_type_sub_title);
-                $('select[name=plan_type_sub_cal'+idx+']').html(plan_type_sub_list);
-                $('select[name=plan_type_sub_cal'+idx+']').attr('age_from', age_from);
-                $('select[name=plan_type_sub_cal'+idx+']').attr('age_to', age_to);
-                $('select[name=plan_type_sub_cal'+idx+']').attr('age_to_limit', age_to);
-                $('select[name=plan_type_sub_cal'+idx+']').attr('cal_type', idx);
-                $('select[name=plan_type_sub_cal'+idx+']').attr('cal_type_text', cal_type_text);
+                $('select[name=plan_repre_type]').html(str_plan_type);
 
-                idx_last = idx;
-                plan_type_sub_title = plan_type_sub_list = "";
-                max_age = age_to;
-			});
+                $.each(data.LIST , function(idx, item){
 
-            $('select[name=plan_type_sub_cal'+idx_last+']').attr('age_to_limit', '200');
+                    $.each(item, function(idx_sub, item_sub){
+
+                        if(!arr_plan_type_sub_cal[idx_sub] ) {
+                            arr_plan_type_sub_cal[idx_sub] = new Array();
+                        }
+
+                        if(plan_type_sub_title=="") {
+                            cal_type_text = arrCalTypeTitle[cnt_cal_type][idx-1];
+                            plan_type_sub_title = cal_type_text + " ("+item_sub.plan_start_age+"~"+item_sub.plan_end_age+"세)";
+                            age_from = item_sub.plan_start_age;
+                            age_to = item_sub.plan_end_age;
+                        }
+
+                        plan_type_sub_options = cal_type_text + " " + item_sub.plan_code + " (";
+                        plan_type_sub_list += "<option value=\""+item_sub.plan_code+"\" plan_type=\""+item_sub.plan_type+"\" plan_title=\""+item_sub.plan_title+"\" plan_sort=\""+item_sub.sort+"\" ";
+                        if(item_sub.plan_type.includes(default_plan_type) && item_sub.sort==0) {
+                            plan_type_sub_list += "selected='selected'";
+                        }
+                        //plan_type_sub_list += ">"+plan_type_sub_title+" "+item_sub.plan_title+"</option>";
+                        plan_type_sub_list += ">"+plan_type_sub_options+item_sub.plan_title+")</option>";
+                    });
+
+                    $('span[name=title_plan_type_sub_cal'+idx+']').html(plan_type_sub_title);
+                    $('select[name=plan_type_sub_cal'+idx+']').html(plan_type_sub_list);
+                    $('select[name=plan_type_sub_cal'+idx+']').attr('age_from', age_from);
+                    $('select[name=plan_type_sub_cal'+idx+']').attr('age_to', age_to);
+                    $('select[name=plan_type_sub_cal'+idx+']').attr('age_to_limit', age_to);
+                    $('select[name=plan_type_sub_cal'+idx+']').attr('cal_type', idx);
+                    $('select[name=plan_type_sub_cal'+idx+']').attr('cal_type_text', cal_type_text);
+
+                    idx_last = idx;
+                    plan_type_sub_title = plan_type_sub_list = "";
+                    max_age = age_to;
+                });
+
+                $('select[name=plan_type_sub_cal'+idx_last+']').attr('age_to_limit', '200');
+
+            } else if(Number(data.RESULTCD) == 900) {
+                alert(data.RESULTMSG);
+                location.replace('/');
+            } else {
+                alert(data.RESULTMSG);
+            }
 		},
 		error : function(err)
 		{
@@ -1540,8 +1587,11 @@ const get_member_price = function(p_company_type, p_member_no, p_trip_type, p_pl
                 if(data.RESULTCD == "200") {
                     rtn_val = data.Price;
                 } else {
-                    if(Number(data.RESULTCD) >= 900) {
+                    if(Number(data.RESULTCD) > 900) {
                         alert(data.RESULTMSG);
+                    } else if(Number(data.RESULTCD) == 900) {
+                        alert(data.RESULTMSG);
+                        location.replace('/');
                     } else if(Number(data.RESULTCD) == 802) {
                         rtn_val = -11;
                     } else if(Number(data.RESULTCD) == 803) {
@@ -1603,12 +1653,12 @@ const calc_price = function(fg_process) {
             //term_day = dateDiff($('input[name=start_date]').val(), $('input[name=end_date]').val(), false)+1;
 
 //            data = $("#writeForm").serialize();
-//            data += "&company_type="+g_company_type+"&member_no=<?=$__CONFIG_MEMBER_NO?>&start_date="+$('input[name=start_date]').val()+"&end_date="+$('input[name=end_date]').val();
+//            data += "&company_type="+g_company_type+"&member_no="+g_member_no+"&start_date="+$('input[name=start_date]').val()+"&end_date="+$('input[name=end_date]').val();
             $.ajax({
                 type : "POST",
                 url : "/service/ajax/get_plan_price_arr_ajax.php",
 //                data : data,
-                data : { 'company_type' : g_company_type , 'member_no' : '<?=$__CONFIG_MEMBER_NO?>', 'trip_type' : tripType, 'plan_code' : p_plan_code, 'gender' : p_gender, 'age' : p_age, 'start_date' : $('input[name=start_date]').val(), 'end_date' : $('input[name=end_date]').val() },
+                data : { 'company_type' : g_company_type , 'member_no' : g_member_no, 'trip_type' : g_trip_type, 'plan_code' : p_plan_code, 'gender' : p_gender, 'age' : p_age, 'start_date' : $('input[name=start_date]').val(), 'end_date' : $('input[name=end_date]').val() },
                 dataType : 'json',
                 async : false,
                 success : function(data, status)
@@ -1637,6 +1687,9 @@ const calc_price = function(fg_process) {
 
                         $('input[name=term_day]').val(data.Term_Day);
 
+                    } else if(Number(data.RESULTCD) == 900) {
+                        alert(data.RESULTMSG);
+                        location.replace('/');
                     } else {
                         alert(data.RESULTMSG);
                         return -1;
@@ -1695,7 +1748,7 @@ const chk_all_set_field = function(fg_msg, fg_chk_price) {
 
     let rtn_val = true, fg_exist_data = false;;
 
-    if(tripType=="2" && $('select[name=nation_srch]').val()=="") {
+    if(g_trip_type=="2" && $('select[name=nation_srch]').val()=="") {
         if(fg_msg) {
             alert("여행지역을 선택해 주십시오.    ");
         }
