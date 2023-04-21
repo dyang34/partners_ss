@@ -4,7 +4,7 @@
         <div class="modal-bg">
             <div class="modal-cont">
 				<div class="title">
-					<h2>여행종류</h2>
+					<h2>해외여행 시 유의 사항</h2>
 					<a href="#;" class="close md-close"></a>
 				</div>
 
