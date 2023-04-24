@@ -10,9 +10,9 @@ if (!LoginManager::isUserLogined()) {
     JsUtil::replace("/");
 } else {
 
-    $cnt_trip1_company = count(LoginManager::getUserLoginInfo('arr_trip_1_company'));
-    $cnt_trip2_company = count(LoginManager::getUserLoginInfo('arr_trip_2_company'));
-    $cnt_trip3_company = count(LoginManager::getUserLoginInfo('arr_trip_3_company'));
+    $cnt_trip1_company = count(LoginManager::getUserLoginInfo('company_type_list')[1]);
+    $cnt_trip2_company = count(LoginManager::getUserLoginInfo('company_type_list')[2]);
+    $cnt_trip3_company = count(LoginManager::getUserLoginInfo('company_type_list')[3]);
 
     if (LoginManager::getUserLoginInfo('mem_type') == "1") {
         JsUtil::replace("/service/contract/inquiry.php");

@@ -172,7 +172,9 @@ class ToursafeMembersDao extends A_Dao
 			."', unix_timestamp())"
 		;
 		
-		return $db->query($sql);
+		$db->query($sql);
+
+		return $db->insert_id;
 	}
 	
 	function update($db, $uq, $key) {

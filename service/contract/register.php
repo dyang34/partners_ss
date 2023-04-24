@@ -17,9 +17,9 @@ $menuNo=[1,0];
 $trip_type = RequestUtil::getParam("trip_type","2");
 
 if($trip_type=="1") {
-    $arr_company_type = LoginManager::getUserLoginInfo('arr_trip_1_company');
+    $arr_company_type = LoginManager::getUserLoginInfo('company_type_list')[1];
 } else {
-    $arr_company_type = LoginManager::getUserLoginInfo('arr_trip_2_company');
+    $arr_company_type = LoginManager::getUserLoginInfo('company_type_list')[2];
 }
 
 if (empty(count($arr_company_type))) {
@@ -27,7 +27,7 @@ if (empty(count($arr_company_type))) {
     exit;
 }
 
-$company_type = RequestUtil::getParam("company_type",$arr_company_type[0]);
+$company_type = RequestUtil::getParam("company_type",$arr_company_type[0]['company_type']);
 
 $now_date = date('Y-m-d');
 
@@ -90,7 +90,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 <?php
         for($i=0;$i<count($arr_company_type);$i++) {
 ?>
-                                <option value="<?=$arr_company_type[$i]?>" <?=$company_type==$arr_company_type[$i]?"selected='selected'":""?>><?=$arrInsuranceCompany[$arr_company_type[$i]]?></option>
+                                <option value="<?=$arr_company_type[$i]['company_type']?>" <?=$company_type==$arr_company_type[$i]['company_type']?"selected='selected'":""?>><?=$arrInsuranceCompany[$arr_company_type[$i]['company_type']]?></option>
 <?
     }
 ?>
@@ -954,6 +954,7 @@ $(document).ready(function() {
     // 여행종류 변경.
     $(document).on('change','input[name=trip_type]',function() {
 
+        // 멀티보험사 지원 버전으로 변경. → 향후 여행종류 변경 버전 적용 시 : trip_type change event 발생 시 보험사 변경되어야 함. 또한 보험사에 따른 여행지역도 변경되어야 함.
         if($(this).val()=="1") {
 
             $('div[name=div_nation_1]').show();

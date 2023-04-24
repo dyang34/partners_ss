@@ -7,6 +7,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/UpdateQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersMgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersManagerMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersCompanyMappingMgr.php";
 
 $rtnUrl = RequestUtil::getParam("rtnUrl", "");
 $mode = RequestUtil::getParam("mode", "");
@@ -73,10 +74,11 @@ if($mode=="login"){
         $row_session["com_name"] = $row["com_name"];
         $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
         $row_session["mem_type"] = $row["mem_type"];
+/*        
         $row_session["arr_trip_1_company"] = array_filter(explode(',', $row["trip_1_company"]));
         $row_session["arr_trip_2_company"] = array_filter(explode(',', $row["trip_2_company"]));
         $row_session["arr_trip_3_company"] = array_filter(explode(',', $row["trip_3_company"]));
-
+*/
         $arr_manager = array();
         array_push($arr_manager, array(
             "idx"=>"0"
@@ -105,6 +107,26 @@ if($mode=="login"){
         }
 
         $row_session["manager_list"] = $arr_manager;
+
+        $arr_company = array(array(), array(), array(), array());
+        $wq_company = new WhereQuery(true, true);
+        $wq_company->addAndString("uid", "=", $row["uid"]);
+        $wq_company->addOrderBy("trip_type", "asc");
+        $wq_company->addOrderBy("sort", "desc");
+        $rs_company = ToursafeMembersCompanyMappingMgr::getInstance()->getList($wq_company);
+
+        if($rs_company->num_rows > 0) {
+            for($i=0;$i<$rs_company->num_rows;$i++) {
+                $row_company = $rs_company->fetch_assoc();
+
+                array_push($arr_company[$row_company['trip_type']], array(
+                    "company_type"=>$row_company['company_type']
+                    ,"com_percent"=>$row_company['com_percent']
+                ));
+            }
+        }
+
+        $row_session["company_type_list"] = $arr_company;
 
         LoginManager::setUserLogin($row_session);
 
@@ -152,17 +174,24 @@ if($mode=="login"){
         $row_session["com_name"] = $row["com_name"];
         $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
         $row_session["mem_type"] = $row["mem_type"];
+/*        
         $row_session["arr_trip_1_company"] = array_filter(explode(',', $row["trip_1_company"]));
         $row_session["arr_trip_2_company"] = array_filter(explode(',', $row["trip_2_company"]));
         $row_session["arr_trip_3_company"] = array_filter(explode(',', $row["trip_3_company"]));
+*/
+        $arr_manager = array();
+        array_push($arr_manager, array(
+            "idx"=>"0"
+            ,"manager_id"=>$row["uid"]
+            ,"name"=>$row["manager_name"]
+        ));
 
         $wq_manager = new WhereQuery(true, true);
         $wq_manager->addAndString("uid", "=", $row["uid"]);
         $wq_manager->addAndString2("fg_del", "=", "0");
-        $wq_manager->addOrderBy("sort", "desc");
+        $wq_manager->addOrderBy("sort", "asc");
         $rs_manager = ToursafeMembersManagerMgr::getInstance()->getList($wq_manager);
 
-        $arr_manager = array();
         if($rs_manager->num_rows > 0) {
             for($i=0;$i<$rs_manager->num_rows;$i++) {
                 $row_manager = $rs_manager->fetch_assoc();
@@ -179,13 +208,33 @@ if($mode=="login"){
 
         $row_session["manager_list"] = $arr_manager;
 
+        $arr_company = array(array(), array(), array(), array());
+        $wq_company = new WhereQuery(true, true);
+        $wq_company->addAndString("uid", "=", $row["uid"]);
+        $wq_company->addOrderBy("trip_type", "asc");
+        $wq_company->addOrderBy("sort", "desc");
+        $rs_company = ToursafeMembersCompanyMappingMgr::getInstance()->getList($wq_company);
+
+        if($rs_company->num_rows > 0) {
+            for($i=0;$i<$rs_company->num_rows;$i++) {
+                $row_company = $rs_company->fetch_assoc();
+
+                array_push($arr_company[$row_company['trip_type']], array(
+                    "company_type"=>$row_company['company_type']
+                    ,"com_percent"=>$row_company['com_percent']
+                ));
+            }
+        }
+
+        $row_session["company_type_list"] = $arr_company;
+
         LoginManager::setUserLogin($row_session);
         
         if(!empty($rtnUrl)){
             $rtnUrl = urldecode($rtnUrl);
             
             if(!(strpos($rtnUrl, "http://") !== false || strpos($rtnUrl, "https://") !== false) )
-                $rtnUrl = "https://".$_SERVER[SERVER_NAME].$rtnUrl;
+                $rtnUrl = "http://".$_SERVER[SERVER_NAME].$rtnUrl;
         } else {
             $rtnUrl = "./branch.php";
         }

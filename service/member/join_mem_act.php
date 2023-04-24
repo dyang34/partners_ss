@@ -9,6 +9,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/UpdateQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersMgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersManagerMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersCompanyMappingMgr.php";
 
 header("Cache-Control:no-cache");
 header("Pragma:no-cache");
@@ -123,7 +124,19 @@ try {
         $arrIns["file_name"] = "/home".$newWebPath.$newFileName;
         $arrIns["com_percent"] = "0";
         
-        ToursafeMembersMgr::getInstance()->add($arrIns);
+        $member_no = ToursafeMembersMgr::getInstance()->add($arrIns);
+
+        $arrIns = array();
+        $arrIns["uid"] = $uid;
+        $arrIns["member_no"] = $member_no;
+        $arrIns["trip_type"] = "1";
+        $arrIns["company_type"] = "5";
+        $arrIns["com_percent"] = "0";
+        $arrIns["sort"] = "0";
+        ToursafeMembersCompanyMappingMgr::getInstance()->add($arrIns);
+
+        $arrIns["trip_type"] = "2";
+        ToursafeMembersCompanyMappingMgr::getInstance()->add($arrIns);
 
         JsUtil::alertReplace("등록되었습니다.    ", "/");
     } else if($mode=="UPD") {
