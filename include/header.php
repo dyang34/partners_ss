@@ -8,9 +8,9 @@ if (!LoginManager::isUserLogined()) {
 }
 */
 
-$trip_1_company_show = count(LoginManager::getUserLoginInfo('arr_trip_1_company'));
-$trip_2_company_show = count(LoginManager::getUserLoginInfo('arr_trip_2_company'));
-$trip_3_company_show = count(LoginManager::getUserLoginInfo('arr_trip_3_company'));
+$CONFIG__TRIP1_COMPANY_LIST = count(LoginManager::getUserLoginInfo('arr_trip_1_company'));
+$CONFIG__TRIP2_COMPANY_LIST = count(LoginManager::getUserLoginInfo('arr_trip_2_company'));
+$CONFIG__TRIP3_COMPANY_LIST = count(LoginManager::getUserLoginInfo('arr_trip_3_company'));
 
 include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
 ?>
@@ -22,24 +22,24 @@ include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
             <nav>                
                 <ul class="clearfix inb">
 <?php
-    if (!empty($trip_1_company_show) || !empty($trip_2_company_show) || !empty($trip_3_company_show)) {
+    if (!empty($CONFIG__TRIP1_COMPANY_LIST) || !empty($CONFIG__TRIP2_COMPANY_LIST) || !empty($CONFIG__TRIP3_COMPANY_LIST)) {
 ?>
-                    <li class="<?=($menuNo[0]==1)?"active":""?>"><a href="/service/contract/<?=!empty($trip_2_company_show)?"register.php?trip_type=2":(!empty($trip_1_company_show)?"register.php?trip_type=1":"register_long.php?trip_type=3")?>">보험 가입</a>
+                    <li class="<?=($menuNo[0]==1)?"active":""?>"><a href="/service/contract/<?=!empty($CONFIG__TRIP2_COMPANY_LIST)?"register.php?trip_type=2":(!empty($CONFIG__TRIP1_COMPANY_LIST)?"register.php?trip_type=1":"register_long.php?trip_type=3")?>">보험 가입</a>
                         <ul id="submenu">
 <?php
-        if (!empty($trip_1_company_show)) {
+        if (!empty($CONFIG__TRIP1_COMPANY_LIST)) {
 ?>
                             <li><a href="/service/contract/register.php?trip_type=1"><?=$arrTripType[1]?></a></li>
 <?php
         }
 
-        if (!empty($trip_2_company_show)) {
+        if (!empty($CONFIG__TRIP2_COMPANY_LIST)) {
 ?>        
                             <li><a href="/service/contract/register.php?trip_type=2"><?=$arrTripType[2]?></a></li>
 <?php
         }
 
-        if (!empty($trip_3_company_show)) {
+        if (!empty($CONFIG__TRIP3_COMPANY_LIST)) {
 ?>        
                             <li><a href="/service/contract/register_long.php?trip_type=3">해외장기체류</a></li>
 <?php
