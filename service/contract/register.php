@@ -9,15 +9,25 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/nation/NationMgr.php";
 if (!LoginManager::isUserLogined()) {
     //    JsUtil::alertBack("비정상적인 접근입니다. (ErrCode:0x05)    ");
     JsUtil::alertReplace("로그인이 필요합니다.    ","/");
+    exit;
 }
 
 $menuNo=[1,0];
 
 $trip_type = RequestUtil::getParam("trip_type","2");
-$company_type = RequestUtil::getParam("company_type","");
-if(empty($company_type)) {
-    $company_type = LoginManager::getUserLoginInfo("company_type");
+
+if($trip_type=="1") {
+    $arr_company_type = LoginManager::getUserLoginInfo('arr_trip_1_company');
+} else {
+    $arr_company_type = LoginManager::getUserLoginInfo('arr_trip_2_company');
 }
+
+if (empty(count($arr_company_type))) {
+    JsUtil::alertReplace("비정상적인 접근입니다. (ErrCode:0x05)    ","/");
+    exit;
+}
+
+$company_type = RequestUtil::getParam("company_type",$arr_company_type[0]);
 
 $now_date = date('Y-m-d');
 
@@ -52,7 +62,6 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 <form name="writeForm" id="writeForm" method="post" autocomplete="off">
     <input type="hidden" name="auto_defense" />
     <input type="hidden" name="term_day" />
-    <input type="hidden" name="company_type" value="<?=$company_type?>" />
     <div class="search-basic-wrap">
         <h2>기본정보</h2>
         <table class="table-search">
@@ -68,23 +77,28 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                 <tr>
                     <th>보험사 <em class="bulStyle1">*</em></th>
                     <td>
-<?php/*                        
+<?php
+    if (count($arr_company_type) < 2) {
+?>
                         <input type="text" class="input-search" readonly value="<?=$arrInsuranceCompany[$company_type]?>">
-*/?>                        
-
+                        <input type="hidden" name="company_type" value="<?=$company_type?>" />
+<?php
+    } else {
+?>                        
                         <div class="select-box">
                             <select name="company_type">
 <?php
-//                                for($i=0;$i<count($arrManager);$i++) {
+        for($i=0;$i<count($arr_company_type);$i++) {
 ?>
-                                <option value="<?=$company_type?>" <?=$company_type=="5"?"selected='selected'":""?>><?=$arrInsuranceCompany[$company_type]?></option>
+                                <option value="<?=$arr_company_type[$i]?>" <?=$company_type==$arr_company_type[$i]?"selected='selected'":""?>><?=$arrInsuranceCompany[$arr_company_type[$i]]?></option>
 <?
-//                                }
+    }
 ?>
                             </select>
                         </div>
-
-
+<?php
+    }
+?>
                     </td>
 
                     <th>계약 담당자 <em class="bulStyle1">*</em></th>                    
@@ -117,7 +131,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     </td>
 
                     <th>청약일</th>
-                    <td><input type="text"  class="input-search" name="" id="" readonly value="<?=$now_date?>"></td>
+                    <td><input type="text"  class="input-search" name="" id="" readonly value="<?=$now_date?>" tabindex="-1"></td>
                 </tr>
             </tbody>
         </table>
@@ -926,14 +940,14 @@ $(document).ready(function() {
     // 여행종류 변경.
     $(document).on('change','select[name=company_type]',function() {
 
-        alert($(this).val());
-
-        //location.href = 'register.php?company_type='+$(this).val();
-
+        location.href = "register.php?trip_type="+g_trip_type+"&company_type="+$(this).val();
+/*
+        g_company_type = $(this).val();
+        g_member_no = ;
         get_plan_repre_list($(this).val(), g_member_no, g_trip_type);
         chg_member_plan(0, 200);
         calc_price(fg_auto_calc);
-
+*/
         return false;
     });
 
