@@ -4,7 +4,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/include/common.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/admin/ToursafeMembersCompanyMappingMgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/contract/HanaPlanMgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/contract/HanaPlanMemberMgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/contract/HanaPlanChangeMgr.php";
@@ -128,7 +128,11 @@ if(!empty($join_name)) {
 		}
 	}
 
-	$row = ToursafeMembersMgr::getInstance()->getByKey($__CONFIG_MEMBER_NO);
+	$wq = new WhereQuery(true, true);
+	$wq->addAndString("member_no","=",$__CONFIG_MEMBER_NO);
+	$wq->addAndString("company_type","=",$company_type);
+	$wq->addAndString("trip_type","=",$trip_type);
+	$row = ToursafeMembersCompanyMappingMgr::getInstance()->getFirst($wq);
 
 	$arrChangeIns = array();
 	$arrChangeIns["hana_plan_no"] = $hana_plan_no;
