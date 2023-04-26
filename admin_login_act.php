@@ -74,11 +74,7 @@ if($mode=="login"){
         $row_session["com_name"] = $row["com_name"];
         $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
         $row_session["mem_type"] = $row["mem_type"];
-/*        
-        $row_session["arr_trip_1_company"] = array_filter(explode(',', $row["trip_1_company"]));
-        $row_session["arr_trip_2_company"] = array_filter(explode(',', $row["trip_2_company"]));
-        $row_session["arr_trip_3_company"] = array_filter(explode(',', $row["trip_3_company"]));
-*/
+
         $arr_manager = array();
         array_push($arr_manager, array(
             "idx"=>"0"
@@ -174,11 +170,7 @@ if($mode=="login"){
         $row_session["com_name"] = $row["com_name"];
         $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
         $row_session["mem_type"] = $row["mem_type"];
-/*        
-        $row_session["arr_trip_1_company"] = array_filter(explode(',', $row["trip_1_company"]));
-        $row_session["arr_trip_2_company"] = array_filter(explode(',', $row["trip_2_company"]));
-        $row_session["arr_trip_3_company"] = array_filter(explode(',', $row["trip_3_company"]));
-*/
+
         $arr_manager = array();
         array_push($arr_manager, array(
             "idx"=>"0"
