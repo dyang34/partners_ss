@@ -108,7 +108,7 @@ if($mode=="login"){
         $wq_company = new WhereQuery(true, true);
         $wq_company->addAndString("uid", "=", $row["uid"]);
         $wq_company->addOrderBy("trip_type", "asc");
-        $wq_company->addOrderBy("sort", "desc");
+        $wq_company->addOrderBy("sort", "asc");
         $rs_company = ToursafeMembersCompanyMappingMgr::getInstance()->getList($wq_company);
 
         if($rs_company->num_rows > 0) {
@@ -204,7 +204,7 @@ if($mode=="login"){
         $wq_company = new WhereQuery(true, true);
         $wq_company->addAndString("uid", "=", $row["uid"]);
         $wq_company->addOrderBy("trip_type", "asc");
-        $wq_company->addOrderBy("sort", "desc");
+        $wq_company->addOrderBy("sort", "asc");
         $rs_company = ToursafeMembersCompanyMappingMgr::getInstance()->getList($wq_company);
 
         if($rs_company->num_rows > 0) {
