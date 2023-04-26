@@ -42,6 +42,8 @@ if($company_type=="2") {
     $wq->addAndString("use_type_meritz","=","1");
 } else if($company_type=="3") {
     $wq->addAnd2("(use_type='Y' or no in ('512', '508', '509', '487')) ");
+} else if($company_type=="5") {
+    $wq->addAnd2("(use_type='Y' or no in ('509')) ");
 } else {
     $wq->addAndString("use_type","=","Y");
 }

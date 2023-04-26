@@ -48,7 +48,19 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 
             <div class="btn-right-wrap">
                 <!-- <a id="three" class="button blue btn-enrl-cnfr">가입 확인서</a> -->
-                <a class="button blue" onclick="openPopup()">가입 확인서</a>
+<?php
+    if($row["company_type"]=="5") {
+?>        
+                <a class="button blue" onclick="openPopup(1)">가입 확인서</a>
+                <a class="button blue cfm_type2" onclick="openPopup(2)">통합 확인서(영문, 국문)</a>
+<?php
+    } else {
+?>        
+                <a class="button blue" onclick="openPopup(1)">가입 확인서</a>
+                <a class="button blue" onclick="openPopup(2)">영문 확인서</a>
+<?php
+    }
+?>                
             </div>
         </div>
         
@@ -124,14 +136,14 @@ if ($rs->num_rows > 0) {
   <!-- 신쳥내역 상세 end -->
 
 <script type="text/javascript">
-    function openPopup(){
+    function openPopup(p_trip_type){
         var _width = '750';
         var _height = '750';
         // 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
         var _left = Math.ceil(( window.screen.width - _width )/2);
         var _top = Math.ceil(( window.screen.height - _height )/2);
 
-        window.open('/service/modal/report_confirm.php?company_type=<?=$row["company_type"]?>&hana_plan_no=<?=$hana_plan_no?>', 'cnfrm', 'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top );
+        window.open('/service/modal/report_confirm.php?trip_type='+p_trip_type+'&company_type=<?=$row["company_type"]?>&hana_plan_no=<?=$hana_plan_no?>', 'cnfrm', 'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top );
     }
 </script>
 
