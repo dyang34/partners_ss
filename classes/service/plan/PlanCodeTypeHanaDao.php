@@ -18,7 +18,7 @@ class PlanCodeTypeHanaDao extends A_Dao
 
 	function selectByKey($db, $key) {
 		 
-		$sql =" select no,member_no,trip_type,plan_type,title,content,title_old,company_type "
+		$sql =" select no,member_no,trip_type,plan_type,title,content,title_old,company_type, title_eng "
 			 ." from plan_code_type_hana "
 			 ." where no = ".$this->quot($db, $key)
 		 	 ;
@@ -36,7 +36,7 @@ class PlanCodeTypeHanaDao extends A_Dao
 
 	function selectFirst($db, $wq) {
 
-		$sql =" select no,member_no,trip_type,plan_type,title,content,title_old,company_type "
+		$sql =" select no,member_no,trip_type,plan_type,title,content,title_old,company_type, title_eng "
 			 ." from plan_code_type_hana"
 			 .$wq->getWhereQuery()
 			 .$wq->getOrderByQuery()
@@ -56,7 +56,7 @@ class PlanCodeTypeHanaDao extends A_Dao
 
 	function select($db, $wq) {
 	    
-	    $sql =" select no,member_no,trip_type,plan_type,title,content,title_old,company_type "
+	    $sql =" select no,member_no,trip_type,plan_type,title,content,title_old,company_type, title_eng "
 	         ." from plan_code_type_hana"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -67,7 +67,7 @@ class PlanCodeTypeHanaDao extends A_Dao
 	
 	function selectPerPage($db, $wq, $pg) {
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
-			."		select @rnum:=0, no,member_no,trip_type,plan_type,title,content,title_old,company_type "
+			."		select @rnum:=0, no,member_no,trip_type,plan_type,title,content,title_old,company_type, title_eng "
 			." 		from plan_code_type_hana a "
 			." 		INNER JOIN ( "
 	        ."			select no as idx from plan_code_type_hana a "

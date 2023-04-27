@@ -78,7 +78,7 @@ for($i=0;$i<$rs->num_rows;$i++) {
 		$arrPlanTypeCompanyList = array();
 	}
 	
-	$arrPlanTypeTripType[$row['plan_type']] = ["title"=>$row['title'], "content"=>$row['content']];
+	$arrPlanTypeTripType[$row['plan_type']] = ["title"=>$row['title'], "title_eng"=>$row['title_eng'], "content"=>$row['content']];
 
 	$prevCompanyType = $row['company_type'];
 	$prevMemberNo = $row['member_no'];
