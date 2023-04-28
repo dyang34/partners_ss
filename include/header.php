@@ -22,7 +22,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
             <nav>                
                 <ul class="clearfix inb">
 <?php
-    if (!empty($cnt_trip1_company) || !empty($cnt_trip2_company) || !empty($cnt_trip3_company)) {
+    if ((!empty($cnt_trip1_company) || !empty($cnt_trip2_company) || !empty($cnt_trip3_company)) && LoginManager::getUserLoginInfo('mem_type') == "2") {
 ?>
                     <li class="<?=($menuNo[0]==1)?"active":""?>"><a href="/service/contract/<?=!empty($cnt_trip2_company)?"register.php?trip_type=2":(!empty($cnt_trip1_company)?"register.php?trip_type=1":"register_long.php?trip_type=3")?>">보험 가입</a>
                         <ul id="submenu">
