@@ -249,7 +249,7 @@ const check_hour_max = function() {
     //console.log(maxdate+" "+sthour+" "+edhour);
     if(!cutMaxTripday(stdate, enddate, max_month, sthour, edhour, g_trip_type)){ // maxdate
         if(g_trip_type == "2"){
-            alert('단기해외여행자보험은 최대 3개월까지 가입가능합니다. 3개월 이상 가입 신청 시 유학(장기체류)보험으로 신청해주세요.');
+            alert('단기해외여행자보험은 최대 3개월까지 가입가능합니다. 3개월 초과 가입 신청 시 [해외장기체류] 보험으로 신청해주세요.');
         } else {
             alert('단기국내여행자보험은 최대 1개월까지 가입가능합니다.');
         }
