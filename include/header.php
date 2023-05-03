@@ -41,7 +41,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
 
         if (!empty($cnt_trip3_company)) {
 ?>        
-                            <li><a href="/service/contract/register_long.php?trip_type=3">해외장기체류</a></li>
+                            <li><a href="/service/contract/register_l2.php?trip_type=3">해외장기체류</a></li>
 <?php
         }
 ?>
