@@ -67,7 +67,7 @@ if(window.location.protocol == "http:"){
     <div class="login-wrap">
         <div class="login-cont-box">
             <div class="info-box-left">
-                <h1><img src="/img/common/logo-toursafe.png" alt="투어세이프 로고"></h1>
+                <h1><img src="/img/common/toursafe-logo-white.png" alt="투어세이프 로고"></h1>
                 <div class="rgstr-guide-wrpa">
                     <div class="rgstr-guide">
                         <strong>가입안내</strong>

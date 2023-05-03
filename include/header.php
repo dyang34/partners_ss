@@ -18,7 +18,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/head.php";
 <!-- Header start -->
     <header>
         <div class="head-wrap">
-            <h1><a href="/branch.php"><img src="/img/common/logo-toursafe.png" alt="투어세이프 로고"></a></h1>
+            <h1><a href="/branch.php"><img src="/img/common/toursafe-logo-white.png" alt="투어세이프 로고"></a></h1>
             <nav>                
                 <ul class="clearfix inb">
 <?php
