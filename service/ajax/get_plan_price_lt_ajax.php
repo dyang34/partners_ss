@@ -65,9 +65,9 @@ if ( $totalday <= 0) {
 	exit;
 }
 
-if ( $totalday > 92) {
+if ( $totalday < 91) {
 	$rtnVal['RESULTCD'] = "902";
-	$rtnVal['RESULTMSG'] = "3개월 이내만 가입 가능합니다.";
+	$rtnVal['RESULTMSG'] = "3개월 초과만 가입 가능합니다.";
 	echo json_encode($rtnVal);
 	exit;
 }
