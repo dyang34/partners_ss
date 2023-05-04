@@ -13,7 +13,7 @@ $arrInsuranceCompany = [
 $arrTripType = [
     1=>"국내여행",
     2=>"해외여행",
-    3=>"장기여행"
+    3=>"해외장기체류"
 ];
 
 $arrCalTypeTitle = [[],["일반"],["주니어","성인"],["주니어","성인","시니어"],["주니어","성인","시니어1","시니어2"]];
@@ -37,4 +37,6 @@ $arrPlanChageStateText = [
 ];
 
 $arrPlanStateUpdatable = [1,2,4,5,6];
+
+$default_plan_join_code_samsung = "82370000077185";
 ?>

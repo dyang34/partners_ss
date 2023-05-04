@@ -133,7 +133,7 @@ for($i=0;$i<count($arrMember);$i++) {
                                     <th>Type of Insurance</th>
                                     <td>Overseas Traveler's Medical Expenses Insurance</td>
                                     <th>Policy Number</th>
-                                    <td><?=!empty($row["plan_join_code"])?$row["plan_join_code"]:$row["plan_join_code_replace"]?></td>
+                                    <td><?=!empty($row["plan_join_code"])?$row["plan_join_code"]:($__CONFIG_COMPANY_TYPE=="5"?$default_plan_join_code_samsung:$row["plan_join_code_replace"])?></td>
                                 </tr>
                                 <tr>
                                     <th>Insured</th>
