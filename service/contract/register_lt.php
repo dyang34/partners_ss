@@ -14,13 +14,9 @@ if (!LoginManager::isUserLogined()) {
 
 $menuNo=[1,0];
 
-$trip_type = RequestUtil::getParam("trip_type","2");
+$trip_type = RequestUtil::getParam("trip_type","3");
 
-if($trip_type=="1") {
-    $arr_company_type = LoginManager::getUserLoginInfo('company_type_list')[1];
-} else {
-    $arr_company_type = LoginManager::getUserLoginInfo('company_type_list')[2];
-}
+$arr_company_type = LoginManager::getUserLoginInfo('company_type_list')[3];
 
 if (empty(count($arr_company_type))) {
     JsUtil::alertReplace("비정상적인 접근입니다. (ErrCode:0x05)    ","/");
@@ -154,7 +150,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             </colgroup>
             <tbody>
                 <tr>
-                    <th>여행종류 <em class="bulStyle1">*</em><a class="btn-travel-type" name="icon_trip_type_2" motion="three" style="<?=$trip_type=="1"?"display:none;":""?>"><i class="icon-question"></i></a></th>
+                    <th>여행종류 <em class="bulStyle1">*</em><a class="btn-travel-type" name="icon_trip_type_2" motion="three"><i class="icon-question"></i></a></th>
                     <td>
 <?php
     if($_GET["fg_trip_type_show"]=="Y") {
@@ -180,11 +176,8 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 
                     </td>
 
-                    <th>여행지역 <em class="bulStyle1">*</em><a class="btn-travel-area" name="icon_trip_type_2" motion="three" style="<?=$trip_type=="1"?"display:none;":""?>"><i class="icon-globe"></i></a></th>   
+                    <th>여행지역 <em class="bulStyle1">*</em><a class="btn-travel-area" name="icon_trip_type_2" motion="three"><i class="icon-globe"></i></a></th>   
                     <td class="nation">
-<?php
-    if($trip_type=="2") {
-?>
                         <div name="div_nation_2">
                             <select name="nation_srch" class="sel_item" >
                                 <option value="">여행지역 선택</option>
@@ -197,10 +190,6 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 ?>
                             </select>
                         </div>
-<?php
-    }
-?>
-                        <div name="div_nation_1" class="tbl-div" style="<?=$trip_type=="2"?"display:none;":""?>">국내일원</div>
                         <input type="hidden" name="nation" value=""/>
                     </td>
 
