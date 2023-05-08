@@ -15,6 +15,12 @@ if (!LoginManager::isUserLogined()) {
 $menuNo=[1,0];
 
 $trip_type = RequestUtil::getParam("trip_type","3");
+$CONFIG_PLAN_FILE_TRIP_TYPE = $trip_type;
+
+if ($trip_type!="3") {
+    JsUtil::alertReplace("비정상적인 접근입니다. (ErrCode:0x04)    ","/");
+    exit;
+}
 
 $arr_company_type = LoginManager::getUserLoginInfo('company_type_list')[3];
 
@@ -602,22 +608,15 @@ $(document).ready(function() {
                         $("#end_date").val("");
                     }
 
-                    if (g_trip_type=='2') {
-                        //$("#end_date").datepicker( "option", "maxDate", new Date(Date.parse(selectedDate) + (1000 * 60 * 60 * 24 * 90)) );
-                        settingDate = new Date(Date.parse(treemonthcal(selectedDate, '3')));
-                        settingDate.setDate(settingDate.getDate()-1);
-                    } else {
-                        //$("#end_date").datepicker( "option", "maxDate", new Date(Date.parse(selectedDate) + (1000 * 60 * 60 * 24 * 30)) );
-                        settingDate = new Date(Date.parse(treemonthcal(selectedDate, '1')));
-                        settingDate.setDate(settingDate.getDate()-1);
-                    }
-
+                    settingDate = new Date(Date.parse(treemonthcal(selectedDate, '12')));
+                    settingDate.setDate(settingDate.getDate()-1);
+                    
                     if($("#end_date").val() && $("#end_date").val() > dateFormat(settingDate)) {
                         $("#end_date").val("");
                     }
 
                     $("#end_date").datepicker("enable");
-                    $("#end_date").datepicker("option", "minDate", new Date(Date.parse(selectedDate)) );
+                    $("#end_date").datepicker("option", "minDate", new Date(Date.parse(treemonthcal(selectedDate, '3'))) );
                     $("#end_date").datepicker("option", "maxDate", settingDate);
                 }
             }
@@ -1584,7 +1583,7 @@ const get_member_price = function(p_company_type, p_member_no, p_trip_type, p_pl
     if(checkValidDate(p_start_date) && checkValidDate(p_end_date) && p_start_date <= p_end_date) {
         $.ajax({
             type : "POST",
-            url : "/service/ajax/get_plan_price_ajax.php",
+            url : "/service/ajax/get_plan_price_lt_ajax.php",
             data : { 'company_type' : p_company_type , 'member_no' : p_member_no, 'trip_type' : p_trip_type, 'plan_code' : p_plan_code, 'gender' : p_gender, 'age' : p_age, 'start_date' : p_start_date, 'end_date' : p_end_date },
             dataType : 'json',
             async : false,
@@ -1662,7 +1661,7 @@ const calc_price = function(fg_process) {
 //            data += "&company_type="+g_company_type+"&member_no="+g_member_no+"&start_date="+$('input[name=start_date]').val()+"&end_date="+$('input[name=end_date]').val();
             $.ajax({
                 type : "POST",
-                url : "/service/ajax/get_plan_price_arr_ajax.php",
+                url : "/service/ajax/get_plan_price_lt_arr_ajax.php",
 //                data : data,
                 data : { 'company_type' : g_company_type , 'member_no' : g_member_no, 'trip_type' : g_trip_type, 'plan_code' : p_plan_code, 'gender' : p_gender, 'age' : p_age, 'start_date' : $('input[name=start_date]').val(), 'end_date' : $('input[name=end_date]').val() },
                 dataType : 'json',

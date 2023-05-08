@@ -3,10 +3,10 @@ require_once $_SERVER['DOCUMENT_ROOT']."/include/common.php";
 
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_array.php";
 
 $CONFIG_PLAN_FILE_TRIP_TYPE = RequestUtil::getParam("trip_type","");
 
+require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_array.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_price_array.php";
 
 if(!LoginManager::isUserLogined()) {
@@ -56,9 +56,9 @@ if ( $totalday <= 0) {
 	exit;
 }
 
-if ( $totalday > 92) {
-	$rtnVal['RESULTCD'] = "902";
-	$rtnVal['RESULTMSG'] = "3개월 이내만 가입 가능합니다.";
+if ( $totalday < 90) {
+	$rtnVal['RESULTCD'] = "904";
+	$rtnVal['RESULTMSG'] = "3개월 초과만 가입 가능합니다.";
 	echo json_encode($rtnVal);
 	exit;
 }
