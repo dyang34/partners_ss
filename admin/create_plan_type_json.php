@@ -5,13 +5,11 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/plan/PlanCodeTypeHanaMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/plan/PlanCodeTypeLongTermMgr.php";
 
 $company_type = RequestUtil::getParam("company_type", "");
 $p_member_no = RequestUtil::getParam("member_no", "");
 $member_no = "";
-
-$arrPlanTypeList = $arrPlanTypeCompanyList = $arrPlanTypeMemberList = $arrPlanTypeTripType = $arrPlanTypePlanCode = $arrPlanTypeSex = $arrPlanTypeTermDay = array();
-$prevCompanyType = $prevMemberNo = $prevTripType = $prevPlanCode = $prevSex = $prevTermDay = "";
 
 /*
 if(empty($company_type)) {
@@ -103,11 +101,61 @@ $file_name .= ".json";
 
 file_put_contents($file_name, json_encode($arrPlanTypeList));
 
-/*
-echo "<pre>";
-print_r($arrPlanTypeList);
-echo "</pre>";
-*/
+$wq = new WhereQuery(true, true);
+$wq->addAndString("company_type","=",$company_type);
+$wq->addAndString("member_no","=",$member_no);
+$wq->addOrderBy("company_type","asc");
+$wq->addOrderBy("member_no","asc");
+$wq->addOrderBy("trip_type","asc");
+$wq->addOrderBy("cast(replace(plan_type, 'type_', '') AS unsigned)","asc");
+
+$rs = PlanCodeTypeLongTermMgr::getInstance()->getList($wq);
+
+$arrPlanTypeList = $arrPlanTypeCompanyList = $arrPlanTypeMemberList = $arrPlanTypeTripType = $arrPlanTypePlanType = array();
+$prevCompanyType = $prevMemberNo = $prevTripType = "";
+
+for($i=0;$i<$rs->num_rows;$i++) {
+	$row = $rs->fetch_assoc();
+
+	if(($prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevTripType!="") {
+		$arrPlanTypeMemberList[$prevTripType]=$arrPlanTypeTripType;
+		$arrPlanTypeTripType = array();
+	}
+
+	if(($prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevMemberNo!="") {
+		$arrPlanTypeCompanyList[$prevMemberNo]=$arrPlanTypeMemberList;
+		$arrPlanTypeMemberList = array();
+	}
+
+	if($prevCompanyType!=$row['company_type'] && $prevCompanyType!="") {
+		$arrPlanTypeList[$prevCompanyType]=$arrPlanTypeCompanyList;
+		$arrPlanTypeCompanyList = array();
+	}
+	
+	$arrPlanTypeTripType[$row['plan_type']] = ["title"=>$row['title'], "title_eng"=>$row['title_eng'], "content"=>$row['content']];
+
+	$prevCompanyType = $row['company_type'];
+	$prevMemberNo = $row['member_no'];
+	$prevTripType = $row['trip_type'];
+}
+
+$arrPlanTypeMemberList[$prevTripType]=$arrPlanTypeTripType;
+$arrPlanTypeCompanyList[$prevMemberNo]=$arrPlanTypeMemberList;
+$arrPlanTypeList[$prevCompanyType]=$arrPlanTypeCompanyList;
+
+$file_name = $_SERVER['DOCUMENT_ROOT']."/config/"."plan_type_list_3";
+
+if(!empty($company_type)) {
+	$file_name .= "_".$company_type;
+}
+
+if(!empty($p_member_no)) {
+	$file_name .= "_".$p_member_no;
+}
+
+$file_name .= ".json";
+
+file_put_contents($file_name, json_encode($arrPlanTypeList));
 
 echo "Ok!";
 ?>

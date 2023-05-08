@@ -6,6 +6,7 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/util/JsUtil.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/db/WhereQuery.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/plan/PlanCodeHanaMgr.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/plan/PlanCodeLongTermMgr.php";
 
 $company_type = RequestUtil::getParam("company_type", "");
 $p_member_no = RequestUtil::getParam("member_no", "");
@@ -50,7 +51,7 @@ $wq->addAndString("member_no","=",$member_no);
 $rs = PlanCodeHanaMgr::getInstance()->getReprePlanList($wq);
 
 $arrPlanList = $arrPlanCompanyList = $arrPlanMemberList = $arrPlanTripType = $arrPlanPlanType = $arrPlanCalType= array();
-$prevCompanyType = $prevMemberNo = $prevTripType = $prevPlanType = $prevPlanRepreTitle = "";
+$prevCompanyType = $prevMemberNo = $prevTripType = $prevPlanType = $prevCalType = $prevPlanRepreTitle = "";
 
 for($i=0;$i<$rs->num_rows;$i++) {
 	$row = $rs->fetch_assoc();
@@ -80,7 +81,7 @@ for($i=0;$i<$rs->num_rows;$i++) {
 	$prevCompanyType = $row['company_type'];
 	$prevMemberNo = $row['member_no'];
 	$prevTripType = $row['trip_type'];
-	$prevPlanType = $row['plan_type'];
+//	$prevPlanType = $row['plan_type'];
 }
 
 //$arrPlanTripType[$prevPlanType]['planRepreTitle']=$prevPlanRepreTitle;
@@ -115,6 +116,9 @@ $wq->addOrderBy("cal_type","asc");
 $wq->addOrderBy("plan_type","asc");
 $wq->addOrderBy("sort","asc");
 $rs = PlanCodeHanaMgr::getInstance()->getList($wq);
+
+$arrPlanList = $arrPlanCompanyList = $arrPlanMemberList = $arrPlanTripType = $arrPlanPlanType = $arrPlanCalType= array();
+$prevCompanyType = $prevMemberNo = $prevTripType = $prevPlanType = $prevCalType = $prevPlanRepreTitle = "";
 
 for($i=0;$i<$rs->num_rows;$i++) {
 	$row = $rs->fetch_assoc();
@@ -178,7 +182,6 @@ $file_name .= ".json";
 
 file_put_contents($file_name, json_encode($arrPlanList));
 
-
 /*
 $fp = fopen($file_name, 'cw');
 if(is_array($arrPlanList)) {
@@ -186,10 +189,143 @@ if(is_array($arrPlanList)) {
 }
 fclose($fp);
 */
+
+$wq = new WhereQuery(true, true);
+$wq->addAndString("company_type","=",$company_type);
+$wq->addAndString("member_no","=",$member_no);
+$rs = PlanCodeLongTermMgr::getInstance()->getReprePlanList($wq);
+
+$arrPlanList = $arrPlanCompanyList = $arrPlanMemberList = $arrPlanTripType = $arrPlanPlanType = $arrPlanCalType= array();
+$prevCompanyType = $prevMemberNo = $prevTripType = $prevPlanType = $prevCalType = $prevPlanRepreTitle = "";
+
+for($i=0;$i<$rs->num_rows;$i++) {
+	$row = $rs->fetch_assoc();
+
+	if(($prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevTripType!="") {
+		$arrPlanMemberList[$prevTripType]=$arrPlanTripType;
+		$arrPlanTripType = array();
+	}
+
+	if(($prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevMemberNo!="") {
+		$arrPlanCompanyList[$prevMemberNo]=$arrPlanMemberList;
+		$arrPlanMemberList = array();
+	}
+
+	if($prevCompanyType!=$row['company_type'] && $prevCompanyType!="") {
+		$arrPlanList[$prevCompanyType]['company_name']=$arrInsuranceCompany[$prevCompanyType];
+		$arrPlanList[$prevCompanyType]['List']=$arrPlanCompanyList;
+		$arrPlanCompanyList = array();
+	}
 /*
-echo "<pre>";
-print_r($arrPlanList);
-echo "</pre>";
+	if($prevPlanType!=$row['cal_type'] || $prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) {
+		$arrPlanPlanType[$row['plan_type']]["List"] = array();
+	}
 */
+	$arrPlanTripType[$row['plan_type']] = $row;
+
+	$prevCompanyType = $row['company_type'];
+	$prevMemberNo = $row['member_no'];
+	$prevTripType = $row['trip_type'];
+//	$prevPlanType = $row['plan_type'];
+}
+
+//$arrPlanTripType[$prevPlanType]['planRepreTitle']=$prevPlanRepreTitle;
+//$arrPlanTripType[$prevPlanType]['List']=$arrPlanPlanType;
+//$arrPlanTripType[$prevPlanType]=$arrPlanPlanType;
+$arrPlanMemberList[$prevTripType]=$arrPlanTripType;
+$arrPlanCompanyList[$prevMemberNo]=$arrPlanMemberList;
+$arrPlanList[$prevCompanyType]['company_name']=$arrInsuranceCompany[$prevCompanyType];
+$arrPlanList[$prevCompanyType]['List']=$arrPlanCompanyList;
+
+$file_name = $_SERVER['DOCUMENT_ROOT']."/config/"."plan_repre_list_3";
+
+if(!empty($company_type)) {
+	$file_name .= "_".$company_type;
+}
+
+if(!empty($p_member_no)) {
+	$file_name .= "_".$p_member_no;
+}
+
+$file_name .= ".json";
+
+file_put_contents($file_name, json_encode($arrPlanList));
+
+$wq = new WhereQuery(true, true);
+$wq->addAndString("company_type","=",$company_type);
+$wq->addAndString("member_no","=",$member_no);
+$wq->addOrderBy("company_type","asc");
+$wq->addOrderBy("member_no","asc");
+$wq->addOrderBy("trip_type","asc");
+$wq->addOrderBy("cal_type","asc");
+$wq->addOrderBy("plan_type","asc");
+$wq->addOrderBy("sort","asc");
+$rs = PlanCodeLongTermMgr::getInstance()->getList($wq);
+
+$arrPlanList = $arrPlanCompanyList = $arrPlanMemberList = $arrPlanTripType = $arrPlanPlanType = $arrPlanCalType= array();
+$prevCompanyType = $prevMemberNo = $prevTripType = $prevPlanType = $prevCalType = $prevPlanRepreTitle = "";
+
+for($i=0;$i<$rs->num_rows;$i++) {
+	$row = $rs->fetch_assoc();
+
+	if(($prevCalType!=$row['cal_type'] || $prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevCalType!="") {
+//		$arrPlanTripType[$prevCalType]['planRepreTitle']=$prevPlanRepreTitle;
+//		$arrPlanTripType[$prevCalType]['List']=$arrPlanCalType;
+		$arrPlanTripType[$prevCalType]=$arrPlanCalType;
+		$arrPlanCalType = array();
+	}
+
+	if(($prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevTripType!="") {
+		$arrPlanMemberList[$prevTripType]=$arrPlanTripType;
+		$arrPlanTripType = array();
+	}
+
+	if(($prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) && $prevMemberNo!="") {
+		$arrPlanCompanyList[$prevMemberNo]=$arrPlanMemberList;
+		$arrPlanMemberList = array();
+	}
+
+	if($prevCompanyType!=$row['company_type'] && $prevCompanyType!="") {
+		$arrPlanList[$prevCompanyType]['company_name']=$arrInsuranceCompany[$prevCompanyType];
+		$arrPlanList[$prevCompanyType]['List']=$arrPlanCompanyList;
+		$arrPlanCompanyList = array();
+	}
+/*
+	if($prevCalType!=$row['plan_type'] || $prevTripType!=$row['trip_type'] || $prevMemberNo!=$row['member_no'] || $prevCompanyType!=$row['company_type']) {
+		$arrPlanCalType[$row['plan_type']]["List"] = array();
+	}
+*/
+//	$arrPlanCalType[$row['plan_type']] = $row;
+	array_push($arrPlanCalType, $row);
+
+	$prevCompanyType = $row['company_type'];
+	$prevMemberNo = $row['member_no'];
+	$prevTripType = $row['trip_type'];
+	$prevCalType = $row['cal_type'];
+//	$prevPlanRepreTitle = $row['plan_repre_title'];
+}
+
+//$arrPlanTripType[$prevCalType]['planRepreTitle']=$prevPlanRepreTitle;
+//$arrPlanTripType[$prevCalType]['List']=$arrPlanCalType;
+$arrPlanTripType[$prevCalType]=$arrPlanCalType;
+$arrPlanMemberList[$prevTripType]=$arrPlanTripType;
+$arrPlanCompanyList[$prevMemberNo]=$arrPlanMemberList;
+$arrPlanList[$prevCompanyType]['company_name']=$arrInsuranceCompany[$prevCompanyType];
+$arrPlanList[$prevCompanyType]['List']=$arrPlanCompanyList;
+
+$file_name = $_SERVER['DOCUMENT_ROOT']."/config/"."plan_list_3";
+
+if(!empty($company_type)) {
+	$file_name .= "_".$company_type;
+}
+
+if(!empty($p_member_no)) {
+	$file_name .= "_".$p_member_no;
+}
+
+$file_name .= ".json";
+
+file_put_contents($file_name, json_encode($arrPlanList));
+
 echo "Ok!";
 ?>
