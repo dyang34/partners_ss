@@ -92,7 +92,7 @@ class HanaPlanChangeDao extends A_Dao
 			." 		ON a.hana_plan_no = b.no "
 					.$wq->getWhereQuery()
 			." 	UNION ALL "
-			." 	SELECT a.company_type, trip_type, change_type, date_format(from_unixtime(a.change_date), '%Y-%m') as job_date, com_percent, 0 AS inq_change_price, change_price AS cancel_change_price, 0 inq_cnt, 1 AS cancel_cnt, round(change_price * com_percent / 100) as commition "
+			." 	SELECT a.company_type, trip_type, change_type, date_format(from_unixtime(case when a.change_date = '' then a.regdate else a.change_date end), '%Y-%m') as job_date, com_percent, 0 AS inq_change_price, change_price AS cancel_change_price, 0 inq_cnt, 1 AS cancel_cnt, round(change_price * com_percent / 100) as commition "
 			." 		FROM hana_plan_change a "
 			." 		LEFT JOIN hana_plan b "
 			." 		ON a.hana_plan_no = b.no "

@@ -21,6 +21,7 @@ $_year_from = RequestUtil::getParam("_year_from", date("Y", strtotime("-1 month"
 $_year_to = RequestUtil::getParam("_year_to", date("Y"));
 $_month_from = RequestUtil::getParam("_month_from", date("m", strtotime("-1 month")));
 $_month_to = RequestUtil::getParam("_month_to", date("m"));
+$_manager_name = RequestUtil::getParam("_manager_name", "");
 
 $date_from = $_year_from.sprintf("-%02d-01", $_month_from);
 if($_month_to=="12") {
@@ -36,14 +37,18 @@ $wq->addAndString("trip_type","=",$_trip_type);
 $wq->addAndString("change_type","=","1");
 $wq->addAndStringBind("a.regdate", ">=", $date_from, "unix_timestamp('?')");
 $wq->addAndStringBind("a.regdate", "<", $date_to, "unix_timestamp('?')");
+$wq->addAndString("manager_name","=",$_manager_name);
 
 $wq_cancel = new WhereQuery(true, true);
 $wq_cancel->addAndString("a.company_type","=",$_company_type);
 $wq_cancel->addAndString("member_no","=",$__CONFIG_MEMBER_NO);
 $wq_cancel->addAndString("trip_type","=",$_trip_type);
 $wq_cancel->addAndString("change_type","=","3");
-$wq_cancel->addAndStringBind("a.change_date", ">=", $date_from, "unix_timestamp('?')");
-$wq_cancel->addAndStringBind("a.change_date", "<", $date_to, "unix_timestamp('?')");
+//$wq_cancel->addAndStringBind("a.change_date", ">=", $date_from, "unix_timestamp('?')");
+//$wq_cancel->addAndStringBind("a.change_date", "<", $date_to, "unix_timestamp('?')");
+$wq_cancel->addAndStringBind("a.regdate", ">=", $date_from, "unix_timestamp('?')");
+$wq_cancel->addAndStringBind("a.regdate", "<", $date_to, "unix_timestamp('?')");
+$wq_cancel->addAndString("manager_name","=",$_manager_name);
 
 $rs = HanaPlanChangeMgr::getInstance()->getListMonthlySummary($wq, $wq_cancel);
 
@@ -54,13 +59,15 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
         <form name="searchForm" method="get" action="calc_list.php">
             <table class="table-search">
                 <colgroup>
-                    <col width="133px">
-                    <col width="370px">
-                    <col width="133px">
-                    <col width="370px">
+                    <col width="7%">
+                    <col width="17%">
+                    <col width="7%">
+                    <col width="17%">
+                    <col width="7%">
+                    <col width="17%">
+                    <col width="7%">
                     <col width="*">
-                    <col width="370px">
-                    <col width="90px">
+                    <col width="5%">
                 </colgroup>
                 <tbody>
                     <tr>
@@ -143,6 +150,30 @@ for($i=1;$i<=count($arrTripType)-1;$i++) {
                                 </select>
                             </div>
                         </td>
+
+                        <th>담당자</th>
+                        <td>
+<?php
+    $arrManager = LoginManager::getUserLoginInfo("manager_list");
+
+    if($arrManager) {
+?>
+                                <div class="select-box">
+                                    <select name="_manager_name">
+                                        <option value="">전체</option>
+<?php
+        for($i=0;$i<count($arrManager);$i++) {
+?>
+                                        <option value="<?=$arrManager[$i]['name']?>" <?=$_manager_name==$arrManager[$i]['name']?"selected":""?>><?=$arrManager[$i]['name']?></option>
+<?
+        }
+?>
+                                    </select>
+                                </div>
+<?php
+}
+?>
+                        </td>                        
                         <td rowspan="1" class="flow-btn"><a class="button search" name="btnSearch">검색</a></td>
                     </tr>
                 </tbody>

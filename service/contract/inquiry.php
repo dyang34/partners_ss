@@ -25,6 +25,7 @@ $_reg_date_from = RequestUtil::getParam("_reg_date_from", date("Y-m-d"));
 $_reg_date_to = RequestUtil::getParam("_reg_date_to", date("Y-m-d"));
 $_name = RequestUtil::getParam("_name", "");
 $_plan_list_state = RequestUtil::getParam("_plan_list_state", "");
+$_manager_name = RequestUtil::getParam("_manager_name", "");
 
 $_order_by = RequestUtil::getParam("_order_by", "a.no");
 $_order_by_asc = RequestUtil::getParam("_order_by_asc", "desc");
@@ -34,6 +35,7 @@ $wq->addAndString("member_no","=",$__CONFIG_MEMBER_NO);
 $wq->addAndStringBind("regdate", ">=", $_reg_date_from, "unix_timestamp('?')");
 $wq->addAndStringBind("regdate", "<", $_reg_date_to, "unix_timestamp(date_add('?', interval 1 day))");
 $wq->addAndString("plan_list_state","=",$_plan_list_state);
+$wq->addAndString("manager_name","=",$_manager_name);
 
 if(!empty($_name)) {
     $wq->addAnd2("no in (select distinct hana_plan_no from hana_plan_member where member_no = '".$__CONFIG_MEMBER_NO."' and name = '".$_name."')");
@@ -68,13 +70,15 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 
                 <table class="table-search">
                     <colgroup>
-                        <col width="133px">
-                        <col width="370px">
-                        <col width="133px">
-                        <col width="370px">
+                        <col width="7%">
+                        <col width="17%">
+                        <col width="7%">
+                        <col width="17%">
+                        <col width="7%">
+                        <col width="17%">
+                        <col width="7%">
                         <col width="*">
-                        <col width="370px">
-                        <col width="90px">
+                        <col width="5%">
                     </colgroup>
                     <tbody>
                         <tr>
@@ -102,12 +106,36 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 <?php
 	foreach($arrPlanStateText as $key => $value) {
 ?>
-                                    <option value="<?=$key?>" <?=$_plan_list_state==$key?"selected":""?>><?=$value?></option>
+                                        <option value="<?=$key?>" <?=$_plan_list_state==$key?"selected":""?>><?=$value?></option>
 <?php
     }
 ?>
                                     </select>
                                 </div>
+                            </td>
+
+                            <th>담당자</th>
+                            <td>
+<?php
+    $arrManager = LoginManager::getUserLoginInfo("manager_list");
+
+    if($arrManager) {
+?>
+                                <div class="select-box">
+                                    <select name="_manager_name">
+                                        <option value="">전체</option>
+<?php
+        for($i=0;$i<count($arrManager);$i++) {
+?>
+                                        <option value="<?=$arrManager[$i]['name']?>" <?=$_manager_name==$arrManager[$i]['name']?"selected":""?>><?=$arrManager[$i]['name']?></option>
+<?
+        }
+?>
+                                    </select>
+                                </div>
+<?php
+}
+?>
                             </td>
 
                             <td rowspan="1" class="flow-btn"><a class="button search" name="btnSearch">검색</a></td>
@@ -144,7 +172,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <thead>
                         <tr>
                             <th rowspan="2">no</th>
-                            <th rowspan="2">보험사</th>
+                            <th>보험사</th>
                             <th rowspan="2">청약일</th>
                             <th rowspan="2">진행상태</th>
 
@@ -163,6 +191,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                             <th rowspan="2">수정요청</th>
                         </tr>
                         <tr>
+                            <th>담당자</th>
                             <th>여행종료일</th>
                             <th>추가정보2</th>
                         </tr>
@@ -183,7 +212,7 @@ if ($rs->num_rows > 0) {
                         <tr>
                         
                             <td rowspan="2"><?=number_format($pg->getMaxNumOfPage() - $i)?></td><!-- no -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=$arrInsuranceCompany[$row["company_type"]]?></a></td><!-- 보험사 -->
+                            <td><a href="<?=$link_url?>"><?=$arrInsuranceCompany[$row["company_type"]]?></a></td><!-- 보험사 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=date('Y-m-d', $row["regdate"])?></a></td><!-- 청약일 -->
                             <td rowspan="2"><a href="<?=$link_url?>" name="plan_list_state_text"><?=$arrPlanStateText[$row["plan_list_state"]]?></a></td><!-- 진행상태 -->
                             <td><a href="<?=$link_url?>"><?=$row["start_date"]?></a></td><!-- 여행시작일 -->
@@ -209,6 +238,7 @@ if ($rs->num_rows > 0) {
                             </td>
                         </tr>
                         <tr>
+                            <td><a href="<?=$link_url?>"><?=$row["manager_name"]?></a></td><!-- 보험사 -->
                             <td><a href="<?=$link_url?>"><?=$row["end_date"]?></a></td><!-- 여행종료일 -->
                             <td><a href="<?=$link_url?>"><?=$row["add_info2"]?></a></td><!-- 추가정보2 -->
                         </tr>
