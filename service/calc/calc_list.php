@@ -141,7 +141,7 @@ for($i=1;$i<=count($arrInsuranceCompany);$i++) {
                                 <select name="_trip_type">
                                     <option value="">전체</option>
 <?php
-for($i=1;$i<=count($arrTripType)-1;$i++) {
+for($i=1;$i<=count($arrTripType);$i++) {
 ?>                                        
                                     <option value="<?=$i?>" <?=($i==$_trip_type)?"selected='selected'":""?>><?=$arrTripType[$i]?></option>
 <?php
