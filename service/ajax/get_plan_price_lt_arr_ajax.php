@@ -63,38 +63,10 @@ if ( $totalday < 90) {
 	exit;
 }
 
-if($totalday <= 27) {
-	for($i=0;$i<count($__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$CONFIG_PLAN_FILE_TRIP_TYPE][$arr_plan_code[0]]);$i++) {
-		if($totalday <= $__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$CONFIG_PLAN_FILE_TRIP_TYPE][$arr_plan_code[0]][$i]) {
-			$term_day = $__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$CONFIG_PLAN_FILE_TRIP_TYPE][$arr_plan_code[0]][$i];
-			break;
-		}
-	}
-} else {
-	if($months == 0){
-			$term_day = 30;
-			//1개월인경우
-	} elseif($months == 1){
-		if($totalday <= 45){
-			if($days < 0 || ($days == 0 && $hours <= 0)){
-				$term_day = 30;
-			} else {
-				$term_day = 45;
-			}
-		} else {
-			$term_day = 60;
-		}
-	} else {
-		if($totalday <= 45) {
-			$term_day = 45;				
-		} else {
-			if ($days > 0 || ($days == 0 && $hours > 0)) {
-				$months = $months + 1;
-			}
-			$term_day = ($months * 30);
-		}		
-	}		
+if ($days > 0 || ($days == 0 && $hours > 0)) {
+	$months = $months + 1;
 }
+$term_day = ($months * 30);
 
 if ( $term_day <= 0) {
 	$rtnVal['RESULTCD'] = "909";
@@ -106,9 +78,7 @@ if ( $term_day <= 0) {
 for($i=0;$i<count($arr_plan_code);$i++) {
 
 	if($arr_plan_code[$i]) {
-		if ($CONFIG_PLAN_FILE_TRIP_TYPE=="2" && $arr_age[$i] >= 80 && $term_day > 30) {
-			array_push($arrPrice, -11);
-		} else if($arr_age[$i] > $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$CONFIG_PLAN_FILE_TRIP_TYPE][count($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$CONFIG_PLAN_FILE_TRIP_TYPE])][0]["plan_end_age"]) {
+		if($arr_age[$i] > $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$CONFIG_PLAN_FILE_TRIP_TYPE][count($__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$CONFIG_PLAN_FILE_TRIP_TYPE])][0]["plan_end_age"]) {
 			array_push($arrPrice, -12);
 		} else {
 /*			

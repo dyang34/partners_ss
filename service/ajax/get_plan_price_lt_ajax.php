@@ -79,46 +79,11 @@ if ($age > $__ARR_CONFIG_PLAN[$company_type]['List'][$member_no][$CONFIG_PLAN_FI
 	exit;
 }
 
-if($totalday <= 27) {
-	for($i=0;$i<count($__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$CONFIG_PLAN_FILE_TRIP_TYPE][$plan_code]);$i++) {
-		if($totalday <= $__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$CONFIG_PLAN_FILE_TRIP_TYPE][$plan_code][$i]) {
-			$term_day = $__ARR_CONFIG_PLAN_PRICE_BOUNDARY[$company_type][$member_no][$CONFIG_PLAN_FILE_TRIP_TYPE][$plan_code][$i];
-			break;
-		}
-	}
-} else {
-	if($months == 0){
-			$term_day = 30;
-			//1개월인경우
-	} elseif($months == 1){
-		if($totalday <= 45){
-			if($days < 0 || ($days == 0 && $hours <= 0)){
-				$term_day = 30;
-			} else {
-				$term_day = 45;
-			}
-		} else {
-			$term_day = 60;
-		}
-	} else {
-		if($totalday <= 45) {
-			$term_day = 45;				
-		} else {
-			if ($days > 0 || ($days == 0 && $hours > 0)) {
-				$months = $months + 1;
-			}
-			$term_day = ($months * 30);
-		}		
-	}		
+if ($days > 0 || ($days == 0 && $hours > 0)) {
+	$months = $months + 1;
 }
-
-if ($CONFIG_PLAN_FILE_TRIP_TYPE=="2" && $age >= 80 && $term_day > 30) {	// $totalday > 30
-	$rtnVal['RESULTCD'] = "802";
-	$rtnVal['RESULTMSG'] = "80세 이상 고객님은 최대 30일까지만 가입이 가능합니다.";
-	echo json_encode($rtnVal);
-	exit;
-}
-
+$term_day = ($months * 30);
+	
 if ( $term_day <= 0) {
 	$rtnVal['RESULTCD'] = "909";
 	$rtnVal['RESULTMSG'] = "시스템 에러입니다.    ";
