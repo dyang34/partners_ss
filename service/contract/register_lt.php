@@ -158,28 +158,8 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                 <tr>
                     <th>여행종류 <em class="bulStyle1">*</em><a class="btn-travel-type" name="icon_trip_type_2" motion="three"><i class="icon-question"></i></a></th>
                     <td>
-<?php
-    if($_GET["fg_trip_type_show"]=="Y") {
-?>        
-                        <div class="radio-wrap">
-                            <input type="radio" id="trvTypeChk2" name="trip_type" value="2" checked='checked'>
-                            <label for="trvTypeChk2">해외</label>
-                            <div class="check"></div>
-                        </div>
-                        <div class="radio-wrap">
-                            <input type="radio" id="trvTypeChk1" name="trip_type" value="1">
-                            <label for="trvTypeChk1">국내</label>
-                            <div class="check"></div>
-                        </div>
-<?php
-    } else {
-?>    
                         <input type="hidden" name="trip_type" value="<?=$trip_type?>" />
                         <input type="text"  class="input-search" name="" id="" readonly value="<?=$arrTripType[$trip_type]?>">
-<?php
-    }
-?>
-
                     </td>
 
                     <th>여행지역 <em class="bulStyle1">*</em><a class="btn-travel-area" name="icon_trip_type_2" motion="three"><i class="icon-globe"></i></a></th>   
@@ -217,8 +197,13 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <td class="inpt">
                         <div class="select-box">
                             <select name="trip_purpose">
-                                <option value="1">여행/관광</option>
-                                <option value="2">연수/출장</option>
+<?php
+    foreach($arrTripPurpose3 as $key => $value) {
+?>
+                                <option value="<?=$key?>"><?=$value?></option>
+<?php
+}
+?>
                             </select>
                         </div>
                     </td>
@@ -941,54 +926,6 @@ $(document).ready(function() {
         return false;
     });
 
-    // 여행종류 변경.
-    $(document).on('change','input[name=trip_type]',function() {
-
-        // 멀티보험사 지원 버전으로 변경. → 향후 여행종류 변경 버전 적용 시 : trip_type change event 발생 시 보험사 변경되어야 함. 또한 보험사에 따른 여행지역도 변경되어야 함.
-        if($(this).val()=="1") {
-
-            $('div[name=div_nation_1]').show();
-            $('div[name=div_nation_2]').hide();
-            $('a[name=icon_trip_type_2]').hide();
-
-            if(checkValidDate($('#start_date').val())) {
-                settingDate = new Date(Date.parse(treemonthcal($('#start_date').val(), '1')));
-                settingDate.setDate(settingDate.getDate()-1);
-
-                if($('#end_date').datepicker('getDate') && $('#end_date').datepicker('getDate') > settingDate) {
-                    $("#end_date").val("");
-                }
-
-                $("#end_date").datepicker( "option", "maxDate", settingDate);
-            }
-        } else {
-
-            $('div[name=div_nation_1]').hide();
-            $('div[name=div_nation_2]').show();
-            $('a[name=icon_trip_type_2]').show();
-            
-            if(checkValidDate($('#start_date').val())) {
-                settingDate = new Date(Date.parse(treemonthcal($('#start_date').val(), '3')));
-                settingDate.setDate(settingDate.getDate()-1);
-                $("#end_date").datepicker( "option", "maxDate", settingDate );
-            }
-        }
-
-        g_trip_type = $(this).val();
-
-        if(checkValidDate($('#start_date').val()) && checkValidDate($('#end_date').val())) {
-            if(!check_hour_max()){
-                $('#end_date').val('');
-            }
-        }
-
-        get_plan_repre_list(g_company_type, g_member_no, $(this).val());
-        chg_member_plan(0, 200);
-        calc_price(fg_auto_calc);
-        
-        return false;
-    });
-
     // 대표 플랜 변경시.
     $(document).on('change','select[name=plan_repre_type]',function() {
         for(i=1;i<=cnt_cal_type;i++) {
@@ -1024,11 +961,7 @@ $(document).ready(function() {
             return false;
         }
 
-        if(g_trip_type=="1") {
-            $('input[name=nation]').val("0");
-        } else {
-            $('input[name=nation]').val($('select[name=nation_srch]').val());
-        }
+        $('input[name=nation]').val($('select[name=nation_srch]').val());
 
 <?php
         if($arrManager) {
@@ -1041,7 +974,7 @@ $(document).ready(function() {
         if(mc_consult_submitted == true) { return false; }
 
         var f = document.writeForm;
-        f.action="/service/contract/register_act.php";
+        f.action="/service/contract/register_lt_act.php";
         f.auto_defense.value = "identicharmc!@";
 	
         mc_consult_submitted = true;
@@ -1522,7 +1455,8 @@ const chg_member_plan = function(age_from, age_to) {
                     age_to = 15;
                 }
 */
-                if(((tr_age >= age_from && tr_age <= age_to) || (age_to==14 && tr_age==15 && tr_age_std==14 && g_company_type!="3")) && !(age_from==15 && tr_age_std==14 && g_company_type!="3")) {
+//                if(((tr_age >= age_from && tr_age <= age_to) || (age_to==14 && tr_age==15 && tr_age_std==14 && g_company_type!="3")) && !(age_from==15 && tr_age_std==14 && g_company_type!="3")) {
+                if(((tr_age >= age_from && tr_age <= age_to))) {
 
                     rtn_arr_val = get_member_plan(tr_age, tr_age_std);
 
@@ -1550,7 +1484,7 @@ const chg_member_plan = function(age_from, age_to) {
 // 1명 플랜 적용.
 const get_member_plan = function(age_insu, age_std) {   // 보험 나이, 만 나이.
     let rtn_plan_code = rtn_plan_type = rtn_plan_title = cal_type = cal_type_text = "";
-
+/*
     if(age_insu==15 && age_std==14 && g_company_type!="3") {
         rtn_plan_code = $('select[name=plan_type_sub_cal1]').val();
         rtn_plan_type = $('select[name=plan_type_sub_cal1] option:selected').attr('plan_type');
@@ -1559,6 +1493,7 @@ const get_member_plan = function(age_insu, age_std) {   // 보험 나이, 만 �
         cal_type = 1;
         cal_type_text = $('select[name=plan_type_sub_cal1]').attr('cal_type_text');
     } else {
+*/        
         $('.cls_select_plan_sub').each(function(idx, item){
             if(Number($(this).attr('age_from')) <= age_insu && Number($(this).attr('age_to_limit')) >= age_insu) {
                 rtn_plan_code = $(this).val();
@@ -1571,7 +1506,7 @@ const get_member_plan = function(age_insu, age_std) {   // 보험 나이, 만 �
                 return false;
             }
         });
-    }
+//    }
 
     return [rtn_plan_code, rtn_plan_type, rtn_plan_title, cal_type, cal_type_text];
 }
@@ -1753,7 +1688,7 @@ const chk_all_set_field = function(fg_msg, fg_chk_price) {
 
     let rtn_val = true, fg_exist_data = false;;
 
-    if(g_trip_type=="2" && $('select[name=nation_srch]').val()=="") {
+    if($('select[name=nation_srch]').val()=="") {
         if(fg_msg) {
             alert("여행지역을 선택해 주십시오.    ");
         }
