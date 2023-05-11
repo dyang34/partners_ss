@@ -36,6 +36,18 @@ $arrPlanChageStateText = [
     3=>"취소완료"
 ];
 
+$arrTripPurpose = [
+    1=>"여행/관광",
+    2=>"연수/출장",
+];
+
+$arrTripPurpose3 = [
+    1=>"유학/연수",
+    2=>"주재원",
+    3=>"업무/출장",
+    4=>"워킹홀리데이"
+];
+
 $arrPlanStateUpdatable = [1,2,4,5,6];
 
 $default_plan_join_code_samsung = "82370000077185";

@@ -222,8 +222,13 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <td class="inpt">
                         <div class="select-box">
                             <select name="trip_purpose">
-                                <option value="1">여행/관광</option>
-                                <option value="2">연수/출장</option>
+<?php
+    foreach($arrTripPurpose as $key => $value) {
+?>
+                                <option value="<?=$key?>"><?=$value?></option>
+<?php
+}
+?>
                             </select>
                         </div>
                     </td>
