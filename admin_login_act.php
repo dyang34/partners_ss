@@ -74,6 +74,7 @@ if($mode=="login"){
         $row_session["com_name"] = $row["com_name"];
         $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
         $row_session["mem_type"] = $row["mem_type"];
+        $row_session["calc_period_type"] = $row["calc_period_type"];
 
         $arr_manager = array();
         array_push($arr_manager, array(
@@ -170,6 +171,7 @@ if($mode=="login"){
         $row_session["com_name"] = $row["com_name"];
         $row_session["fg_not_common_plan"] = $row["fg_not_common_plan"];
         $row_session["mem_type"] = $row["mem_type"];
+        $row_session["calc_period_type"] = $row["calc_period_type"];
 
         $arr_manager = array();
         array_push($arr_manager, array(

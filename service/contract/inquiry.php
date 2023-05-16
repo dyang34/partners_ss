@@ -155,7 +155,13 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         <col width="7%">
                         <col width="7%">
                         <col width="5%">
-
+<?php
+    if(LoginManager::getUserLoginInfo("calc_period_type")=="9") {
+?>
+                        <col width="7%">
+<?php        
+    }
+?>
                         <col width="7%">
 
                         <col width="9%">
@@ -176,6 +182,13 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                             <th rowspan="2">보험상품</th>
                             <th rowspan="2">청약일</th>
                             <th rowspan="2">진행상태</th>
+<?php
+    if(LoginManager::getUserLoginInfo("calc_period_type")=="9") {
+?>
+                            <th rowspan="2">입금일</th>
+<?php        
+    }
+?>
 
                             <th>여행시작일</th>
 
@@ -217,6 +230,13 @@ if ($rs->num_rows > 0) {
                             <td rowspan="2"><a href="<?=$link_url?>"><?=$arrTripType[$row["trip_type"]]?></a></td><!-- 보험상품 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=date('Y-m-d', $row["regdate"])?></a></td><!-- 청약일 -->
                             <td rowspan="2"><a href="<?=$link_url?>" name="plan_list_state_text"><?=$arrPlanStateText[$row["plan_list_state"]]?></a></td><!-- 진행상태 -->
+<?php
+    if(LoginManager::getUserLoginInfo("calc_period_type")=="9") {
+?>
+                            <td rowspan="2"><a href="<?=$link_url?>"><?=$row["deposit_date"]?></a></td><!-- 입금일 -->
+<?php        
+    }
+?>
                             <td><a href="<?=$link_url?>"><?=$row["start_date"]?></a></td><!-- 여행시작일 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_code"]." (".$row["plan_title"].")"?></a></td><!-- 플랜코드 -->
                             <td><a href="<?=$link_url?>"><?=$row["name"]?></a></td><!-- 대표 피보험자 -->
