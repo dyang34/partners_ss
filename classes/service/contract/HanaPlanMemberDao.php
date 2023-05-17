@@ -172,6 +172,33 @@ class HanaPlanMemberDao extends A_Dao
 
 	}
 	
+	function insert_simple_triptype3($db, $arrVal) {
+
+	    $sql =" insert hana_plan_member(member_no,hana_plan_no,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age)"
+	        ." values ('".$this->checkMysql($db, $arrVal["member_no"])
+	            ."', '".$this->checkMysql($db, $arrVal["hana_plan_no"])
+	            ."', '".$this->checkMysql($db, $arrVal["main_check"])
+	            ."', '".$this->checkMysql($db, $arrVal["name"])
+	            ."', '".$this->checkMysql($db, $arrVal["name_eng"])
+	            ."', '".$this->checkMysql($db, $arrVal["name_eng_first"])
+	            ."', '".$this->checkMysql($db, $arrVal["name_eng_last"])
+	            ."', '".$this->checkMysql($db, $arrVal["jumin_1"])
+	            ."', '".$this->checkMysql($db, $arrVal["jumin_2"])
+	            ."', '".$this->checkMysql($db, $arrVal["hphone"])
+	            ."', '".$this->checkMysql($db, $arrVal["email"])
+	            ."', '".$this->checkMysql($db, $arrVal["plan_code"])
+	            ."', (select plan_title from plan_code_longterm where company_type= '".$this->checkMysql($db, $arrVal["company_type"])."' and plan_code='".$this->checkMysql($db, $arrVal["plan_code"])."' order by (case when member_no= ".$this->checkMysql($db, $arrVal["member_no"])." then 999999 else member_no end) desc limit 1)"
+				.", (select plan_title_src from plan_code_longterm where company_type= '".$this->checkMysql($db, $arrVal["company_type"])."' and plan_code='".$this->checkMysql($db, $arrVal["plan_code"])."' order by (case when member_no= ".$this->checkMysql($db, $arrVal["member_no"])." then 999999 else member_no end) desc limit 1)"
+	            .", '".$this->checkMysql($db, $arrVal["plan_price"])
+	            ."', '".$this->checkMysql($db, $arrVal["sex"])
+	            ."', '".$this->checkMysql($db, $arrVal["age"])
+	            ."')"
+		;
+	                
+		return $db->query($sql);
+
+	}
+	
 	function update($db, $uq, $key) {
 	    
 	    $sql =" update hana_plan_member"

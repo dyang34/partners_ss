@@ -177,6 +177,29 @@ class HanaPlanMemberMgr extends A_Mgr
         return $isOk;
     }
     
+    function add_simple_triptype3($arrVal) {
+        
+        $isOk = null;
+        $db = null;
+        
+        try {
+            $db = DbUtil::getConnection();
+            
+            //            $this->startTran($db);
+            
+            $isOk = HanaPlanMemberDao::getInstance()->insert_simple_triptype3($db, $arrVal);
+            
+            //            $this->commit($db);
+            
+        } catch(Exception $e) {
+            //            $this->rollback($db);
+            echo $e->getMessage();
+        }
+        
+        @ $db->close();
+        return $isOk;
+    }
+    
     function edit($uq, $key) {
         
         $isOk = null;

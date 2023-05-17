@@ -124,7 +124,11 @@ if(!empty($join_name)) {
 			$arrMemIns["sex"] = $arr_gender[$i];
 			$arrMemIns["age"] = $arr_age[$i];
 
-			HanaPlanMemberMgr::getInstance()->add_simple($arrMemIns);
+			if($trip_type=="3") {
+				HanaPlanMemberMgr::getInstance()->add_simple_triptype3($arrMemIns);
+			} else {
+				HanaPlanMemberMgr::getInstance()->add_simple($arrMemIns);
+			}
 		}
 	}
 

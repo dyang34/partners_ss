@@ -974,7 +974,7 @@ $(document).ready(function() {
         if(mc_consult_submitted == true) { return false; }
 
         var f = document.writeForm;
-        f.action="/service/contract/register_lt_act.php";
+        f.action="/service/contract/register_act.php";
         f.auto_defense.value = "identicharmc!@";
 	
         mc_consult_submitted = true;
