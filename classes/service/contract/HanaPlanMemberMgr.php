@@ -78,7 +78,7 @@ class HanaPlanMemberMgr extends A_Mgr
     /*
      *	$result 사용후 반드시 @ $result->free(); 해줘야 한다.
      */
-    function getListDetail($wq, $plan_member_no) {
+    function getListDetail($wq, $plan_member_no, $tripType) {
         
         $result = null;
         $db = null;
@@ -86,7 +86,11 @@ class HanaPlanMemberMgr extends A_Mgr
         try {
             $db = DbUtil::getConnection();
             
-            $result = HanaPlanMemberDao::getInstance()->selectDetail($db, $wq, $plan_member_no);
+            if ($tripType=="3") {
+                $result = HanaPlanMemberDao::getInstance()->selectDetailTriptype3($db, $wq, $plan_member_no);
+            } else {
+                $result = HanaPlanMemberDao::getInstance()->selectDetail($db, $wq, $plan_member_no);
+            }
             
         } catch(Exception $e) {
             echo $e->getMessage();

@@ -7,9 +7,6 @@ require_once $_SERVER['DOCUMENT_ROOT']."/classes/cms/login/LoginManager.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/contract/HanaPlanMgr.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/classes/service/contract/HanaPlanMemberMgr.php";
 
-require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_array.php";
-require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_type_array.php";
-
 if (!LoginManager::isUserLogined()) {
     //    JsUtil::alertBack("비정상적인 접근입니다. (ErrCode:0x05)    ");
     JsUtil::alertReplace("로그인이 필요합니다.    ","/");
@@ -32,11 +29,15 @@ if(empty($__CONFIG_COMPANY_TYPE) || empty($hana_plan_no)) {
 
 $row = HanaPlanMgr::getInstance()->getByKey($hana_plan_no);
 $trip_type = $row["trip_type"];
+$CONFIG_PLAN_FILE_TRIP_TYPE = $trip_type;
+
+require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_array.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_type_array.php";
 
 $wq = new WhereQuery(true, true);
 $wq->addAndString("m.member_no","=",$member_no_org);
 $wq->addAndString("hana_plan_no","=",$hana_plan_no);
-$rs = HanaPlanMemberMgr::getInstance()->getListDetail($wq, $__CONFIG_MEMBER_NO);
+$rs = HanaPlanMemberMgr::getInstance()->getListDetail($wq, $__CONFIG_MEMBER_NO, $trip_type);
 
 $arrMember = array();
 $arrCalType = array();

@@ -24,6 +24,8 @@ $wq->addAndString("member_no","=",$__CONFIG_MEMBER_NO);
 $wq->addAndString("hana_plan_no","=",$hana_plan_no);
 $rs = HanaPlanMemberMgr::getInstance()->getList($wq);
 
+$arrPrintableState = [1, 5, 6];
+
 include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 ?>
   <!-- 신쳥내역 상세 start -->
@@ -49,16 +51,18 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             <div class="btn-right-wrap">
                 <!-- <a id="three" class="button blue btn-enrl-cnfr">가입 확인서</a> -->
 <?php
-    if($row["company_type"]=="5") {
+    if (in_array($row["plan_list_state"], $arrPrintableState)) {
+        if($row["company_type"]=="5") {
 ?>        
                 <a class="button blue" onclick="openPopup(1)">가입 확인서</a>
                 <a class="button blue cfm_type2" onclick="openPopup(2)">통합 확인서(영문, 국문)</a>
 <?php
-    } else {
+        } else {
 ?>        
                 <a class="button blue" onclick="openPopup(1)">가입 확인서</a>
                 <a class="button blue" onclick="openPopup(2)">영문 확인서</a>
 <?php
+        }
     }
 ?>                
             </div>
