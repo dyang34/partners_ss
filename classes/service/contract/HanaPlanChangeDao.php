@@ -84,6 +84,29 @@ class HanaPlanChangeDao extends A_Dao
 	
 	function selectMonthlySummary($db, $wq, $wq_cancel) {
 	
+		$sql =" SELECT job_date, group_concat(distinct concat(com_percent,'%')) com_percent, SUM(inq_change_price) as inq_change_price, SUM(cancel_change_price) as cancel_change_price, SUM(inq_cnt) as inq_cnt, SUM(cancel_cnt) AS cancel_cnt, round(sum(commition)) as commition "
+			." FROM ( "
+			." 	SELECT change_type, date_format(from_unixtime(a.regdate), '%Y-%m') as job_date, com_percent, change_price AS inq_change_price, 0 AS cancel_change_price, 1 inq_cnt, 0 AS cancel_cnt, (change_price * com_percent / 100) as commition "
+			." 		FROM hana_plan_change a "
+			." 		LEFT JOIN hana_plan b "
+			." 		ON a.hana_plan_no = b.no "
+					.$wq->getWhereQuery()
+			." 	UNION ALL "
+			." 	SELECT change_type, date_format(from_unixtime(case when a.change_date = '' then a.regdate else a.change_date end), '%Y-%m') as job_date, com_percent, 0 AS inq_change_price, change_price AS cancel_change_price, 0 inq_cnt, 1 AS cancel_cnt, (change_price * com_percent / 100) as commition "
+			." 		FROM hana_plan_change a "
+			." 		LEFT JOIN hana_plan b "
+			." 		ON a.hana_plan_no = b.no "
+					.$wq_cancel->getWhereQuery()
+			." ) AS t "
+			." GROUP BY job_date "
+			." ORDER BY job_date desc "
+		;
+			
+		return $db->query($sql);
+	}
+
+	function selectMonthlySummary2($db, $wq, $wq_cancel) {
+	
 		$sql =" SELECT company_type, job_date, trip_type, group_concat(distinct concat(com_percent,'%')) com_percent, SUM(inq_change_price) as inq_change_price, SUM(cancel_change_price) as cancel_change_price, SUM(inq_cnt) as inq_cnt, SUM(cancel_cnt) AS cancel_cnt, round(sum(commition)) as commition "
 			." FROM ( "
 			." 	SELECT a.company_type, trip_type, change_type, date_format(from_unixtime(a.regdate), '%Y-%m') as job_date, com_percent, change_price AS inq_change_price, 0 AS cancel_change_price, 1 inq_cnt, 0 AS cancel_cnt, (change_price * com_percent / 100) as commition "

@@ -50,7 +50,7 @@ $wq_cancel->addAndStringBind("a.regdate", ">=", $date_from, "unix_timestamp('?')
 $wq_cancel->addAndStringBind("a.regdate", "<", $date_to, "unix_timestamp('?')");
 $wq_cancel->addAndString("manager_name","=",$_manager_name);
 
-$rs = HanaPlanChangeMgr::getInstance()->getListMonthlySummary($wq, $wq_cancel);
+$rs = HanaPlanChangeMgr::getInstance()->getListMonthlySummary2($wq, $wq_cancel);
 
 include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 ?>
@@ -182,7 +182,7 @@ for($i=1;$i<=count($arrTripType);$i++) {
     </div>
         
     <div class="adjustm-list-wrap">
-        <h2>실적 관리</h2>
+        <h2>실적 관리 - 월/보험사/상품별 집계표</h2>
         <p class="notes">※ 현재 금액은 실시간 데이터로 인보이스 발행 금액과 다를 수 있습니다.</p>
         <!-- table start -->
         <div class="table-wrap">
