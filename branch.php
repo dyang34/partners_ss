@@ -15,7 +15,7 @@ if (!LoginManager::isUserLogined()) {
     $cnt_trip3_company = count(LoginManager::getUserLoginInfo('company_type_list')[3]);
 
     if (LoginManager::getUserLoginInfo('mem_type') == "1") {
-        JsUtil::replace("/service/contract/inquiry.php");
+        JsUtil::replace("/service/contract/inquiry".LoginManager::getUserLoginInfo('mem_type').".php");
     } else if (!empty($cnt_trip2_company)) {
         JsUtil::replace("/service/contract/register.php?trip_type=2");
     } else if (!empty($cnt_trip1_company)) {
@@ -23,7 +23,7 @@ if (!LoginManager::isUserLogined()) {
     } else if (!empty($cnt_trip3_company)) {
         JsUtil::replace("/service/contract/register_long.php?trip_type=3");
     } else {
-        JsUtil::replace("/service/contract/inquiry.php");
+        JsUtil::replace("/service/contract/inquiry".LoginManager::getUserLoginInfo('mem_type').".php");
     }
 }
 ?>

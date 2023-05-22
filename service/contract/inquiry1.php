@@ -34,7 +34,11 @@ $wq = new WhereQuery(true, true);
 $wq->addAndString("member_no","=",$__CONFIG_MEMBER_NO);
 $wq->addAndStringBind("regdate", ">=", $_reg_date_from, "unix_timestamp('?')");
 $wq->addAndStringBind("regdate", "<", $_reg_date_to, "unix_timestamp(date_add('?', interval 1 day))");
-$wq->addAndString("plan_list_state","=",$_plan_list_state);
+if($_plan_list_state=="1") {
+    $wq->addAndIn("plan_list_state",array(1,6));
+} else {
+    $wq->addAndString("plan_list_state","=",$_plan_list_state);
+}
 $wq->addAndString("manager_name","=",$_manager_name);
 
 if(!empty($_name)) {
@@ -64,7 +68,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
     <div class="check-box-wrap">
         <div class="search-shnch-wrap">
 
-            <form name="searchForm" method="get" action="inquiry.php">
+            <form name="searchForm" method="get" action="inquiry1.php">
                 <input type="hidden" name="_order_by" value="<?=$_order_by?>">
                 <input type="hidden" name="_order_by_asc" value="<?=$_order_by_asc?>">
 
@@ -105,37 +109,19 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                                         <option value="">전체</option>
 <?php
 	foreach($arrPlanStateText as $key => $value) {
+        if( $key < 6) {
 ?>
                                         <option value="<?=$key?>" <?=$_plan_list_state==$key?"selected":""?>><?=$value?></option>
 <?php
+        }
     }
 ?>
                                     </select>
                                 </div>
                             </td>
 
-                            <th>담당자</th>
+                            <th></th>
                             <td>
-<?php
-    $arrManager = LoginManager::getUserLoginInfo("manager_list");
-
-    if($arrManager) {
-?>
-                                <div class="select-box">
-                                    <select name="_manager_name">
-                                        <option value="">전체</option>
-<?php
-        for($i=0;$i<count($arrManager);$i++) {
-?>
-                                        <option value="<?=$arrManager[$i]['name']?>" <?=$_manager_name==$arrManager[$i]['name']?"selected":""?>><?=$arrManager[$i]['name']?></option>
-<?
-        }
-?>
-                                    </select>
-                                </div>
-<?php
-}
-?>
                             </td>
 
                             <td rowspan="1" class="flow-btn"><a class="button search" name="btnSearch">검색</a></td>
@@ -173,12 +159,11 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 
                         <col width="12%">
                         <col width="*">
-                        <col width="7%">
                     </colgroup>
                     <thead>
                         <tr>
                             <th rowspan="2">no</th>
-                            <th>보험사</th>
+                            <th rowspan="2">보험사</th>
                             <th rowspan="2">보험상품</th>
                             <th rowspan="2">청약일</th>
                             <th rowspan="2">진행상태</th>
@@ -193,20 +178,25 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                             <th>여행시작일</th>
 
                             <th rowspan="2">플랜코드</th>
-                            
+<?php /*                            
                             <th>대표 피보험자</th>
+*/?>
+                            <th rowspan="2">대표 피보험자</th>
 
                             <th rowspan="2">보험료</th>
                             <th rowspan="2">증권번호</th>
 
                             <th rowspan="2">여행지</th>
                             <th>추가정보1</th>
-                            <th rowspan="2">수정요청</th>
                         </tr>
                         <tr>
+<?php /*                            
                             <th>담당자</th>
+*/?>                            
                             <th>여행종료일</th>
+<?php /*                            
                             <th>주민등록번호</th>
+*/?>
                             <th>추가정보2</th>
                         </tr>
                     </thead>
@@ -217,58 +207,53 @@ if ($rs->num_rows > 0) {
     for($i=0; $i<$rs->num_rows; $i++) {
         $row = $rs->fetch_assoc();
 
-        $link_url = "inquiry_view.php?hana_plan_no=".$row["no"];
+        //$link_url = "inquiry1_view.php?hana_plan_no=".$row["no"];
+/*        
         //$jumin = (double)decode_pass($row["jumin_1"],$pass_key).(double)decode_pass($row["jumin_2"],$pass_key);
         //$jumin = preg_replace("/([0-9]{6})([0-9])([0-9]+)/", "$1-$2******", $jumin);
-
-        $jumin = trim(decode_pass($row["jumin_1"],$pass_key))."-".substr(trim(decode_pass($row["jumin_2"],$pass_key)),0,1)."******";
+*/        
+//        $jumin = trim(decode_pass($row["jumin_1"],$pass_key))."-".substr(trim(decode_pass($row["jumin_2"],$pass_key)),0,1)."******";
 ?>
                         <tr>
                         
                             <td rowspan="2"><?=number_format($pg->getMaxNumOfPage() - $i)?></td><!-- no -->
-                            <td><a href="<?=$link_url?>"><?=$arrInsuranceCompany[$row["company_type"]]?></a></td><!-- 보험사 -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=$arrTripType[$row["trip_type"]]?></a></td><!-- 보험상품 -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=date('Y-m-d', $row["regdate"])?></a></td><!-- 청약일 -->
-                            <td rowspan="2"><a href="<?=$link_url?>" name="plan_list_state_text"><?=$arrPlanStateText[$row["plan_list_state"]]?></a></td><!-- 진행상태 -->
+                            <td rowspan="2"><a><?=$arrInsuranceCompany[$row["company_type"]]?></a></td><!-- 보험사 -->
+                            <td rowspan="2"><a><?=$arrTripType[$row["trip_type"]]?></a></td><!-- 보험상품 -->
+                            <td rowspan="2"><a><?=date('Y-m-d', $row["regdate"])?></a></td><!-- 청약일 -->
+                            <td rowspan="2"><a name="plan_list_state_text"><?=$arrPlanStateText[$row["plan_list_state"]]?></a></td><!-- 진행상태 -->
 <?php
     if(LoginManager::getUserLoginInfo("calc_period_type")=="9") {
 ?>
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=$row["deposit_date"]?></a></td><!-- 입금일 -->
+                            <td rowspan="2"><a><?=$row["deposit_date"]?></a></td><!-- 입금일 -->
 <?php        
     }
 ?>
-                            <td><a href="<?=$link_url?>"><?=$row["start_date"]?></a></td><!-- 여행시작일 -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_code"]." (".$row["plan_title"].")"?></a></td><!-- 플랜코드 -->
-                            <td><a href="<?=$link_url?>"><?=$row["name"]?></a></td><!-- 대표 피보험자 -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=number_format($row["price_sum"])?>원</a></td><!-- 보험료 -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_join_code"]?$row["plan_join_code"]:$row["plan_join_code_replace"]?></a></td><!-- 증권번호 -->
-                            <td rowspan="2" class="tvl-dest"><a href="<?=$link_url?>"><?=$row["trip_type"]=="1"?"국내일원":$row["nation_txt"]?></a></td><!-- 여행지 -->
-                            <td><a href="<?=$link_url?>"><?=$row["add_info1"]?></a></td><!-- 추가정보1 -->
-                            <td rowspan="2">
-<?php
-
-        if($row["end_date"]>=date("Y-m-d") && in_array($row["plan_list_state"], $arrPlanStateUpdatable)) {
-?>
-                                <a mode="three" class="button mdfy btn-check-mdfy" company_type="<?=$row["company_type"]?>" hana_plan_no="<?=$row["no"]?>">수정</a>
-<?php
-        }
-?>    
-<?/*                                
-                                <span class="mdfy-text">수정 접수</span>
-*/?>                                
-                            </td>
+                            <td><a><?=$row["start_date"]?></a></td><!-- 여행시작일 -->
+                            <td rowspan="2"><a><?=$row["plan_code"]." (".$row["plan_title"].")"?></a></td><!-- 플랜코드 -->
+<?php /*                            
+                            <td><a><?=$row["name"]?></a></td><!-- 대표 피보험자 -->
+*/?>                            
+                            <td rowspan="2"><a><?=substr($row['name'],0,-3)."*"?></a></td><!-- 대표 피보험자 -->
+                            <td rowspan="2"><a><?=number_format($row["price_sum"])?>원</a></td><!-- 보험료 -->
+                            <td rowspan="2"><a><?=$row["plan_join_code"]?$row["plan_join_code"]:$row["plan_join_code_replace"]?></a></td><!-- 증권번호 -->
+                            <td rowspan="2" class="tvl-dest"><a><?=$row["trip_type"]=="1"?"국내일원":$row["nation_txt"]?></a></td><!-- 여행지 -->
+                            <td><a><?=$row["add_info1"]?></a></td><!-- 추가정보1 -->
                         </tr>
                         <tr>
-                            <td><a href="<?=$link_url?>"><?=$row["manager_name"]?></a></td><!-- 보험사 -->
-                            <td><a href="<?=$link_url?>"><?=$row["end_date"]?></a></td><!-- 여행종료일 -->
-                            <td><a href="<?=$link_url?>"><?=$jumin?></a></td><!-- 주민등록번호 -->
-                            <td><a href="<?=$link_url?>"><?=$row["add_info2"]?></a></td><!-- 추가정보2 -->
+<?php /*                            
+                            <td><a><?=$row["manager_name"]?></a></td><!-- 담당자 -->
+*/?>                            
+                            <td><a><?=$row["end_date"]?></a></td><!-- 여행종료일 -->
+<?php /*                            
+                            <td><a><?=$jumin?></a></td><!-- 주민등록번호 -->
+*/?>                            
+                            <td><a><?=$row["add_info2"]?></a></td><!-- 추가정보2 -->
                         </tr>
 <?php
     }
 } else {
 ?>
-                <tr><td colspan="13" class="no-data">No Data.</td></tr>
+                <tr><td colspan="12" class="no-data">No Data.</td></tr>
 <?php
 }
 ?>
@@ -437,7 +422,7 @@ $(document).ready(function() {
 const goPage = function(page) {
 	var f = document.pageForm;
 	f.currentPage.value = page;
-	f.action = "inquiry.php";
+	f.action = "inquiry1.php";
 	f.submit();
 }
 </script>

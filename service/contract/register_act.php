@@ -148,7 +148,7 @@ if(!empty($join_name)) {
 
 	HanaPlanChangeMgr::getInstance()->add($arrChangeIns);
 
-	JsUtil::replace("./inquiry.php");						
+	JsUtil::replace("./inquiry".LoginManager::getUserLoginInfo('mem_type').".php");						
  
 } else {
     JsUtil::alertBack("비정상적인 접근입니다.    ");

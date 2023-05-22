@@ -75,8 +75,10 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <col width="5%">
                     <col width="7%">
                     <col width="7%">
+<?php/*                    
                     <col width="10%">
                     <col width="10%">
+*/?>
                     <col width="7%">
                     <col width="7%">
                     <col width="10%">
@@ -89,8 +91,10 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         <th>no</th>
                         <th>진행상태</th>
                         <th>피보험자</th>
+<?php/*                    
                         <th>영문성명</th>
                         <th>주민등록번호</th>
+*/?>
                         <th>성별</th>
                         <th>보험나이</th>
                         <th>플랜코드</th>
@@ -104,16 +108,20 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 if ($rs->num_rows > 0) {
     for($i=0; $i<$rs->num_rows; $i++) {
         $row_mem = $rs->fetch_assoc();
-        //$jumin = (double)decode_pass($row_mem["jumin_1"],$pass_key).(double)decode_pass($row_mem["jumin_2"],$pass_key);
-        //$jumin = preg_replace("/([0-9]{6})([0-9])([0-9]+)/", "$1-$2******", $jumin);
-        $jumin = trim(decode_pass($row_mem["jumin_1"],$pass_key))."-".substr(trim(decode_pass($row_mem["jumin_2"],$pass_key),0,1))."******";
+/*        
+        $jumin = (double)decode_pass($row_mem["jumin_1"],$pass_key).(double)decode_pass($row_mem["jumin_2"],$pass_key);
+        $jumin = preg_replace("/([0-9]{6})([0-9])([0-9]+)/", "$1-$2******", $jumin);
+*/        
+//        $jumin = trim(decode_pass($row_mem["jumin_1"],$pass_key))."-".substr(trim(decode_pass($row_mem["jumin_2"],$pass_key),0,1))."******";
 ?>                    
                     <tr>
                         <td><?=$i+1?></td>
                         <td><?=$arrPlanStateText[$row["plan_list_state"]]?></td>
-                        <td><?=$row_mem["name"]?></td>
-                        <td><?=$row_mem["name_eng"]?></td>
+                        <td><?=substr($row_mem['name'],0,-3)."*"?></td>
+<?php/*                    
+                        <td><?=$row_mem['name_eng']?></td>
                         <td><?=$jumin?></td>
+*/?>
                         <td><?=($row_mem["sex"]==1)?"남성":"여성"?></td>
                         <td><?=$row_mem["age"]?>세</td>
                         <td><?=$row_mem["plan_code"]?></td>

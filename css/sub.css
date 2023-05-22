@@ -168,8 +168,36 @@
 }
 .search-shnch-wrap  table tr td .input-search {
   display: inline-block;
-  width: calc(100% - 70px);
+  width: 100%; /*calc(100% - 70px)*/
 }
+.search-shnch-wrap table tr td .year-first,
+.search-shnch-wrap table tr td .year-last {
+  width: 25%;
+}
+.search-shnch-wrap table tr td .month-first,
+.search-shnch-wrap table tr td .month-last {
+  width: 20%;
+}
+
+.search-shnch-wrap table tr td.year-month .select-box:before,
+.search-shnch-wrap table tr td.year-month .select-box:before,
+.search-shnch-wrap table tr td.year-month .select-box:before,
+.search-shnch-wrap table tr td.year-month .select-box:before {
+  right: 10px;
+}
+.search-shnch-wrap table tr td.year-month .select-box:after,
+.search-shnch-wrap table tr td.year-month .select-box:after,
+.search-shnch-wrap table tr td.year-month .select-box:after,
+.search-shnch-wrap table tr td.year-month .select-box:after {
+  right: 5px;
+}
+.search-shnch-wrap table tr td.year-month .select-box.month-last:before {
+  right: 15px;
+}
+.search-shnch-wrap table tr td.year-month .select-box.month-last:after {
+  right: 10px;
+}
+
 
 .table-list-wrap .table-history-wrap {
   position: relative;
@@ -220,7 +248,7 @@
 .cont-left-wrap {
   display: flex;
   flex-direction: row; align-content: center; align-items: center; justify-content: flex-start;
-  font-size: var(--font-size-13); line-height: 35px;
+  font-size: var(--font-size-13); line-height: 35px; height: 35px;
 }
 .cont-left-wrap div strong {
   font-weight: bold;
@@ -229,10 +257,20 @@
 .cont-left-wrap .insurance {
   margin-left: 30px;;
 }
+.btn-right-wrap {
+  display: flex;
+  flex-direction: row;  flex-wrap: nowrap; justify-content: flex-end; align-items: flex-start;
+}
 .btn-right-wrap .blue {
   font-size: var(--font-size-13); text-align: center;
   padding: 0; width: 100px; height: 35px; line-height: 35px;
   border-radius: 5px;
+}
+.btn-right-wrap .blue:last-child {
+  margin-left: 5px;
+}
+.btn-right-wrap .cfm_type2 {
+  width: 170px;
 }
 .check-box-wrap .table-wrap {
   margin-top: 10px;
@@ -257,6 +295,10 @@
   position: absolute; bottom: -1px; left: 0; z-index: 1;
   width: 74px; height: 2px;
   background-color: var(--color-blue);
+}
+.adjustm-list-wrap > p.notes {
+  text-align: right;
+  padding: 10px 0 0px;
 }
 .adjustm-list-wrap .table-wrap > table tr td a.btn-printer {
   position: relative;
@@ -336,26 +378,26 @@
 
 i.icon-sending {
   background-color: var(--color-white); background-size: 100%;
-  -webkit-mask: url('/img/service/service/icon-sending.svg?eni') no-repeat center;
-          mask: url('/img/service/service/icon-sending.svg?eni') no-repeat center;
+  -webkit-mask: url('/img/service/icon-sending.svg?eni') no-repeat center;
+          mask: url('/img/service/icon-sending.svg?eni') no-repeat center;
   vertical-align: top;
 }
 i.icon-medical {
   background-color: var(--color-white); background-size: 100%;
-  -webkit-mask: url('/img/service/service/icon-medical.svg?eni') no-repeat center;
-          mask: url('/img/service/service/icon-medical.svg?eni') no-repeat center;
+  -webkit-mask: url('/img/service/icon-medical.svg?eni') no-repeat center;
+          mask: url('/img/service/icon-medical.svg?eni') no-repeat center;
   vertical-align: top;
 }
 i.icon-break {
   background-color: var(--color-white); background-size: 100%;
-  -webkit-mask: url('/img/service/service/icon-break.svg?eni') no-repeat center;
-          mask: url('/img/service/service/icon-break.svg?eni') no-repeat center;
+  -webkit-mask: url('/img/service/icon-break.svg?eni') no-repeat center;
+          mask: url('/img/service/icon-break.svg?eni') no-repeat center;
   vertical-align: top;
 }
 i.icon-theft {
   background-color: var(--color-white); background-size: 100%;
-  -webkit-mask: url('/img/service/service/icon-theft.svg?eni') no-repeat center;
-          mask: url('/img/service/service/icon-theft.svg?eni') no-repeat center;
+  -webkit-mask: url('/img/service/icon-theft.svg?eni') no-repeat center;
+          mask: url('/img/service/icon-theft.svg?eni') no-repeat center;
   vertical-align: top;
 }
 #tab1:checked ~ #content1, #tab2:checked ~ #content2, #tab3:checked ~ #content3, #tab4:checked ~ #content4,
@@ -398,8 +440,8 @@ i.icon-theft {
 .set .title i.icon-accordion {
   width: 26px; height: 26px;
   background-color: var(--color-white); background-size: 100%;
-  -webkit-mask: url('/img/service/service/icon-accordion-arrow.svg?eni') no-repeat center;
-          mask: url('/img/service/service/icon-accordion-arrow.svg?eni') no-repeat center;
+  -webkit-mask: url('/img/service/icon-accordion-arrow.svg?eni') no-repeat center;
+          mask: url('/img/service/icon-accordion-arrow.svg?eni') no-repeat center;
   vertical-align: top;
   transition: all 0.3s;
 }
@@ -605,8 +647,8 @@ i.icon-theft {
   width: 16px; height: 16px;
   margin-top: -1px;
   background-color: var(--color-white); background-size: 100%;
-  -webkit-mask: url('/img/service/service/icon-file.svg?en') no-repeat center;
-          mask: url('/img/service/service/icon-file.svg?en') no-repeat center;
+  -webkit-mask: url('/img/service/icon-file.svg?en') no-repeat center;
+          mask: url('/img/service/icon-file.svg?en') no-repeat center;
   vertical-align: top;
 }
 .check-box-wrap .customer-list-wrap .view-cont-wrap {
@@ -615,7 +657,12 @@ i.icon-theft {
 }
 .view-cont-wrap p {
   line-height: 1.4;
-  font-size: var(--font-size-15); font-weight: 400;
+  font-size: var(--font-size-15); font-weight: 300;
+}
+.view-cont-wrap p b {
+  line-height: 1.6;
+  font-weight: 700;
+  font-size: 17px;
 }
 .customer-list-wrap .center-button-area {
   margin-top: 30px;
