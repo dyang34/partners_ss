@@ -217,37 +217,37 @@ if ($rs->num_rows > 0) {
                         <tr>
                         
                             <td rowspan="2"><?=number_format($pg->getMaxNumOfPage() - $i)?></td><!-- no -->
-                            <td rowspan="2"><a><?=$arrInsuranceCompany[$row["company_type"]]?></a></td><!-- 보험사 -->
-                            <td rowspan="2"><a><?=$arrTripType[$row["trip_type"]]?></a></td><!-- 보험상품 -->
-                            <td rowspan="2"><a><?=date('Y-m-d', $row["regdate"])?></a></td><!-- 청약일 -->
-                            <td rowspan="2"><a name="plan_list_state_text"><?=$arrPlanStateText[$row["plan_list_state"]]?></a></td><!-- 진행상태 -->
+                            <td rowspan="2"><?=$arrInsuranceCompany[$row["company_type"]]?></td><!-- 보험사 -->
+                            <td rowspan="2"><?=$arrTripType[$row["trip_type"]]?></td><!-- 보험상품 -->
+                            <td rowspan="2"><?=date('Y-m-d', $row["regdate"])?></td><!-- 청약일 -->
+                            <td rowspan="2"><?=$arrPlanStateText[$row["plan_list_state"]]?></td><!-- 진행상태 -->
 <?php
     if(LoginManager::getUserLoginInfo("calc_period_type")=="9") {
 ?>
-                            <td rowspan="2"><a><?=$row["deposit_date"]?></a></td><!-- 입금일 -->
+                            <td rowspan="2"><?=$row["deposit_date"]?></td><!-- 입금일 -->
 <?php        
     }
 ?>
-                            <td><a><?=$row["start_date"]?></a></td><!-- 여행시작일 -->
-                            <td rowspan="2"><a><?=$row["plan_code"]." (".$row["plan_title"].")"?></a></td><!-- 플랜코드 -->
+                            <td><?=$row["start_date"]?></td><!-- 여행시작일 -->
+                            <td rowspan="2"><?=$row["plan_code"]." (".$row["plan_title"].")"?></td><!-- 플랜코드 -->
 <?php /*                            
-                            <td><a><?=$row["name"]?></a></td><!-- 대표 피보험자 -->
+                            <td><?=$row["name"]?></td><!-- 대표 피보험자 -->
 */?>                            
-                            <td rowspan="2"><a><?=substr($row['name'],0,-3)."*"?></a></td><!-- 대표 피보험자 -->
-                            <td rowspan="2"><a><?=number_format($row["price_sum"])?>원</a></td><!-- 보험료 -->
-                            <td rowspan="2"><a><?=$row["plan_join_code"]?$row["plan_join_code"]:$row["plan_join_code_replace"]?></a></td><!-- 증권번호 -->
-                            <td rowspan="2" class="tvl-dest"><a><?=$row["trip_type"]=="1"?"국내일원":$row["nation_txt"]?></a></td><!-- 여행지 -->
-                            <td><a><?=$row["add_info1"]?></a></td><!-- 추가정보1 -->
+                            <td rowspan="2"><?=substr($row['name'],0,-3)."*"?></td><!-- 대표 피보험자 -->
+                            <td rowspan="2"><?=number_format($row["price_sum"])?>원</td><!-- 보험료 -->
+                            <td rowspan="2"><?=$row["plan_join_code"]?$row["plan_join_code"]:$row["plan_join_code_replace"]?></td><!-- 증권번호 -->
+                            <td rowspan="2" class="tvl-dest"><?=$row["trip_type"]=="1"?"국내일원":$row["nation_txt"]?></td><!-- 여행지 -->
+                            <td><?=$row["add_info1"]?></td><!-- 추가정보1 -->
                         </tr>
                         <tr>
 <?php /*                            
-                            <td><a><?=$row["manager_name"]?></a></td><!-- 담당자 -->
+                            <td><?=$row["manager_name"]?></td><!-- 담당자 -->
 */?>                            
-                            <td><a><?=$row["end_date"]?></a></td><!-- 여행종료일 -->
+                            <td><?=$row["end_date"]?></td><!-- 여행종료일 -->
 <?php /*                            
-                            <td><a><?=$jumin?></a></td><!-- 주민등록번호 -->
+                            <td><?=$jumin?></td><!-- 주민등록번호 -->
 */?>                            
-                            <td><a><?=$row["add_info2"]?></a></td><!-- 추가정보2 -->
+                            <td><?=$row["add_info2"]?></td><!-- 추가정보2 -->
                         </tr>
 <?php
     }
