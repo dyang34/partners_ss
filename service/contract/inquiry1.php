@@ -17,7 +17,7 @@ $menuNo=[2,0];
 $__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
 
 $currentPage = RequestUtil::getParam("currentPage", "1");
-$pageSize = RequestUtil::getParam("pageSize", "10");
+$pageSize = RequestUtil::getParam("pageSize", "15");
 
 $pg = new Page($currentPage, $pageSize);
 
