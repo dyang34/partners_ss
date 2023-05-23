@@ -317,16 +317,16 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
             <table class="table-list" name="tbl_contract">
                 <colgroup>
                     <col width="3%">
-                    <col width="5%">
-                    <col width="8%">
-                    <col width="10%">
+                    <col width="4%">
+                    <col width="7%">
                     <col width="12%">
+                    <col width="9%">
                     <col width="7%">
                     
                     <col width="7%">
                     <col width="7%">
                     <col width="7%">
-                    <col width="12%">
+                    <col width="9%">
                     <col width="*">
 
                     <col width="8%">
