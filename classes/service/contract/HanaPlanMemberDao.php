@@ -18,7 +18,7 @@ class HanaPlanMemberDao extends A_Dao
 
 	function selectByKey($db, $key) {
 		 
-		$sql =" select no,member_no,hana_plan_no,plan_state,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name "
+		$sql =" select no,member_no,hana_plan_no,plan_state,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name, job "
 			 ." from hana_plan_member "
 			 ." where no = ".$this->quot($db, $key)
 		 	 ;
@@ -36,7 +36,7 @@ class HanaPlanMemberDao extends A_Dao
 
 	function selectFirst($db, $wq) {
 
-		$sql =" select no,member_no,hana_plan_no,plan_state,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name "
+		$sql =" select no,member_no,hana_plan_no,plan_state,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name, job "
 			 ." from hana_plan_member"
 			 .$wq->getWhereQuery()
 			 .$wq->getOrderByQuery()
@@ -56,7 +56,7 @@ class HanaPlanMemberDao extends A_Dao
 
 	function select($db, $wq) {
 	    
-	    $sql =" select no,member_no,hana_plan_no,plan_state,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name "
+	    $sql =" select no,member_no,hana_plan_no,plan_state,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name, job "
 	         ." from hana_plan_member"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -67,7 +67,7 @@ class HanaPlanMemberDao extends A_Dao
 	
 	function selectDetail($db, $wq, $plan_member_no) {
 	    
-	    $sql =" select m.no,m.member_no,m.hana_plan_no,m.plan_state,m.main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,m.hphone,m.email,m.plan_code,m.plan_title,m.plan_title_src,m.plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name "
+	    $sql =" select m.no,m.member_no,m.hana_plan_no,m.plan_state,m.main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,m.hphone,m.email,m.plan_code,m.plan_title,m.plan_title_src,m.plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name, job "
 			."			,a.cal_type, a.plan_type, a.sort "
 	        ." from hana_plan_member m "
 			." left join plan_code_hana a "
@@ -82,7 +82,7 @@ class HanaPlanMemberDao extends A_Dao
 
 	function selectDetailTriptype3($db, $wq, $plan_member_no) {
 	    
-	    $sql =" select m.no,m.member_no,m.hana_plan_no,m.plan_state,m.main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,m.hphone,m.email,m.plan_code,m.plan_title,m.plan_title_src,m.plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name "
+	    $sql =" select m.no,m.member_no,m.hana_plan_no,m.plan_state,m.main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,m.hphone,m.email,m.plan_code,m.plan_title,m.plan_title_src,m.plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name, job "
 			."			,a.cal_type, a.plan_type, a.sort "
 	        ." from hana_plan_member m "
 			." left join plan_code_longterm a "
@@ -97,7 +97,7 @@ class HanaPlanMemberDao extends A_Dao
 
 	function selectPerPage($db, $wq, $pg) {
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
-			."		select @rnum:=0, no,member_no,hana_plan_no,plan_state,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name "
+			."		select @rnum:=0, no,member_no,hana_plan_no,plan_state,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,chubb_relator_seq,chubb_relator_premium,chubb_relator_return_code,thai_chk,fg_dual,nation_name, job "
 			." 		from hana_plan_member a "
 			." 		INNER JOIN ( "
 	        ."			select no as idx from hana_plan_member a "
@@ -162,7 +162,7 @@ class HanaPlanMemberDao extends A_Dao
 	
 	function insert_simple($db, $arrVal) {
 
-	    $sql =" insert hana_plan_member(member_no,hana_plan_no,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age)"
+	    $sql =" insert hana_plan_member(member_no,hana_plan_no,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age, job)"
 	        ." values ('".$this->checkMysql($db, $arrVal["member_no"])
 	            ."', '".$this->checkMysql($db, $arrVal["hana_plan_no"])
 	            ."', '".$this->checkMysql($db, $arrVal["main_check"])
@@ -180,6 +180,7 @@ class HanaPlanMemberDao extends A_Dao
 	            .", '".$this->checkMysql($db, $arrVal["plan_price"])
 	            ."', '".$this->checkMysql($db, $arrVal["sex"])
 	            ."', '".$this->checkMysql($db, $arrVal["age"])
+	            ."', '".$this->checkMysql($db, $arrVal["job"])
 	            ."')"
 		;
 	                
@@ -189,7 +190,7 @@ class HanaPlanMemberDao extends A_Dao
 	
 	function insert_simple_triptype3($db, $arrVal) {
 
-	    $sql =" insert hana_plan_member(member_no,hana_plan_no,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age)"
+	    $sql =" insert hana_plan_member(member_no,hana_plan_no,main_check,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,job)"
 	        ." values ('".$this->checkMysql($db, $arrVal["member_no"])
 	            ."', '".$this->checkMysql($db, $arrVal["hana_plan_no"])
 	            ."', '".$this->checkMysql($db, $arrVal["main_check"])
@@ -207,6 +208,7 @@ class HanaPlanMemberDao extends A_Dao
 	            .", '".$this->checkMysql($db, $arrVal["plan_price"])
 	            ."', '".$this->checkMysql($db, $arrVal["sex"])
 	            ."', '".$this->checkMysql($db, $arrVal["age"])
+	            ."', '".$this->checkMysql($db, $arrVal["job"])
 	            ."')"
 		;
 	                

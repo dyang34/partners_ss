@@ -43,6 +43,7 @@ $arr_cal_type = RequestUtil::getParam("cal_type","");
 $arr_plan_code = RequestUtil::getParam("plan_code","");
 $arr_plan_type = RequestUtil::getParam("plan_type","");
 $arr_price = RequestUtil::getParam("price","");
+$arr_job = RequestUtil::getParam("job","");
 
 $auto_defense = RequestUtil::getParam("auto_defense", "");
 
@@ -123,6 +124,7 @@ if(!empty($join_name)) {
 			$arrMemIns["plan_price"] = $arr_price[$i];
 			$arrMemIns["sex"] = $arr_gender[$i];
 			$arrMemIns["age"] = $arr_age[$i];
+			$arrMemIns["job"] = $arr_job[$i];
 
 			if($trip_type=="3") {
 				HanaPlanMemberMgr::getInstance()->add_simple_triptype3($arrMemIns);

@@ -321,6 +321,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <col width="8%">
                     <col width="10%">
                     <col width="12%">
+                    <col width="7%">
                     
                     <col width="7%">
                     <col width="7%">
@@ -342,6 +343,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         <th class="navy">이름(국문)</th>
                         <th class="navy">이름(영문)</th>
                         <th class="navy">주민등록번호</th>
+                        <th class="navy">직업</th>
                         <th>성별</th>
                         <th>나이</th>
                         <th>연령대</th>
@@ -369,6 +371,19 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         <td td_error="0" class="navy"><input type="text" class="input pastable td_last_obj" autocomplete="bis-prevent-auto" name="name[]"></td>
                         <td td_error="0" class="navy"><input type="text" class="input pastable td_last_obj" autocomplete="bis-prevent-auto" name="name_eng[]"></td>
                         <td td_error="0" class="navy"><input type="text" class="input pastable input_jumin td_last_obj tr_td_last_obj" autocomplete="bis-prevent-auto" name="jumin_show[]" maxlength="13" auto_field="jumin_1" ><input type="hidden" name="jumin[]"></td>
+                        <td td_error="0" class="navy">
+                            <div class="select-box">
+                                <select name="job[]">
+<?php
+        foreach($arrJob as $key => $value) {
+?>
+                                    <option value="<?=$key?>"><?=$value?></option>
+<?php
+        }
+?>        
+                                </select>
+                            </div>
+                        </td>
                         <td td_error="0" class=""><input type="text" class="input td_last_obj" name="gender_text[]" tabindex="-1" readonly><input type="hidden" name="gender[]" /></td>
                         <td td_error="0" class=""><input type="text" class="input td_last_obj" name="age[]" age_std="" tabindex="-1" readonly></td>
                         <td td_error="0" class=""><input type="text" class="input td_last_obj" name="cal_type_text[]" tabindex="-1" readonly><input type="hidden" name="cal_type[]" /></td>
@@ -397,6 +412,19 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         <td td_error="0" class="navy"><input type="text" class="input pastable td_last_obj" autocomplete="bis-prevent-auto" name="name[]"></td>
                         <td td_error="0" class="navy"><input type="text" class="input pastable td_last_obj" autocomplete="bis-prevent-auto" name="name_eng[]"></td>
                         <td td_error="0" class="navy"><input type="text" class="input pastable input_jumin td_last_obj tr_td_last_obj" autocomplete="bis-prevent-auto" name="jumin_show[]" maxlength="13" auto_field="jumin_1" ><input type="hidden" name="jumin[]"></td>
+                        <td td_error="0" class="navy">
+                            <div class="select-box">
+                                <select name="job[]">
+<?php
+        foreach($arrJob as $key => $value) {
+?>
+                                    <option value="<?=$key?>"><?=$value?></option>
+<?php
+        }
+?>        
+                                </select>
+                            </div>
+                        </td>
                         <td td_error="0" class=""><input type="text" class="input td_last_obj" name="gender_text[]" tabindex="-1" readonly><input type="hidden" name="gender[]" /></td>
                         <td td_error="0" class=""><input type="text" class="input td_last_obj" name="age[]" age_std="" tabindex="-1" readonly></td>
                         <td td_error="0" class=""><input type="text" class="input td_last_obj" name="cal_type_text[]" tabindex="-1" readonly><input type="hidden" name="cal_type[]" /></td>
@@ -487,6 +515,19 @@ const tr_contents = '<tr class="tr_input" tr_error_cnt="0">'
                     + '    <td td_error="0" class="navy"><input type="text" class="input pastable td_last_obj" autocomplete="bis-prevent-auto" name="name[]"></td>'
                     + '    <td td_error="0" class="navy"><input type="text" class="input pastable td_last_obj" autocomplete="bis-prevent-auto" name="name_eng[]"></td>'
                     + '    <td td_error="0" class="navy"><input type="text" class="input pastable input_jumin td_last_obj tr_td_last_obj" autocomplete="bis-prevent-auto" name="jumin_show[]" maxlength="13" auto_field="jumin_1" ><input type="hidden" name="jumin[]"></td>'
+                    + '                        <td td_error="0" class="navy"> '
+                    + '                                <div class="select-box"> '
+                    + '                                    <select name="job[]"> '
+<?php
+    foreach($arrJob as $key => $value) {
+?>
+                    + '                                        <option value="<?=$key?>"><?=$value?></option> '
+<?php
+    }
+?>
+                    + '                                    </select> '
+                    + '                                </div> '
+                    + '                            </td> '
                     + '    <td td_error="0" class=""><input type="text" class="input td_last_obj" name="gender_text[]" tabindex="-1" readonly><input type="hidden" name="gender[]" /></td>'
                     + '    <td td_error="0" class=""><input type="text" class="input td_last_obj" name="age[]" age_std="" tabindex="-1" readonly></td>'
                     + '    <td td_error="0" class=""><input type="text" class="input td_last_obj" name="cal_type_text[]" tabindex="-1" readonly><input type="hidden" name="cal_type[]" /></td>'

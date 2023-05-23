@@ -83,6 +83,13 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                     <col width="10%">
                     <col width="7%">
                     <col width="7%">
+<?php
+    if($row["trip_type"]==3) {
+?>
+                    <col width="7%">
+<?php
+    }
+?>
                     <col width="10%">
                     <col width="10%">
                     <col width="10%">
@@ -97,6 +104,13 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         <th>주민등록번호</th>
                         <th>성별</th>
                         <th>보험나이</th>
+<?php
+    if($row["trip_type"]==3) {
+?>
+                        <th>직업</th>
+<?php
+    }
+?>
                         <th>플랜코드</th>
                         <th>플랜명</th>
                         <th>보험료</th>
@@ -120,6 +134,13 @@ if ($rs->num_rows > 0) {
                         <td><?=$jumin?></td>
                         <td><?=($row_mem["sex"]==1)?"남성":"여성"?></td>
                         <td><?=$row_mem["age"]?>세</td>
+<?php
+    if($row["trip_type"]==3) {
+?>
+                        <td><?=$arrJob[$row_mem["job"]]?></td>
+<?php
+    }
+?>
                         <td><?=$row_mem["plan_code"]?></td>
                         <td><?=$row_mem["plan_title"]?></td>
                         <td class="right"><?=number_format($row_mem["plan_price"])?>원</td>
