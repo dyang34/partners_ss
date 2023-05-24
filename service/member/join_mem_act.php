@@ -27,6 +27,9 @@ $hphone2 = RequestUtil::getParam("hphone2", "");
 $email = RequestUtil::getParam("email", "");
 $arr_manager_name_add = RequestUtil::getParam("manager_name_add","");
 $arr_manager_name_del = RequestUtil::getParam("manager_name_del","");
+$account_bank = RequestUtil::getParam("account_bank", "");
+$account_no = RequestUtil::getParam("account_no", "");
+$account_owner = RequestUtil::getParam("account_owner", "");
 
 $auto_defense = RequestUtil::getParam("auto_defense", "");
 
@@ -220,6 +223,9 @@ try {
         $uq->add("hphone",encode_pass($hphone,$pass_key));
         $uq->add("hphone2",encode_pass($hphone2,$pass_key));
         $uq->add("email",encode_pass($email,$pass_key));
+        $uq->add("account_bank",$account_bank);
+        $uq->add("account_no",$account_no);
+        $uq->add("account_owner",$account_owner);
         
         ToursafeMembersMgr::getInstance()->edit($uq, LoginManager::getUserLoginInfo("uid"));
 

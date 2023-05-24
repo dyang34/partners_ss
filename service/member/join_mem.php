@@ -70,6 +70,26 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         <strong>이메일 <i class="icon-necessary"></i></strong>
                         <input type="text" class="input-member" name="email" placeholder="hong@udirect.co.kr">
                     </li>
+                    <li>
+                        <strong>은행 <i class="icon-necessary"></i></strong>
+                        <select name="account_bank">
+<?php
+        foreach($arrBank as $key => $value) {
+?>
+                                    <option value="<?=$value?>"><?=$value?></option>
+<?php
+        }
+?>        
+                        </select>
+                    </li>
+                    <li>
+                        <strong>계좌번호 <i class="icon-necessary"></i></strong>
+                        <input type="text" class="input-member" name="account_no" placeholder="111-12345-789">
+                    </li>
+                    <li>
+                        <strong>계좌주 <i class="icon-necessary"></i></strong>
+                        <input type="text" class="input-member" name="account_owner" placeholder="홍길동">
+                    </li>
                 </ul>
         
                 <h3 class="privacy fourth">이용약관

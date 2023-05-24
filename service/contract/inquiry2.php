@@ -278,7 +278,7 @@ if ($rs->num_rows > 0) {
     }
 } else {
 ?>
-                <tr><td colspan="13" class="no-data">No Data.</td></tr>
+                <tr><td colspan="<?=LoginManager::getUserLoginInfo("calc_period_type")=="9"?14:13?>" class="no-data">No Data.</td></tr>
 <?php
 }
 ?>

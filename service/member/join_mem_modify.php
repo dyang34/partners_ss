@@ -101,6 +101,30 @@ if(!empty($row["file_name"])) {
                             <strong>이메일 <i class="icon-necessary"></i></strong>
                             <input type="text" class="input-member" name="email" value="<?=trim(decode_pass($row["email"],$pass_key))?>">
                         </li>
+
+                        <li>
+                            <strong>은행 <i class="icon-necessary"></i></strong>
+                            <div class="select-box">
+                                <select name="account_bank">
+<?php
+        foreach($arrBank as $key => $value) {
+?>
+                                    <option value="<?=$value?>" <?=$value==$row["account_bank"]?"selected='selected'":""?>><?=$value?></option>
+<?php
+        }
+?>        
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <strong>계좌번호 <i class="icon-necessary"></i></strong>
+                            <input type="text" class="input-member" name="account_no" value="<?=$row["account_no"]?>" placeholder="111-12345-789">
+                        </li>
+                        <li>
+                            <strong>계좌주 <i class="icon-necessary"></i></strong>
+                            <input type="text" class="input-member" name="account_owner" value="<?=$row["account_owner"]?>" placeholder="홍길동">
+                        </li>
+
                     </ul>
                 </div>
 
