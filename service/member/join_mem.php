@@ -71,24 +71,27 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         <input type="text" class="input-member" name="email" placeholder="hong@udirect.co.kr">
                     </li>
                     <li>
-                        <strong>은행 <i class="icon-necessary"></i></strong>
-                        <select name="account_bank">
+                        <strong>환불 은행</strong>
+                        <div class="select-box">
+                            <select name="account_bank">
+                                    <option value="">미선택</option>
 <?php
         foreach($arrBank as $key => $value) {
 ?>
                                     <option value="<?=$value?>"><?=$value?></option>
 <?php
         }
-?>        
-                        </select>
+?>
+                            </select>
+                        </div>
                     </li>
                     <li>
-                        <strong>계좌번호 <i class="icon-necessary"></i></strong>
-                        <input type="text" class="input-member" name="account_no" placeholder="111-12345-789">
+                        <strong>환불 계좌번호</strong>
+                        <input type="text" class="input-member" name="account_no" placeholder="환불 계좌번호 입력">
                     </li>
                     <li>
-                        <strong>계좌주 <i class="icon-necessary"></i></strong>
-                        <input type="text" class="input-member" name="account_owner" placeholder="홍길동">
+                        <strong>환불 계좌주</strong>
+                        <input type="text" class="input-member" name="account_owner" placeholder="환불 계좌주 입력">
                     </li>
                 </ul>
         

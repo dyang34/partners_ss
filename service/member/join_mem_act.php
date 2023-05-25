@@ -126,7 +126,10 @@ try {
         $arrIns["file_real_name"] = $_FILES["file_name"]["name"];
         $arrIns["file_name"] = "/home".$newWebPath.$newFileName;
         $arrIns["com_percent"] = "0";
-        
+        $arrIns["account_bank"] = $account_bank;
+        $arrIns["account_no"] = $account_no;
+        $arrIns["account_owner"] = $account_owner;
+
         $member_no = ToursafeMembersMgr::getInstance()->add($arrIns);
 
         $arrIns = array();

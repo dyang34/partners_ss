@@ -103,9 +103,10 @@ if(!empty($row["file_name"])) {
                         </li>
 
                         <li>
-                            <strong>은행 <i class="icon-necessary"></i></strong>
+                            <strong>환불 은행</strong>
                             <div class="select-box">
                                 <select name="account_bank">
+                                    <option value="">미선택</option>
 <?php
         foreach($arrBank as $key => $value) {
 ?>
@@ -117,12 +118,12 @@ if(!empty($row["file_name"])) {
                             </div>
                         </li>
                         <li>
-                            <strong>계좌번호 <i class="icon-necessary"></i></strong>
-                            <input type="text" class="input-member" name="account_no" value="<?=$row["account_no"]?>" placeholder="111-12345-789">
+                            <strong>환불 계좌번호</strong>
+                            <input type="text" class="input-member" name="account_no" value="<?=$row["account_no"]?>" placeholder="환불 계좌번호 입력">
                         </li>
                         <li>
-                            <strong>계좌주 <i class="icon-necessary"></i></strong>
-                            <input type="text" class="input-member" name="account_owner" value="<?=$row["account_owner"]?>" placeholder="홍길동">
+                            <strong>환불 계좌주</strong>
+                            <input type="text" class="input-member" name="account_owner" value="<?=$row["account_owner"]?>" placeholder="환불 계좌주 입력">
                         </li>
 
                     </ul>
