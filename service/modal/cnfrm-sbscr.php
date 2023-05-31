@@ -39,6 +39,8 @@ for($i=0;$i<count($arr_company_type);$i++) {
     if($arr_company_type[$i]['company_type']==$__CONFIG_COMPANY_TYPE) {
         if(empty($arr_company_type[$i]['plan_member_no'])) {
             $__CONFIG_MEMBER_NO = get_default_member_no($__CONFIG_COMPANY_TYPE);
+        } else {
+            $__CONFIG_MEMBER_NO = $arr_company_type[$i]['plan_member_no'];
         }
         break;
     }

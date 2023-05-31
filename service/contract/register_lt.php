@@ -34,8 +34,21 @@ $company_type = RequestUtil::getParam("company_type",$arr_company_type[0]['compa
 $now_date = date('Y-m-d');
 
 $__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
+/*
 if(!LoginManager::getUserLoginInfo("fg_not_common_plan")) {
 	$__CONFIG_MEMBER_NO = get_default_member_no($company_type);
+}
+*/
+
+for($i=0;$i<count($arr_company_type);$i++) {
+    if($arr_company_type[$i]['company_type']==$company_type) {
+        if(empty($arr_company_type[$i]['plan_member_no'])) {
+            $__CONFIG_MEMBER_NO = get_default_member_no($company_type);
+        } else {
+            $__CONFIG_MEMBER_NO = $arr_company_type[$i]['plan_member_no'];
+        }
+        break;
+    }
 }
 
 $arrNation = array();
