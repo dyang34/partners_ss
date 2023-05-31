@@ -59,7 +59,10 @@ $arrJob = [
 
 $arrPlanStateUpdatable = [1,2,4,5,6];
 
-$default_plan_join_code_samsung = "82370000077185";
+$default_plan_join_code_fix = [
+    2=>[1=>'15920-119', 2=>'15540-761']
+    ,5=>[1=>'82370000075665', 2=>'82370000077185']
+];
 
 $arrBank = [
     60=>'BOA 은행'

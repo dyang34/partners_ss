@@ -251,7 +251,7 @@ if ($rs->num_rows > 0) {
                             <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_code"]." (".$row["plan_title"].")"?></a></td><!-- 플랜코드 -->
                             <td><a href="<?=$link_url?>"><?=$row["name"]?></a></td><!-- 대표 피보험자 -->
                             <td rowspan="2"><a href="<?=$link_url?>"><?=number_format($row["price_sum"])?>원</a></td><!-- 보험료 -->
-                            <td rowspan="2"><a href="<?=$link_url?>"><?=$row["plan_join_code"]?$row["plan_join_code"]:$row["plan_join_code_replace"]?></a></td><!-- 증권번호 -->
+                            <td rowspan="2"><a href="<?=$link_url?>"><?=!empty($default_plan_join_code_fix[$row["company_type"]][$row["trip_type"]])?$default_plan_join_code_fix[$row["company_type"]][$row["trip_type"]]:(!empty($row["plan_join_code"])?$row["plan_join_code"]:$row["plan_join_code_replace"])?></a></td><!-- 증권번호 -->
                             <td rowspan="2" class="tvl-dest"><a href="<?=$link_url?>"><?=$row["trip_type"]=="1"?"국내일원":$row["nation_txt"]?></a></td><!-- 여행지 -->
                             <td><a href="<?=$link_url?>"><?=$row["add_info1"]?></a></td><!-- 추가정보1 -->
                             <td rowspan="2">

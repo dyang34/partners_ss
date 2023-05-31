@@ -130,6 +130,10 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                 </table>
             </form>            
         </div>
+<?php /*
+        <a href="#" name="btnExcelDownload" class="button excel medium">엑셀</a>
+*/?>
+
         <!-- List start -->
         <div class="table-list-wrap">
             <div class="table-history-wrap">
@@ -156,7 +160,6 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                         <col width="8%">
 
                         <col width="7%">
-                        <col width="8%">
 
                         <col width="*">
                     </colgroup>
@@ -185,7 +188,6 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                             <th>대표 피보험자</th>
 
                             <th>보험료</th>
-                            <th>증권번호</th>
 
                             <th>여행지</th>
                         </tr>
@@ -226,7 +228,6 @@ if ($rs->num_rows > 0) {
 */?>                            
                             <td><?=substr($row['name'],0,-3)."*"?></td><!-- 대표 피보험자 -->
                             <td><?=number_format($row["price_sum"])?>원</td><!-- 보험료 -->
-                            <td><?=$row["plan_join_code"]?$row["plan_join_code"]:$row["plan_join_code_replace"]?></td><!-- 증권번호 -->
                             <td class="tvl-dest"><?=$row["trip_type"]=="1"?"국내일원":$row["nation_txt"]?></td><!-- 여행지 -->
                         </tr>
 <?php
@@ -396,6 +397,14 @@ $(document).ready(function() {
         close_modal();
 
         return false;
+    });
+
+    $(document).on('click','a[name=btnExcelDownload]', function() {
+        var f = document.pageForm;
+        f.target = "_new";
+        f.action = "contract_list_xls.php";
+        
+        f.submit();
     });
 });
 
