@@ -120,6 +120,7 @@ if($mode=="login"){
 
                 array_push($arr_company[$row_company['trip_type']], array(
                     "company_type"=>$row_company['company_type']
+                    ,"plan_member_no"=>$row_company['plan_member_no']
                     ,"com_percent"=>$row_company['com_percent']
                 ));
             }
@@ -217,6 +218,7 @@ if($mode=="login"){
 
                 array_push($arr_company[$row_company['trip_type']], array(
                     "company_type"=>$row_company['company_type']
+                    ,"plan_member_no"=>$row_company['plan_member_no']
                     ,"com_percent"=>$row_company['com_percent']
                 ));
             }

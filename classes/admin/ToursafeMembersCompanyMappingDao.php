@@ -18,7 +18,7 @@ class ToursafeMembersCompanyMappingDao extends A_Dao
 
 	function selectByKey($db, $key) {
 		 
-		$sql =" select idx, uid,member_no,trip_type,company_type,com_percent,sort,reg_date "
+		$sql =" select idx, uid,member_no,trip_type,company_type,com_percent,sort,reg_date, plan_member_no "
 			 ." from toursafe_members_company_mapping "
 			 ." where idx = ".$this->quot($db, $key)
 		 	 ;
@@ -36,7 +36,7 @@ class ToursafeMembersCompanyMappingDao extends A_Dao
 
 	function selectFirst($db, $wq) {
 
-		$sql =" select idx, uid,member_no,trip_type,company_type,com_percent,sort,reg_date "
+		$sql =" select idx, uid,member_no,trip_type,company_type,com_percent,sort,reg_date, plan_member_no "
 			 ." from toursafe_members_company_mapping"
 			 .$wq->getWhereQuery()
 			 .$wq->getOrderByQuery()
@@ -56,7 +56,7 @@ class ToursafeMembersCompanyMappingDao extends A_Dao
 
 	function select($db, $wq) {
 	    
-	    $sql =" select idx, uid,member_no,trip_type,company_type,com_percent,sort,reg_date "
+	    $sql =" select idx, uid,member_no,trip_type,company_type,com_percent,sort,reg_date, plan_member_no "
 	         ." from toursafe_members_company_mapping"
 	         .$wq->getWhereQuery()
 	         .$wq->getOrderByQuery()
@@ -67,7 +67,7 @@ class ToursafeMembersCompanyMappingDao extends A_Dao
 	
 	function selectPerPage($db, $wq, $pg) {
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
-			."		select @rnum:=0, idx, uid,member_no,trip_type,company_type,com_percent,sort,reg_date "
+			."		select @rnum:=0, idx, uid,member_no,trip_type,company_type,com_percent,sort,reg_date, plan_member_no "
 			." 		from toursafe_members_company_mapping a "
 			." 		INNER JOIN ( "
 	        ."			select idx from toursafe_members_company_mapping a "
@@ -132,13 +132,14 @@ class ToursafeMembersCompanyMappingDao extends A_Dao
 	
 	function insert($db, $arrVal) {
 
-	    $sql =" insert toursafe_members_company_mapping(uid,member_no,trip_type,company_type,com_percent,sort,reg_date)"
+	    $sql =" insert toursafe_members_company_mapping(uid,member_no,trip_type,company_type,com_percent,sort, plan_member_no,reg_date)"
 	        ." values ('".$this->checkMysql($db, $arrVal["uid"])
 			."', ".$this->checkMysql($db, $arrVal["member_no"])
 			.", ".$this->checkMysql($db, $arrVal["trip_type"])
 			.", ".$this->checkMysql($db, $arrVal["company_type"])
 			.", ".$this->checkMysql($db, $arrVal["com_percent"])
 			.", ".$this->checkMysql($db, $arrVal["sort"])
+			.", ".$this->checkMysql($db, $arrVal["plan_member_no"])
 			.", now())"
 		;
 		

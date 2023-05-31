@@ -138,6 +138,7 @@ try {
         $arrIns["trip_type"] = "1";
         $arrIns["company_type"] = "5";
         $arrIns["com_percent"] = "0";
+        $arrIns["plan_member_no"] = "0";
         $arrIns["sort"] = "0";
         ToursafeMembersCompanyMappingMgr::getInstance()->add($arrIns);
 

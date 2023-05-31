@@ -16,10 +16,6 @@ $__CONFIG_COMPANY_TYPE = RequestUtil::getParam("company_type","");
 $__CONFIG_MEMBER_NO = LoginManager::getUserLoginInfo("no");
 $member_no_org = $__CONFIG_MEMBER_NO;
 
-if(!LoginManager::getUserLoginInfo("fg_not_common_plan")) {
-	$__CONFIG_MEMBER_NO = get_default_member_no($__CONFIG_COMPANY_TYPE);
-}
-
 $hana_plan_no = RequestUtil::getParam("hana_plan_no", "");
 
 if(empty($__CONFIG_COMPANY_TYPE) || empty($hana_plan_no)) {
@@ -30,6 +26,23 @@ if(empty($__CONFIG_COMPANY_TYPE) || empty($hana_plan_no)) {
 $row = HanaPlanMgr::getInstance()->getByKey($hana_plan_no);
 $trip_type = $row["trip_type"];
 $CONFIG_PLAN_FILE_TRIP_TYPE = $trip_type;
+
+/*
+if(!LoginManager::getUserLoginInfo("fg_not_common_plan")) {
+	$__CONFIG_MEMBER_NO = get_default_member_no($__CONFIG_COMPANY_TYPE);
+}
+*/
+
+$arr_company_type = LoginManager::getUserLoginInfo('company_type_list')[$trip_type];
+
+for($i=0;$i<count($arr_company_type);$i++) {
+    if($arr_company_type[$i]['company_type']==$__CONFIG_COMPANY_TYPE) {
+        if(empty($arr_company_type[$i]['plan_member_no'])) {
+            $__CONFIG_MEMBER_NO = get_default_member_no($__CONFIG_COMPANY_TYPE);
+        }
+        break;
+    }
+}
 
 require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_array.php";
 require_once $_SERVER['DOCUMENT_ROOT']."/include/get_plan_type_array.php";
