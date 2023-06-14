@@ -391,6 +391,12 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                 </section>
                 <!-- 휴대품도난 end -->
             </div>
+
+            <div class="btn-bottom-area">
+                <a href="https://b2b.udirect.co.kr/download/삼성화재 보험금청구서.pdf" target="_blank" >삼성화재 보험금 청구서</a>
+                <!-- <a href="https://b2b.udirect.co.kr/download/삼성화재 보험금청구서.pdf" target="_blank" class="">삼성화재 보험금청구서</a> -->
+                <p>※ 보험사 청구접수전 <strong>1800-9010</strong>으로 문의후 접수바랍니다</p>
+            </div>
             <!-- Tabs end -->
         </div>
     </div>
