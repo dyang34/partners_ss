@@ -336,7 +336,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 
     <!-- 정보입력 start -->
     <div class="table-list-wrap">
-        <h2>정보입력</h2>
+        <h2>정보입력<span class="title-info">※ 엑셀에서 복사 후 붙여넣기 가능</span></h2>
         <div class="right-btn-area">
             <div class="number">
                 <div class="many">
@@ -448,7 +448,6 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                 </tbody>
             </table>
         </div>
-
         <div class="center-button-area">
             <a href="#" name="btnApply" class="button sbscr">청약 신청</a>
         </div>

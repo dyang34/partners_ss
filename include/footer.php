@@ -3,8 +3,8 @@
     <footer>
         <div class="foot-wrap">
             <div class="menuWrap">
-                <a href="" class="">이용약관</a>
-                <a href="" class="">개인정보취급방침</a>
+                <a href="/service/terms/terms.php" >이용약관</a>
+                <a href="/service/terms/privacy.php" >개인정보취급방침</a>
             </div>
             <ul class="clearfix inb">
                 <li>
