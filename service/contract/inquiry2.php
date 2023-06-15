@@ -29,7 +29,17 @@ $_reg_date_from = RequestUtil::getParam("_reg_date_from", date("Y-m-d"));
 $_reg_date_to = RequestUtil::getParam("_reg_date_to", date("Y-m-d"));
 $_name = RequestUtil::getParam("_name", "");
 $_plan_list_state = RequestUtil::getParam("_plan_list_state", "");
-$_manager_name = RequestUtil::getParam("_manager_name", "");
+$_manager_info = RequestUtil::getParam("_manager_info", "");
+
+if(!empty($_manager_info)) {
+    $arr_manager_info = explode('|', $_manager_info);
+
+    $_manager_name = $arr_manager_info[0];
+    $_manager_idx = $arr_manager_info[1];
+} else {
+    $_manager_name = "";
+    $_manager_idx = -1;
+}
 
 $_order_by = RequestUtil::getParam("_order_by", "a.no");
 $_order_by_asc = RequestUtil::getParam("_order_by_asc", "desc");
@@ -42,8 +52,13 @@ if($_plan_list_state=="1") {
     $wq->addAndIn("plan_list_state",array(1,6));
 } else {
     $wq->addAndString("plan_list_state","=",$_plan_list_state);
-}    
-$wq->addAndString("manager_name","=",$_manager_name);
+}
+
+if($_manager_idx=="0") {
+    $wq->addAndString2("ifnull(manager_idx, 0)","=","0");
+} else {
+    $wq->addAndString("manager_name","=",$_manager_name);
+}
 
 if(!empty($_name)) {
     $wq->addAnd2("no in (select distinct hana_plan_no from hana_plan_member where member_no = '".$__CONFIG_MEMBER_NO."' and name = '".$_name."')");
@@ -132,12 +147,12 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
     if($arrManager) {
 ?>
                                 <div class="select-box">
-                                    <select name="_manager_name">
+                                    <select name="_manager_info">
                                         <option value="">전체</option>
 <?php
         for($i=0;$i<count($arrManager);$i++) {
 ?>
-                                        <option value="<?=$arrManager[$i]['name']?>" <?=$_manager_name==$arrManager[$i]['name']?"selected":""?>><?=$arrManager[$i]['name']?></option>
+                                        <option value="<?=$arrManager[$i]['name']."|".$arrManager[$i]['idx']?>" <?=$_manager_name==$arrManager[$i]['name']?"selected":""?>><?=$arrManager[$i]['name']?></option>
 <?
         }
 ?>
