@@ -56,7 +56,7 @@ if($company_type=="2") {
 } else if($company_type=="3") {
     $wq->addAnd2("(use_type='Y' or no in ('512', '508', '509', '487')) ");
 } else if($company_type=="5") {
-    $wq->addAnd2("(use_type='Y' or no in ('509', '519')) ");
+    $wq->addAnd2("(use_type='Y' or no in ('504','508', '509', '519', '534')) ");
 } else {
     $wq->addAndString("use_type","=","Y");
 }
@@ -461,7 +461,11 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 <!-- modal start -->
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'].'/service/modal/travel-type.php';    // 여행 종류.
-require_once $_SERVER['DOCUMENT_ROOT'].'/service/modal/travel-area.php';    // 보험인수 제한 국가 안내.
+if($company_type=="5") {
+    require_once $_SERVER['DOCUMENT_ROOT'].'/service/modal/travel-area_5.php';    // 보험인수 제한 국가 안내.
+} else {
+    require_once $_SERVER['DOCUMENT_ROOT'].'/service/modal/travel-area.php';    // 보험인수 제한 국가 안내.
+}
 require_once $_SERVER['DOCUMENT_ROOT'].'/service/modal/flan-info.php';      // 플랜 정보.
 require_once $_SERVER['DOCUMENT_ROOT'].'/service/modal/flan-select.php';    // 플랜코드 변경.
 ?>
