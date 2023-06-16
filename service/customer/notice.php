@@ -24,8 +24,7 @@ $pg = new Page($currentPage, $pageSize);
 $_order_by = RequestUtil::getParam("_order_by", "no");
 $_order_by_asc = RequestUtil::getParam("_order_by_asc", "desc");
 
-echo LoginManager::getUserLoginInfo("mem_type");
-
+$wq = new WhereQuery(true, true);
 if (LoginManager::getUserLoginInfo("mem_type")=="2") {
     $wq->addAndIn("table_name",array("board_1","board_2"));
 } else {
