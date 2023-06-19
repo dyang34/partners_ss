@@ -86,7 +86,23 @@ class HanaPlanDao extends A_Dao
 
         return $db->query($sql);
 	}
-	
+
+	function selectRepresent($db, $wq) {
+	    
+	    $sql =" select a.* "
+			."			,(select sum(plan_price) from hana_plan_member bb where bb.hana_plan_no = a.no) as price_sum, (select nation_name from nation n where n.no = a.nation_no) as nation_txt "
+			."			,plan_state,name,name_eng,name_eng_first,name_eng_last,jumin_1,jumin_2,hphone,email,plan_code,plan_title,plan_title_src,plan_price,sex,age,gift_state,gift_key,sms_send,thai_chk,fg_dual,nation_name "
+			."	from hana_plan a "
+	        ." 	LEFT JOIN hana_plan_member b "
+	        ." 	ON a.no = b.hana_plan_no "
+	        ." 	AND b.main_check = 'Y' "
+			.$wq->getWhereQuery()
+			.$wq->getOrderByQuery()
+		;
+
+        return $db->query($sql);
+	}
+
 	function selectPerPage($db, $wq, $pg) {
 		$sql =" select @rnum:=@rnum+1 as rnum, r.* from ("
 			."		select @rnum:=0, no,member_no,insurance_comp,plan_list_state,session_key,trip_type,order_type,bill_state,common_plan,plan_join_code,plan_join_code_date,nation_no,trip_purpose,start_date,start_hour,end_date,end_hour,term_day,join_cnt,current_resi,plan_type,regdate,check_type_1,check_type_2,check_type_3,check_type_4,check_type_5,check_type_marketing,select_agree,join_name,join_hphone,order_no,card_cd,card_name,tno,app_no,plan_memo,etc_memo1,etc_memo2,cancel_insert_date,cancel_confirm_date,change_date,chubb_plan_no,chubb_app_premium,chubb_return_code,is_mobile,api_status,company_type,plan_join_code_replace,referer_type,chubb_return_msg, manager_idx, manager_name, add_info1, add_info2 "
