@@ -25,7 +25,17 @@ $_reg_date_from = RequestUtil::getParam("_reg_date_from", date("Y-m-d"));
 $_reg_date_to = RequestUtil::getParam("_reg_date_to", date("Y-m-d"));
 $_name = RequestUtil::getParam("_name", "");
 $_plan_list_state = RequestUtil::getParam("_plan_list_state", "");
-$_manager_name = RequestUtil::getParam("_manager_name", "");
+$_manager_info = RequestUtil::getParam("_manager_info", "");
+
+if(!empty($_manager_info)) {
+    $arr_manager_info = explode('|', $_manager_info);
+
+    $_manager_name = $arr_manager_info[0];
+    $_manager_idx = $arr_manager_info[1];
+} else {
+    $_manager_name = "";
+    $_manager_idx = -1;
+}
 
 $_order_by = RequestUtil::getParam("_order_by", "a.no");
 $_order_by_asc = RequestUtil::getParam("_order_by_asc", "desc");
@@ -39,7 +49,12 @@ if($_plan_list_state=="1") {
 } else {
     $wq->addAndString("plan_list_state","=",$_plan_list_state);
 }
-$wq->addAndString("manager_name","=",$_manager_name);
+
+if($_manager_idx==0) {
+    $wq->addAndString("manager_idx",">","0");
+} else {
+    $wq->addAndString("manager_name","=",$_manager_name);
+}
 
 if(!empty($_name)) {
     $wq->addAnd2("no in (select distinct hana_plan_no from hana_plan_member where member_no = '".$__CONFIG_MEMBER_NO."' and name = '".$_name."')");
@@ -130,12 +145,12 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                 </table>
             </form>            
         </div>
-<?php /*
-        <a href="#" name="btnExcelDownload" class="button excel medium">엑셀</a>
-*/?>
 
         <!-- List start -->
         <div class="table-list-wrap">
+            <h2>신청내역 조회/수정
+                <a name="btnExcelDownload" class="button excel">엑셀다운로드</a>
+            </h2>
             <div class="table-history-wrap">
                 <table class="table-list">
                     <colgroup>
@@ -309,7 +324,7 @@ $(document).ready(function() {
 
         toDate.setMonth(toDate.getMonth()-24);
         
-        if (fromDate < toDate) {
+        if (fromDate <= toDate) {
             alert("최대 24개월 단위로 조회하실 수 있습니다.    ");
             f._order_date_from.focus();
         
@@ -400,9 +415,30 @@ $(document).ready(function() {
     });
 
     $(document).on('click','a[name=btnExcelDownload]', function() {
+        
+        //var f = document.searchForm;
         var f = document.pageForm;
+
+        if ( VC_inValidDate(f._reg_date_from, "청약 시작일") ) return false;
+        if ( VC_inValidDate(f._reg_date_to, "청약 종료일") ) return false;
+
+        var arrFromDate=f._reg_date_from.value.split('-');
+        var arrToDate=f._reg_date_to.value.split('-');
+        
+        var fromDate = new Date(arrFromDate[0],arrFromDate[1]-1,arrFromDate[2]);
+        var toDate = new Date(arrToDate[0],arrToDate[1]-1,arrToDate[2]);
+
+        toDate.setMonth(toDate.getMonth()-3);
+        
+        if (fromDate <= toDate) {
+            alert("최대 3개월 단위로 다운로드 하실 수 있습니다.    ");
+            f._order_date_from.focus();
+        
+            return false;
+        }
+        
         f.target = "_new";
-        f.action = "contract_list_xls.php";
+        f.action = "inquiry1_xls.php";
         
         f.submit();
     });

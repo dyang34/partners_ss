@@ -171,6 +171,10 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
         </div>
         <!-- List start -->
         <div class="table-list-wrap">
+            <h2>신청내역 조회/수정
+                <a name="btnExcelDownload" class="button excel">엑셀다운로드</a>
+            </h2>
+
             <div class="table-history-wrap">
                 <table class="table-list">
                     <colgroup>
@@ -368,7 +372,7 @@ $(document).ready(function() {
 
         toDate.setMonth(toDate.getMonth()-24);
         
-        if (fromDate < toDate) {
+        if (fromDate <= toDate) {
             alert("최대 24개월 단위로 조회하실 수 있습니다.    ");
             f._order_date_from.focus();
         
@@ -457,6 +461,35 @@ $(document).ready(function() {
 
         return false;
     });
+
+    $(document).on('click','a[name=btnExcelDownload]', function() {
+        
+        //var f = document.searchForm;
+        var f = document.pageForm;
+
+        if ( VC_inValidDate(f._reg_date_from, "청약 시작일") ) return false;
+        if ( VC_inValidDate(f._reg_date_to, "청약 종료일") ) return false;
+
+        var arrFromDate=f._reg_date_from.value.split('-');
+        var arrToDate=f._reg_date_to.value.split('-');
+        
+        var fromDate = new Date(arrFromDate[0],arrFromDate[1]-1,arrFromDate[2]);
+        var toDate = new Date(arrToDate[0],arrToDate[1]-1,arrToDate[2]);
+
+        toDate.setMonth(toDate.getMonth()-3);
+        
+        if (fromDate <= toDate) {
+            alert("최대 3개월 단위로 다운로드 하실 수 있습니다.    ");
+            f._order_date_from.focus();
+        
+            return false;
+        }
+        
+        f.target = "_new";
+        f.action = "inquiry2_xls.php";
+        
+        f.submit();
+    });
 });
 
 const goPage = function(page) {
@@ -470,5 +503,5 @@ const goPage = function(page) {
 <?php
 include $_SERVER['DOCUMENT_ROOT']."/include/footer.php";
 
-$rs->free();
+@ $rs->free();
 ?>
