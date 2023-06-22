@@ -330,14 +330,3 @@ include $_SERVER['DOCUMENT_ROOT']."/include/footer.php";
 
 @ $rs->free();
 ?>
-
-여행사를 위한 여행자보험 분양 플랫폼 개발.
-B2B 여행자보험(삼성화재, 현대해상, CHUBB, 메리츠화재, DB손해보험) 관리 시스템 개발.
-에이스손해보험(CHUBB) 여행자보험 API 연동 시스템 개발(AWS KMS 모듈 적용).
-투어세이프(toursafe.co.kr) 여행자보험 사이트 리뉴얼 및 유지/보수.
-유다이렉트(udirect.co.kr) 메리츠 여행자보험 시스템 개발.
-통합계약관리시스템(내부 ERP) 개발.
-반려동물 보험 사이트 유지/보수(ipet.co.kr. petsafe.co.kr).
-기업단체보험 사이트 유지/보수(ubiz.co.kr).
-
-B2B 여행자보험 관리 시스템 개발.
