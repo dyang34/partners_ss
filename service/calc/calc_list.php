@@ -21,7 +21,17 @@ $_year_from = RequestUtil::getParam("_year_from", date("Y", strtotime("-1 month"
 $_year_to = RequestUtil::getParam("_year_to", date("Y"));
 $_month_from = RequestUtil::getParam("_month_from", date("m", strtotime("-1 month")));
 $_month_to = RequestUtil::getParam("_month_to", date("m"));
-$_manager_name = RequestUtil::getParam("_manager_name", "");
+$_manager_info = RequestUtil::getParam("_manager_info", "");
+
+if(!empty($_manager_info)) {
+    $arr_manager_info = explode('|', $_manager_info);
+
+    $_manager_name = $arr_manager_info[0];
+    $_manager_idx = $arr_manager_info[1];
+} else {
+    $_manager_name = "";
+    $_manager_idx = -1;
+}
 
 $date_from = $_year_from.sprintf("-%02d-01", $_month_from);
 if($_month_to=="12") {
@@ -37,7 +47,12 @@ $wq->addAndString("trip_type","=",$_trip_type);
 $wq->addAndString("change_type","=","1");
 $wq->addAndStringBind("a.regdate", ">=", $date_from, "unix_timestamp('?')");
 $wq->addAndStringBind("a.regdate", "<", $date_to, "unix_timestamp('?')");
-$wq->addAndString("manager_name","=",$_manager_name);
+
+if($_manager_idx==0) {
+    $wq->addAndString2("ifnull(manager_idx, 0)","=","0");
+} else {
+    $wq->addAndString("manager_name","=",$_manager_name);
+}
 
 $wq_cancel = new WhereQuery(true, true);
 $wq_cancel->addAndString("a.company_type","=",$_company_type);
@@ -48,7 +63,12 @@ $wq_cancel->addAndString("change_type","=","3");
 //$wq_cancel->addAndStringBind("a.change_date", "<", $date_to, "unix_timestamp('?')");
 $wq_cancel->addAndStringBind("a.regdate", ">=", $date_from, "unix_timestamp('?')");
 $wq_cancel->addAndStringBind("a.regdate", "<", $date_to, "unix_timestamp('?')");
-$wq_cancel->addAndString("manager_name","=",$_manager_name);
+
+if($_manager_idx==0) {
+    $wq_cancel->addAndString2("ifnull(manager_idx, 0)","=","0");
+} else {
+    $wq_cancel->addAndString("manager_name","=",$_manager_name);
+}
 
 $rs = HanaPlanChangeMgr::getInstance()->getListMonthlySummary2($wq, $wq_cancel);
 
@@ -159,12 +179,12 @@ for($i=1;$i<=count($arrTripType);$i++) {
     if($arrManager) {
 ?>
                                 <div class="select-box">
-                                    <select name="_manager_name">
+                                    <select name="_manager_info">
                                         <option value="">전체</option>
 <?php
         for($i=0;$i<count($arrManager);$i++) {
 ?>
-                                        <option value="<?=$arrManager[$i]['name']?>" <?=$_manager_name==$arrManager[$i]['name']?"selected":""?>><?=$arrManager[$i]['name']?></option>
+                                        <option value="<?=$arrManager[$i]['name']."|".$arrManager[$i]['idx']?>" <?=$_manager_name==$arrManager[$i]['name']?"selected":""?>><?=$arrManager[$i]['name']?></option>
 <?
         }
 ?>
@@ -182,8 +202,17 @@ for($i=1;$i<=count($arrTripType);$i++) {
     </div>
         
     <div class="adjustm-list-wrap">
-        <h2>실적 관리 - 월/보험사/상품별 집계표</h2>
-        <p class="notes">※ 현재 금액은 실시간 데이터로 인보이스 발행 금액과 다를 수 있습니다.</p>
+        <h2 class="excel">실적 관리 - 월/보험사/상품별 집계표
+            <a name="btnExcelDownload" class="button excel">엑셀다운로드</a>
+        </h2>
+<?php
+    if($_GET["fg_admin"]=="Y") {
+?>
+        <a href="#" name="btnExcelDownload" class="button excel medium">엑셀</a>
+<?php
+    }
+?>
+        <p class="notes fc-aqua">※ 현재 금액은 실시간 데이터로 인보이스 발행 금액과 다를 수 있습니다.</p>
         <!-- table start -->
         <div class="table-wrap">
             <table class="table-list">
@@ -255,26 +284,60 @@ $(document).ready(function() {
         
         var f = document.searchForm;
 
-        if(f._year_from.value > f._year_to.value) {
-            alert("조회 종료일이 조회 시작일보다 과거입니다.    ");
-            return false;
-        } else if(f._year_from.value == f._year_to.value && f._month_from.value > f._month_to.value) {
-            alert("조회 종료일이 조회 시작일보다 과거입니다.    ");
-            return false;
-        }
-
-        if((Number(f._year_to.value)*12+Number(f._month_to.value))-(Number(f._year_from.value)*12+Number(f._month_from.value)) > 23) {
-            alert("최대 24개월까지 조회 가능합니다.    ");
+        if(!chk_search_field(f)) {
             return false;
         }
 
         f.submit();
     });
+
+    $(document).on('click','a[name=btnExcelDownload]', function() {
+        
+        var f = document.searchForm;
+
+        if(!chk_search_field(f)) {
+            return false;
+        }
+
+        f.target = "_new";
+        f.action = "calc_list_xls.php";
+        
+        f.submit();
+    });
 });
+
+const chk_search_field = function(f) {
+
+    if(f._year_from.value > f._year_to.value) {
+        alert("조회 종료일이 조회 시작일보다 과거입니다.    ");
+        return false;
+    } else if(f._year_from.value == f._year_to.value && f._month_from.value > f._month_to.value) {
+        alert("조회 종료일이 조회 시작일보다 과거입니다.    ");
+        return false;
+    }
+
+    if((Number(f._year_to.value)*12+Number(f._month_to.value))-(Number(f._year_from.value)*12+Number(f._month_from.value)) > 23) {
+        alert("최대 24개월까지 조회 가능합니다.    ");
+        return false;
+    }
+
+    return true;
+}
 </script>
 
 <?php
 include $_SERVER['DOCUMENT_ROOT']."/include/footer.php";
 
-$rs->free();
+@ $rs->free();
 ?>
+
+여행사를 위한 여행자보험 분양 플랫폼 개발.
+B2B 여행자보험(삼성화재, 현대해상, CHUBB, 메리츠화재, DB손해보험) 관리 시스템 개발.
+에이스손해보험(CHUBB) 여행자보험 API 연동 시스템 개발(AWS KMS 모듈 적용).
+투어세이프(toursafe.co.kr) 여행자보험 사이트 리뉴얼 및 유지/보수.
+유다이렉트(udirect.co.kr) 메리츠 여행자보험 시스템 개발.
+통합계약관리시스템(내부 ERP) 개발.
+반려동물 보험 사이트 유지/보수(ipet.co.kr. petsafe.co.kr).
+기업단체보험 사이트 유지/보수(ubiz.co.kr).
+
+B2B 여행자보험 관리 시스템 개발.

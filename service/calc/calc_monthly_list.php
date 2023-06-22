@@ -140,8 +140,10 @@ for($i=1;$i<=12;$i++) {
     </div>
         
     <div class="adjustm-list-wrap">
-        <h2>실적 관리 - 월별 집계표</h2>
-        <p class="notes">※ 현재 금액은 실시간 데이터로 인보이스 발행 금액과 다를 수 있습니다.</p>
+        <h2 class="excel">실적 관리 - 월별 집계표
+            <a name="btnExcelDownload" class="button excel">엑셀다운로드</a>
+        </h2>
+        <p class="notes fc-aqua">※ 현재 금액은 실시간 데이터로 인보이스 발행 금액과 다를 수 있습니다.</p>
         <!-- table start -->
         <div class="table-wrap">
             <table class="table-list">
@@ -207,26 +209,48 @@ $(document).ready(function() {
         
         var f = document.searchForm;
 
-        if(f._year_from.value > f._year_to.value) {
-            alert("조회 종료일이 조회 시작일보다 과거입니다.    ");
-            return false;
-        } else if(f._year_from.value == f._year_to.value && f._month_from.value > f._month_to.value) {
-            alert("조회 종료일이 조회 시작일보다 과거입니다.    ");
-            return false;
-        }
-
-        if((Number(f._year_to.value)*12+Number(f._month_to.value))-(Number(f._year_from.value)*12+Number(f._month_from.value)) > 23) {
-            alert("최대 24개월까지 조회 가능합니다.    ");
+        if(!chk_search_field(f)) {
             return false;
         }
 
         f.submit();
     });
+
+    $(document).on('click','a[name=btnExcelDownload]', function() {
+        
+        var f = document.searchForm;
+
+        if(!chk_search_field(f)) {
+            return false;
+        }
+        
+        f.target = "_new";
+        f.action = "calc_monthly_list_xls.php";
+        
+        f.submit();
+    });
 });
+
+const chk_search_field = function(f) {
+    if(f._year_from.value > f._year_to.value) {
+        alert("조회 종료일이 조회 시작일보다 과거입니다.    ");
+        return false;
+    } else if(f._year_from.value == f._year_to.value && f._month_from.value > f._month_to.value) {
+        alert("조회 종료일이 조회 시작일보다 과거입니다.    ");
+        return false;
+    }
+
+    if((Number(f._year_to.value)*12+Number(f._month_to.value))-(Number(f._year_from.value)*12+Number(f._month_from.value)) > 23) {
+        alert("최대 24개월까지 조회 가능합니다.    ");
+        return false;
+    }
+
+    return true;
+}
 </script>
 
 <?php
 include $_SERVER['DOCUMENT_ROOT']."/include/footer.php";
 
-$rs->free();
+@ $rs->free();
 ?>
