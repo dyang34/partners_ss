@@ -1,5 +1,5 @@
 var auth_token="asdf340jfaiofasdfsadf";
-const arrCalTypeTitle = [[],["일반"],["주니어","성인"],["주니어","성인","시니어"],["주니어","성인","시니어1","시니어2"]];
+const arrCalTypeTitle = [[],["일반"],["주니어","성인"],["주니어","성인","시니어"],["주니어","성인","시니어1","시니어2"],["주니어","성인","시니어1","시니어2","시니어3"]];
 
 const chk_pattern = function(p_val, p_type) {
 	const pattern_num = /^[0-9]+$/g;

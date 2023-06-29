@@ -330,6 +330,19 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
                 </ul>
             </div>
             <!-- 시니어2 end -->
+            <!-- 시니어3 start -->
+            <div class="flan-box-list div_plan_type" name="divPlantypeCal5">
+                <ul class="clearfix inb">
+                    <li class="title"><span name="title_plan_type_sub_cal5"></span> <a class="btn-flan-info" motion="three" cal_type="5"><i class="icon-question"></i></a></li>
+                    <li>
+                        <div class="select-box">
+                            <select name="plan_type_sub_cal5" class="cls_select_plan_sub" age_from="" age_to="" age_to_limit="">
+                            </select>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- 시니어3 end -->
         </div>
     </div>
     <!-- 플랜정보선택 end -->
