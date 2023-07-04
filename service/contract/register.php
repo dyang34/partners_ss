@@ -116,7 +116,7 @@ include $_SERVER['DOCUMENT_ROOT']."/include/header.php";
 ?>
                     </td>
 
-                    <th>계약 담당자 <em class="bulStyle1">*</em></th>                    
+                    <th>계약 담당자 <em class="bulStyle1">*</em></th>
                     <td>
 <?php
                     $arrManager = LoginManager::getUserLoginInfo("manager_list");
@@ -1259,49 +1259,13 @@ const chk_jumin = function(obj) {
                             obj_tr.find('input[name="cal_type_text[]"]').val(rtn_arr_val[4]); // cal_type_text
                             obj_tr.find('a[name="btnSearchPlan"]').addClass("active-plan-chg");
                         } else {
-                            obj_tr.find('input[name="gender_text[]"]').val(""); // gender_text
-                            obj_tr.find('input[name="gender[]"]').val(""); // gender
-                            obj_tr.find('input[name="age[]"]').val(""); // age
-                            obj_tr.find('input[name="age[]"]').attr("age_std",""); // age_std
-                            obj_tr.find('input[name="plan_code[]"]').val(""); // plan_code
-                            obj_tr.find('input[name="plan_type[]"]').val(""); // plan_type
-                            obj_tr.find('input[name="plan_title[]"]').val(""); // plan_title
-                            obj_tr.find('input[name="cal_type[]"]').val(""); // cal_type
-                            obj_tr.find('input[name="cal_type_text[]"]').val(""); // cal_type_text
-                            obj_tr.find('a[name="btnSearchPlan"]').removeClass("active-plan-chg");
-                            if(fg_auto_calc) {
-                                obj_tr.find('input[name="price[]"]').val(""); // price
-                            }
+                            reset_row(obj_tr);
                         }
                     } else {
-                        obj_tr.find('input[name="gender_text[]"]').val(""); // gender_text
-                        obj_tr.find('input[name="gender[]"]').val(""); // gender
-                        obj_tr.find('input[name="age[]"]').val(""); // age
-                        obj_tr.find('input[name="age[]"]').attr("age_std",""); // age_std
-                        obj_tr.find('input[name="plan_code[]"]').val(""); // plan_code
-                        obj_tr.find('input[name="plan_type[]"]').val(""); // plan_type
-                        obj_tr.find('input[name="plan_title[]"]').val(""); // plan_title
-                        obj_tr.find('input[name="cal_type[]"]').val(""); // cal_type
-                        obj_tr.find('input[name="cal_type_text[]"]').val(""); // cal_type_text
-                        obj_tr.find('a[name="btnSearchPlan"]').removeClass("active-plan-chg");
-                        if(fg_auto_calc) {
-                            obj_tr.find('input[name="price[]"]').val(""); // price
-                        }
+                        reset_row(obj_tr);
                     }
                 } else {
-                    obj_tr.find('input[name="gender_text[]"]').val(""); // gender_text
-                    obj_tr.find('input[name="gender[]"]').val(""); // gender
-                    obj_tr.find('input[name="age[]"]').val(""); // age
-                    obj_tr.find('input[name="age[]"]').attr("age_std",""); // age_std
-                    obj_tr.find('input[name="plan_code[]"]').val(""); // plan_code
-                    obj_tr.find('input[name="plan_type[]"]').val(""); // plan_type
-                    obj_tr.find('input[name="plan_title[]"]').val(""); // plan_title
-                    obj_tr.find('input[name="cal_type[]"]').val(""); // cal_type
-                    obj_tr.find('input[name="cal_type_text[]"]').val(""); // cal_type_text
-                    obj_tr.find('a[name="btnSearchPlan"]').removeClass("active-plan-chg");
-                    if(fg_auto_calc) {
-                        obj_tr.find('input[name="price[]"]').val(""); // price
-                    }
+                    reset_row(obj_tr);
                 }
 			} else {
 /*                
@@ -1313,25 +1277,29 @@ const chk_jumin = function(obj) {
                 obj.closest('td').next().next().next().next().next().next().children('.td_last_obj').val("");
 */
                 
-                obj_tr.find('input[name="gender_text[]"]').val(""); // gender_text
-                obj_tr.find('input[name="gender[]"]').val(""); // gender
-                obj_tr.find('input[name="age[]"]').val(""); // age
-                obj_tr.find('input[name="age[]"]').attr("age_std",""); // age_std
-                obj_tr.find('input[name="plan_code[]"]').val(""); // plan_code
-                obj_tr.find('input[name="plan_type[]"]').val(""); // plan_type
-                obj_tr.find('input[name="plan_title[]"]').val(""); // plan_title
-                obj_tr.find('input[name="cal_type[]"]').val(""); // cal_type
-                obj_tr.find('input[name="cal_type_text[]"]').val(""); // cal_type_text
-                obj_tr.find('a[name="btnSearchPlan"]').removeClass("active-plan-chg");
-                if(fg_auto_calc) {
-                    obj_tr.find('input[name="price[]"]').val(""); // price
-                }
+                reset_row(obj_tr);
 			}
 
 			break;
 	}
 
 	return fg_check;
+}
+
+const reset_row = function(p_obj_tr) {
+    p_obj_tr.find('input[name="gender_text[]"]').val(""); // gender_text
+    p_obj_tr.find('input[name="gender[]"]').val(""); // gender
+    p_obj_tr.find('input[name="age[]"]').val(""); // age
+    p_obj_tr.find('input[name="age[]"]').attr("age_std",""); // age_std
+    p_obj_tr.find('input[name="plan_code[]"]').val(""); // plan_code
+    p_obj_tr.find('input[name="plan_type[]"]').val(""); // plan_type
+    p_obj_tr.find('input[name="plan_title[]"]').val(""); // plan_title
+    p_obj_tr.find('input[name="cal_type[]"]').val(""); // cal_type
+    p_obj_tr.find('input[name="cal_type_text[]"]').val(""); // cal_type_text
+    p_obj_tr.find('a[name="btnSearchPlan"]').removeClass("active-plan-chg");
+    if(fg_auto_calc) {
+        p_obj_tr.find('input[name="price[]"]').val(""); // price
+    }
 }
 
 // 행(tr)별 보험료 세팅.
@@ -1819,6 +1787,15 @@ const chk_all_set_field = function(fg_msg, fg_chk_price) {
     if (!checkValidDate($('input[name=end_date]').val())) {
         if(fg_msg) {
             alert("여행 종료일을 입력해 주십시오.    ");
+            $('input[name="end_date"]').datepicker("show");
+        }
+
+        return false;
+    }
+
+    if($('input[name=start_date]').val() > $('input[name=end_date]').val()) {
+        if(fg_msg) {
+            alert("여행 종료일이 시작일보다 이전 날짜입니다.    ");
             $('input[name="end_date"]').datepicker("show");
         }
 
