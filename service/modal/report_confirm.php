@@ -8,6 +8,13 @@ $trip_type = RequestUtil::getParam("trip_type", "");
 $company_type = RequestUtil::getParam("company_type", "");
 $hana_plan_no = RequestUtil::getParam("hana_plan_no", "");
 switch($company_type) {
+    case "4":
+        if($trip_type=="1") {
+            JsUtil::replace("cnfrm-sbscr_4.php?company_type=".$company_type."&hana_plan_no=".$hana_plan_no);
+        } else {
+            JsUtil::replace("cnfrm-sbscr_T.php?company_type=".$company_type."&hana_plan_no=".$hana_plan_no);
+        }
+        break;
     case "5":
         if($trip_type=="1") {
             JsUtil::replace("cnfrm-sbscr_5.php?company_type=".$company_type."&hana_plan_no=".$hana_plan_no);
