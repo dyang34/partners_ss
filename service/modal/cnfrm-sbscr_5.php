@@ -317,6 +317,8 @@ if (count($arrMember) > 0) {
                         <?
     }
 }
+
+@$rs->free();
 ?>
                     </tbody>
                 </table>
