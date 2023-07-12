@@ -50,6 +50,8 @@ $wq = new WhereQuery(true, true);
 $wq->addAndString("m.member_no","=",$member_no_org);
 $wq->addAndString("hana_plan_no","=",$hana_plan_no);
 $wq->addOrderBy("main_check","desc");
+$wq->addOrderBy("m.no","asc");
+
 $rs = HanaPlanMemberMgr::getInstance()->getListDetail($wq, $__CONFIG_MEMBER_NO, $trip_type);
 
 $arrMember = array();
@@ -66,6 +68,12 @@ if ($rs->num_rows > 0) {
 
 $arrCalType = array_unique($arrCalType, SORT_REGULAR);
 $arrCalType = array_values($arrCalType);
+
+foreach ($arrCalType as $key => $value) {
+	$sort[$key] = $value['cal_type'];
+}
+
+array_multisort($sort, SORT_ASC, $arrCalType);
 ?>
 
 <!DOCTYPE html>
@@ -172,7 +180,6 @@ echo $jumin1." / ".($arrMember[0]["sex"]==1?"남":"여");
                             <td class="left"><?=number_format($rs->num_rows)?>명</td>
                         </tr>
 */?>                        
-                    -->
                     </tbody>
                 </table>
                 
