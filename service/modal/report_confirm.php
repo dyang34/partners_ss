@@ -13,7 +13,7 @@ if($company_type=="4" && $referer_type != 2) {
     if($mode=="1") {
         JsUtil::replace("cnfrm-sbscr_4.php?company_type=".$company_type."&hana_plan_no=".$hana_plan_no);
     } else {
-        JsUtil::replace("cnfrm-sbscr_T.php?company_type=".$company_type."&hana_plan_no=".$hana_plan_no);
+        JsUtil::replace("cnfrm-sbscr_4_E.php?company_type=".$company_type."&hana_plan_no=".$hana_plan_no);
     }
 } else if ($company_type=="5") {
     if($mode=="1") {

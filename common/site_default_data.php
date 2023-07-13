@@ -16,6 +16,12 @@ $arrTripType = [
     3=>"해외장기체류"
 ];
 
+$arrTripTypeEng = [
+    1=>"Domestic travel insurance",
+    2=>"Overseas Travel Insurance",
+    3=>"Overseas long-term stay"
+];
+
 $arrCalTypeTitle = [[],["일반"],["주니어","성인"],["주니어","성인","시니어"],["주니어","성인","시니어1","시니어2"],["주니어","성인","시니어1","시니어2","시니어3"]];
 
 $arrPlanStateText = [
@@ -40,6 +46,11 @@ $arrPlanChageStateText = [
 $arrTripPurpose = [
     1=>"여행/관광"
     ,2=>"연수/출장"
+];
+
+$arrTripPurposeEng = [
+    1=>"Travel/Tour"
+    ,2=>"Training/Business trip"
 ];
 
 $arrTripPurpose3 = [
