@@ -195,8 +195,10 @@ for($k=1;$k<=34;$k++) {
                                 </tr>
                             </tbody>
                         </table>
-                        <p>* 이 상품은 마이뱅크를 계약자로 지정한 단체보험으로, 피보험자의 보험청구는 DB손해보험에서 정상적으로 처리됩니다.</p>
-                        <p>* 이 상품은 미국을 포함한 세계 어느 지역의 여행이든 보장하나, 대한민국 외교부가 지정한 여행금지국가와 3단계 여행경보지역은 보장에서 제외됩니다.</p>
+                        <!-- 
+                            <p>* 이 상품은 마이뱅크를 계약자로 지정한 단체보험으로, 피보험자의 보험청구는 DB손해보험에서 정상적으로 처리됩니다.</p>
+                            <p>* 이 상품은 미국을 포함한 세계 어느 지역의 여행이든 보장하나, 대한민국 외교부가 지정한 여행금지국가와 3단계 여행경보지역은 보장에서 제외됩니다.</p>
+                        -->
                     </div>
                 </div>
 
@@ -308,41 +310,36 @@ if (count($arrMember) > 0) {
 <?php
     }
 ?>
-                <!--div class="sign-cnfrm-wrap">
-                    <h2>
-                        <strong>DB손해보험</strong>은 
-                        <span></?=$arrMember[0]["name"]?></span>님외 
-                        <span></?=number_format(count($arrMember)-1)?></span>명께서 
-                        <strong>해외여행자보험</strong>에 
-                        <strong>가입</strong>하셨음을 
-                        <strong>확인</strong>합니다
-                    </h2>
-                </div -->
 
                 <div class="sign-cnfrm-wrap">
                     <ul>
-                        <li>◎ 이 증서는 보험가입 확인용 입니다</li>
+                        <li>◎ 이 증서는 보험가입 확인용 입니다.</li>
                         <li>◎ 해당 보험은 만기환급금 및 해약환급금이 없습니다.</li>
                         <li><span class="fc-red">◎ 보험금청구 :</span>
                             <ul>
-                                <li>[DB Solutions] ※Hours of Operation : 08:00 - 17:00 (Weekdays) - Pacific Time</li>
+                                <li>
+                                    <strong>[DB Solutions] ※Hours of Operation : 08:00 - 17:00 (Weekdays) - Pacific Time</strong>
+                                </li>
                                 <li>- 미국,캐나다,호주,뉴질랜드,유럽과 아프리카의 영어통용국에서 발생 의료비 지불보증 및 보험금청구대행</li>
+                                <li>PO BOX 5588, Diamond Bar, CA  91765</li>
                             </ul>
-                            <div>
-                                <div>
+                            <div class="box-contact">
+                                <div class="inner">
                                     <span>
-                                        Tel: + 1-909-444-5511
-                                        Email: info@dbsclaim.com 
+                                        Tel: + 1-909-444-5511<br>
+                                        Email: info@dbsclaim.com
                                     </span>
                                     <span>
-                                        Fax : + 1-909-444-5533
-                                        www.dbsclaim.com 
+                                        Fax : + 1-909-444-5533<br>
+                                        www.dbsclaim.com
                                     </span>
                                 </div>
                             </div>
                             <ul>
                                 <li>- 그 외 국가</li>
-                                <li>[DB손해보험 해외긴급지원 우리말서비스] (24시간 지원센터)</li>
+                                <li>
+                                    <strong>[DB손해보험 해외긴급지원 우리말서비스] (24시간 지원센터)</strong>
+                                </li>
                                 <li>Tel : 82-2-3011-5200 (Collect Call)</li>
                                 <li>www.flyingdoctors.co.kr</li>
                             </ul>
@@ -350,16 +347,41 @@ if (count($arrMember) > 0) {
                         <li>◎ DB손해보험 콜센터 : +82 1588-0100</li>
                         <li>◎ 보험담당직원 : ( 070)4281-0086 )</li>
                     </ul>
-                </div>
 
-                <div class="sign-area-wrap">
-                    <div class="inner">
-                        <img src="/img/service/logo-directdb-col.png" alt="">
-                        <span>서울시 강남구 테헤란로 432 DB금융센터</span>
-                        <img src="/img/service/sign-directdb.png" alt="">
+                    <div class="sign-area-wrap">
+                        <div class="inner">
+                            <img src="/img/service/logo-directdb-col.png" alt="">
+                            <span>서울시 강남구 테헤란로 432 DB금융센터</span>
+                            <img src="/img/service/sign-directdb.png" alt="">
+                        </div>
                     </div>
                 </div>
-                <?=$row_company["web_site"]?>
+
+                <div class="box-conts-wrap last">
+                    <strong>발행일  : 2023.07.12</strong>
+
+                    <div class="table-box">
+                        <table class="table-db">
+                            <colgroup>
+                                <col width="12%">
+                                <col width="*">
+                                <col width="13%">
+                                <col width="23%">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>담당자</th>
+                                    <td>
+                                        주식회사 비아이에스 / 김성일<br>
+                                        (고유번호 : 20190581090012, 연락처 : 1800-9010)
+                                    </td>
+                                    <th>홈페이지</th>
+                                    <td>www.idbins.com<!-- 홍페이지 --></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

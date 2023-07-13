@@ -137,7 +137,7 @@ for($k=1;$k<=34;$k++) {
                 <div class="headWrap">
                     <h1><img src="/img/service/logo-directdb.png" alt="DB손해보험"></h1>
                     <strong>
-                        <span>해외여행자보험 가입증명서</span>
+                        <span>CERTIFICATE OF INSURANCE</span>
                     </strong>
                     <div class="btn-printer">
                         <a href="" value="인쇄하기" id="print" onclick="window.print()">
@@ -147,10 +147,8 @@ for($k=1;$k<=34;$k++) {
                 </div>
 
                 <div class="box-conts-wrap">
-                    <h2>기본정보
-                        <div>증권번호 : <span><?=
-                        
-                        !empty($default_plan_join_code_fix[$__CONFIG_COMPANY_TYPE][$trip_type])?$default_plan_join_code_fix[$__CONFIG_COMPANY_TYPE][$trip_type]:(!empty($row["plan_join_code"])?$row["plan_join_code"]:$row["plan_join_code_replace"])?></span></div>
+                    <h2>Basic Information <!-- 기본정보 -->
+                        <div>Securities number<!-- 증권번호 --> : <span><?=!empty($default_plan_join_code_fix[$__CONFIG_COMPANY_TYPE][$trip_type])?$default_plan_join_code_fix[$__CONFIG_COMPANY_TYPE][$trip_type]:(!empty($row["plan_join_code"])?$row["plan_join_code"]:$row["plan_join_code_replace"])?></span></div>
                     </h2>
 
                     <div class="table-box">
@@ -163,29 +161,29 @@ for($k=1;$k<=34;$k++) {
                             </colgroup>
                             <tbody>
                                 <tr>
-                                    <th>결제자</th>
+                                    <th>Payer</th><!-- 결제자 -->
                                     <td><?=$arrMember[0]["name_eng"]?></td>
-                                    <th>단체계약자</th>
+                                    <th>Collective contractor</th><!-- 단체계약자 -->
                                     <td>UDIRECT</td>
                                 </tr>
 
                                 <tr>
-                                    <th>피보험자수</th>
+                                    <th>Number of insured persons</th><!-- 피보험자수 -->
                                     <td><?=number_format(count($arrMember))?></td>
-                                    <th>여행지</th>
+                                    <th>Travel destinations</th><!-- 여행지 -->
                                     <td><?=($row["trip_type"]==1)?"국내일원":$row["nation_txt_eng"]?></td>
                                 </tr>
                                 <tr>
-                                    <th>보험기간</th>
+                                    <th>Insurance period</th><!-- 보험기간 -->
                                     <td>
                                         <span><?=$row["start_date"]." ".$row["start_hour"].":00 ~"?></span>
                                         <span><?=$row["end_date"]." ".$row["end_hour"].":00"?></span>
                                     </td>
-                                    <th>여행목적</th>
+                                    <th>Purpose of travel</th><!-- 여행목적 -->
                                     <td><?=$arrTripPurposeEng[$row["trip_purpose"]]?></td>
                                 </tr>
                                 <tr>
-                                    <th>납입보험료</th>
+                                    <th>Premiums paid</th><!-- 납입보험료 -->
                                     <td colspan="3"><?=number_format($total_price)?> WON</td>
 <?/*                                    
                                     <th>보험료 납입일자</th>
@@ -197,13 +195,11 @@ for($k=1;$k<=34;$k++) {
                                 </tr>
                             </tbody>
                         </table>
-                        <p>* 이 상품은 마이뱅크를 계약자로 지정한 단체보험으로, 피보험자의 보험청구는 DB손해보험에서 정상적으로 처리됩니다.</p>
-                        <p>* 이 상품은 미국을 포함한 세계 어느 지역의 여행이든 보장하나, 대한민국 외교부가 지정한 여행금지국가와 3단계 여행경보지역은 보장에서 제외됩니다.</p>
                     </div>
                 </div>
 
                 <div class="box-conts-wrap">
-                    <h2>보험가입자(피보험자) 정보</h2>
+                    <h2>Insurance policy holder (insured person) information</h2> <!-- 보험가입자(피보험자) 정보 -->
 
                     <div class="table-box">
                         <table class="table-db">
@@ -215,14 +211,14 @@ for($k=1;$k<=34;$k++) {
                             </colgroup>
                             <tbody>
                                 <tr>
-                                    <th>이름</th>
+                                    <th>Name</th>
                                     <td><?=$arrMember[0]["name_eng"]?></td>
-                                    <th>보험종류</th>
+                                    <th>Insurance type</th> <!-- 보험종류 -->
                                     <td><?=$arrTripTypeEng[$trip_type]?></td>
                                 </tr>
 
                                 <tr>
-                                    <th>출생년도</th>
+                                    <th>Year of birth</th><!-- 출생년도 -->
                                     <td>
 <?php                                        
 if (count($arrMember) > 0) {
@@ -243,13 +239,13 @@ if (count($arrMember) > 0) {
 }                                        
 ?>
                                     </td>
-                                    <th>휴대폰번호</th>
+                                    <th>Mobile number</th><!-- 휴대폰번호 -->
                                     <td><?=mb_substr(decode_pass($arrMember[0]["hphone"],$pass_key),0,-3)."***"?></td>
                                 </tr>
                                 <tr>
-                                    <th>이메일</th>
+                                    <th>E-mail</th><!-- 이메일 -->
                                     <td><?=decode_pass($arrMember[0]["email"],$pass_key)?></td>
-                                    <th>보험금수령인</th>
+                                    <th>Beneficiary of Insurance money</th><!-- 보험금수령인 -->
                                     <td>
                                         <span>On death: legal heir</span>
                                         <span>Other than death: principal (provided that he is a legal representative in case of a minor)</span>
@@ -263,7 +259,7 @@ if (count($arrMember) > 0) {
     for($i=1;$i<=ceil(count($arrCalType)/3);$i++) {
 ?>    
                 <div class="box-conts-wrap">
-                    <h2>연령별 보장내용 (<?=$i?>)</h2>
+                    <h2>Coverage by age (<?=$i?>)</h2><!-- 연령별 보장내용 -->
 
                     <div class="table-box">
                         <div class="db-table-box">
@@ -318,31 +314,91 @@ if (count($arrMember) > 0) {
 <?php
     }
 ?>
-                <div class="sign-cnfrm-wrap">
-                    <h2>
-                        <strong>DB손해보험</strong>은 
-                        <span><?=$arrMember[0]["name_eng"]?></span>님외 
-                        <span><?=number_format(count($arrMember)-1)?></span>명께서 
-                        <strong>해외여행자보험</strong>에 
-                        <strong>가입</strong>하셨음을 
-                        <strong>확인</strong>합니다
-                    </h2>
-                </div>
 
-                <div class="sign-area-wrap">
-                    <div class="inner">
-                        <img src="/img/service/logo-directdb-col.png" alt="">
-                        <span>서울시 강남구 테헤란로 432 DB금융센터</span>
-                        <img src="/img/service/sign-directdb.png" alt="">
+                <div class="sign-cnfrm-wrap">
+                    <ul>
+                        <li>
+                            ◎ The above Medical Expenses Coverages are applied to medical treatment Worldwide Excluding Korea.<br>Medical Expenses incurred are defined in the Original Policy's Terms & Conditions.
+                        </li>
+                        <li>◎ Accident Medical Expense,Per accident(in Korea) / Disease Expense,Per sickness(in Korea)</li>
+                        <li>◎ Disease Expense Coverage : this coverage includes the Medical expense caused by Covid-19 infection up to the coverage limit of this policy.</li>
+                        <li><span class="fc-red">◎ Please submit Claims to:</span>
+                            <ul>
+                                <li>
+                                    <strong>[DB Solutions] ※Hours of Operation : 08:00 - 17:00 (Weekdays) - Pacific Time</strong>
+                                </li>
+                                <li>
+                                    - USA, Canada, Australia, New Zealand, and most Anglophonic European and African countries.</li>
+                                <li>PO BOX 5588, Diamond Bar, CA  91765</li>
+                            </ul>
+                            <div class="box-contact">
+                                <div class="inner">
+                                    <span>
+                                        Tel: + 1-909-444-5511
+                                    </span>
+                                    <span>
+                                        Fax : + 1-909-444-5533
+                                    </span>
+                                    <span>
+                                        Email: info@dbsclaim.com
+                                    </span>
+                                    <span>
+                                        www.dbsclaim.com
+                                    </span>
+                                </div>
+                            </div>
+                            <ul>
+                                <li>- Other Countries</li>
+                                <li>
+                                    <strong>[ Emergency customer service center (Korean) ] (24h Assistance Center)</strong>
+                                </li>
+                                <li>Tel : 82-2-3011-5200 (Collect Call)</li>
+                                <li>www.flyingdoctors.co.kr</li>
+                            </ul>
+                        </li>
+                        <li>◎ DB Insurance Call Center: +82 1588-0100</li>
+                        <li>◎ Sales Representative : ( 070)4281-0086 )</li> 
+                        <li class="eng">
+                            <strong>DB INSURANCE CO., LTD. latest financial ratings are as follows : A. M. BEST'S : <br>A(Excellent)</strong>
+                        </li>
+                        <li>STANDARD&POOR'S : A</li>
+                    
+                    </ul>
+
+                    <div class="sign-area-wrap eng">
+                        <div class="inner">
+                            <img src="/img/service/logo-directdb-col-eng.png?n" alt="">
+                            <span>DB Finance Center, 432, Teheran-ro, Gangnam-gu, Seoul, Korea, 06194</span>
+                            <img src="/img/service/sign-directdb-eng.png?e" alt="">
+                        </div>
                     </div>
                 </div>
 
-                <div class="dtlng-wrap">
-                    <strong>보장성보험이므로 만기시 환급금이 없습니다.</strong>
-                    <p>* 이 보험계약은 예금자보호법에 따라 예금보험공사가 보호하되, 보호한도는 본 보험회사에 있는 귀하의 모든 예금보호대상 금융상품의 해지환급금(또는 만기시 보험 금이나 사고보험금)에 기타지급금을 합하여 1인당 "최고 5천만원"이며, 5천만원을 초과하는 나머지 금액은 보호하지 않습니다.</p>
-                    <p>* 자세한 사항은 약관을 읽어보시기 바랍니다.</p>
+                <div class="box-conts-wrap last">
+                    <strong>Date of issue : 2023.07.12</strong>
+
+                    <div class="table-box">
+                        <table class="table-db">
+                            <colgroup>
+                                <col width="12%">
+                                <col width="*">
+                                <col width="13%">
+                                <col width="23%">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>Sales Representative</th>
+                                    <td>
+                                    BIS Co., Ltd. / Kim Sungil<br>
+                                        (unique number : 20190581090012, contact : 1800-9010)
+                                    </td>
+                                    <th>Homepage</th>
+                                    <td>www.idbins.com<!-- 홍페이지 --></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <?=$row_company["web_site"]?>
             </div>
         </div>
     </div>
